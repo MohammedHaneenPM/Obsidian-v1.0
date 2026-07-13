@@ -1,0 +1,67 @@
+/* Masonry Gallery Premium - Milestone 4, Phase 4 ------------------------- */
+
+.masonry-gallery-premium {
+  margin-top: 2.4rem;
+  column-count: 1;
+  column-gap: var(--masonry-gap, 16px);
+}
+
+@media screen and (min-width: 750px) {
+  .masonry-gallery-premium {
+    column-count: 2;
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .masonry-gallery-premium {
+    column-count: 3;
+  }
+}
+
+.masonry-gallery-premium__item {
+  break-inside: avoid;
+  margin-bottom: var(--masonry-gap, 16px);
+  display: inline-block;
+  width: 100%;
+}
+
+.masonry-gallery-premium__media {
+  position: relative;
+  border-radius: var(--card-corner-radius, 0);
+  overflow: hidden;
+}
+
+.masonry-gallery-premium__media img,
+.masonry-gallery-premium__media .placeholder-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.masonry-gallery-premium__deferred-media {
+  position: relative;
+}
+
+.masonry-gallery-premium__poster {
+  padding: 0;
+  border: 0;
+  width: 100%;
+  cursor: pointer;
+}
+
+.masonry-gallery-premium__caption-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.8rem;
+  margin-top: 0.8rem;
+}
+
+.masonry-gallery-premium__caption {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.masonry-gallery-premium__product-link {
+  white-space: nowrap;
+}

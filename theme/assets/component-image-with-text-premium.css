@@ -1,0 +1,125 @@
+/* Image with text (premium) - Milestone 4, Phase 2 ----------------------- */
+
+.image-with-text-premium {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.image-with-text-premium__media {
+  position: relative;
+  width: 100%;
+}
+
+.image-with-text-premium__image {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.image-with-text-premium--bordered .image-with-text-premium__image {
+  border: 1px solid rgba(var(--color-foreground), 0.15);
+}
+
+.image-with-text-premium__decorative-shape {
+  position: absolute;
+  width: 12rem;
+  height: 12rem;
+  border: 2px solid rgba(var(--color-foreground), 0.25);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.image-with-text-premium--image-left .image-with-text-premium__decorative-shape {
+  bottom: -3rem;
+  right: -3rem;
+}
+
+.image-with-text-premium--image-right .image-with-text-premium__decorative-shape {
+  bottom: -3rem;
+  left: -3rem;
+}
+
+.image-with-text-premium__content-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+/* Split layout ------------------------------------------------------------*/
+@media screen and (min-width: 750px) {
+  .image-with-text-premium--split {
+    flex-direction: row;
+    align-items: stretch;
+    gap: 5rem;
+  }
+
+  .image-with-text-premium--split.image-with-text-premium--image-right {
+    flex-direction: row-reverse;
+  }
+
+  .image-with-text-premium--split .image-with-text-premium__media,
+  .image-with-text-premium--split .image-with-text-premium__content-wrapper {
+    flex: 1 1 50%;
+    min-width: 0;
+  }
+}
+
+.image-with-text-premium--split .image-with-text-premium__content {
+  padding: 2rem 0;
+}
+
+/* Overlay layout ------------------------------------------------------------*/
+.image-with-text-premium--overlay {
+  min-height: 50rem;
+}
+
+.image-with-text-premium--overlay .image-with-text-premium__media {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+}
+
+.image-with-text-premium--overlay .image-with-text-premium__image {
+  height: 100%;
+}
+
+.image-with-text-premium--overlay .image-with-text-premium__content-wrapper {
+  position: relative;
+  z-index: 1;
+  min-height: 50rem;
+  width: 100%;
+}
+
+.image-with-text-premium--overlay.image-with-text-premium--image-right .image-with-text-premium__content-wrapper {
+  justify-content: flex-start;
+}
+
+.image-with-text-premium--overlay.image-with-text-premium--image-left .image-with-text-premium__content-wrapper {
+  justify-content: flex-end;
+}
+
+.image-with-text-premium--overlay .image-with-text-premium__content {
+  max-width: 44rem;
+  margin: 2rem;
+  padding: 3.2rem;
+  border-radius: var(--card-corner-radius, 0);
+}
+
+@media screen and (max-width: 749px) {
+  .image-with-text-premium--overlay {
+    min-height: 40rem;
+  }
+
+  .image-with-text-premium--overlay .image-with-text-premium__content-wrapper {
+    min-height: 40rem;
+    align-items: flex-end;
+  }
+
+  .image-with-text-premium--overlay .image-with-text-premium__content {
+    margin: 1.6rem;
+    padding: 2rem;
+    max-width: none;
+  }
+}

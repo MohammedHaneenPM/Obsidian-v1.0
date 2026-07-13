@@ -1,0 +1,282 @@
+{% comment %}
+  Brand Story (premium) - Milestone 4, Phase 2.
+{% endcomment %}
+
+{{ 'component-brand-story-premium.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign has_media = false
+  if section.settings.video != blank or section.settings.image != blank
+    assign has_media = true
+  endif
+  assign video_source = section.settings.video.sources | last
+
+  assign header_alignment = 'left'
+  if section.settings.layout == 'centered'
+    assign header_alignment = 'center'
+  endif
+-%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
+  <div class="page-width">
+    <div class="brand-story-premium brand-story-premium--{{ section.settings.layout }}">
+      {%- if has_media and section.settings.layout != 'centered' -%}
+        <div class="brand-story-premium__media">
+          {%- if video_source != blank -%}
+            <video
+              class="brand-story-premium__video"
+              autoplay
+              muted
+              loop
+              playsinline
+              preload="none"
+              {% if section.settings.image != blank %}
+                poster="{{ section.settings.image | image_url: width: 1200 }}"
+              {% endif %}
+            >
+              <source src="{{ video_source.url }}" type="{{ video_source.mime_type }}">
+            </video>
+          {%- elsif section.settings.image != blank -%}
+            <img
+              srcset="
+                {{ section.settings.image | image_url: width: 400 }} 400w,
+                {{ section.settings.image | image_url: width: 700 }} 700w,
+                {{ section.settings.image | image_url: width: 1000 }} 1000w,
+                {{ section.settings.image | image_url: width: 1500 }} 1500w
+              "
+              src="{{ section.settings.image | image_url: width: 1000 }}"
+              sizes="(min-width: 750px) 50vw, 100vw"
+              alt="{{ section.settings.image.alt | escape }}"
+              class="brand-story-premium__image"
+              loading="lazy"
+              width="{{ section.settings.image.width }}"
+              height="{{ section.settings.image.height }}"
+            >
+          {%- else -%}
+            {{ 'lifestyle-apparel-1' | placeholder_svg_tag: 'placeholder-svg brand-story-premium__image' }}
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      <div class="brand-story-premium__content">
+        {%- render 'section-header',
+          eyebrow: section.settings.eyebrow,
+          heading: section.settings.heading,
+          description: section.settings.body,
+          alignment: header_alignment,
+          section_id: section.id
+        -%}
+
+        {%- if section.blocks.size > 0 -%}
+          <div class="brand-story-premium__stats" role="list">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'statistic' -%}
+                <div class="brand-story-premium__stat" role="listitem" {{ block.shopify_attributes }}>
+                  {%- if block.settings.icon != blank -%}
+                    <span class="brand-story-premium__stat-icon" aria-hidden="true">
+                      {{- block.settings.icon | image_url: width: 60 | image_tag: loading: 'lazy' -}}
+                    </span>
+                  {%- endif -%}
+                  <p class="brand-story-premium__stat-number">{{ block.settings.number | escape }}</p>
+                  <p class="brand-story-premium__stat-label">{{ block.settings.label | escape }}</p>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.button_text != blank -%}
+          <div class="brand-story-premium__cta">
+            {%- render 'button', text: section.settings.button_text, url: section.settings.button_url, style: section.settings.button_style -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- if has_media and section.settings.layout == 'centered' -%}
+        <div class="brand-story-premium__media brand-story-premium__media--centered">
+          {%- if video_source != blank -%}
+            <video class="brand-story-premium__video" autoplay muted loop playsinline preload="none">
+              <source src="{{ video_source.url }}" type="{{ video_source.mime_type }}">
+            </video>
+          {%- elsif section.settings.image != blank -%}
+            <img
+              srcset="
+                {{ section.settings.image | image_url: width: 700 }} 700w,
+                {{ section.settings.image | image_url: width: 1200 }} 1200w
+              "
+              src="{{ section.settings.image | image_url: width: 1200 }}"
+              sizes="(min-width: 750px) 70vw, 100vw"
+              alt="{{ section.settings.image.alt | escape }}"
+              class="brand-story-premium__image"
+              loading="lazy"
+              width="{{ section.settings.image.width }}"
+              height="{{ section.settings.image.height }}"
+            >
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Brand story (premium)",
+  "class": "section-brand-story-premium",
+  "tag": "section",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "image-left", "label": "Image left" },
+        { "value": "image-right", "label": "Image right" },
+        { "value": "centered", "label": "Centered, media below text" }
+      ],
+      "default": "image-left"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Our story"
+    },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Body text",
+      "default": "<p>Share the story behind your brand - where you started, what you believe in, and why it matters.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Media"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Video",
+      "info": "Optional. Overrides the image when set. Muted, looped, autoplaying."
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "options": [
+        { "value": "primary", "label": "Primary" },
+        { "value": "secondary", "label": "Secondary" },
+        { "value": "link", "label": "Text link" }
+      ],
+      "default": "secondary"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.colors.label"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "statistic",
+      "name": "Statistic",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon"
+        },
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Number",
+          "default": "10,000+"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Happy customers"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brand story (premium)",
+      "blocks": [
+        { "type": "statistic" },
+        { "type": "statistic" },
+        { "type": "statistic" }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,121 @@
+/* Testimonials Premium - Milestone 4, Phase 3 ---------------------------- */
+
+.testimonials-premium__grid {
+  margin: 0;
+  padding: 0;
+}
+
+.testimonials-premium__item {
+  list-style: none;
+}
+
+.testimonial-premium-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 1.6rem;
+  padding: 3.2rem 2.8rem;
+}
+
+.testimonial-premium-card--card {
+  border: 0.1rem solid rgba(var(--color-foreground), 0.1);
+  border-radius: var(--card-corner-radius, 0.8rem);
+  background: rgb(var(--color-background));
+}
+
+.testimonial-premium-card--minimal {
+  padding: 1.6rem 0;
+}
+
+.testimonial-premium-card__quote-icon {
+  width: 2.8rem;
+  height: 2.8rem;
+  opacity: 0.25;
+}
+
+.testimonial-premium-card__quote-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.testimonial-premium-card__quote {
+  margin: 0;
+  font-size: 1.6rem;
+  line-height: 1.6;
+}
+
+.testimonial-premium-card__product {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  text-decoration: none;
+}
+
+.testimonial-premium-card__product img {
+  border-radius: 0.4rem;
+  object-fit: cover;
+}
+
+.testimonial-premium-card__footer {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  margin-top: auto;
+  padding-top: 0.8rem;
+}
+
+.testimonial-premium-card__avatar {
+  width: 4.8rem;
+  height: 4.8rem;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.testimonial-premium-card__avatar--placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(var(--color-foreground), 0.08);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.testimonial-premium-card__identity {
+  min-width: 0;
+}
+
+.testimonial-premium-card__name {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+  font-weight: 600;
+}
+
+.testimonial-premium-card__verified-badge {
+  margin-top: 0.4rem;
+}
+
+.testimonial-premium-card__location {
+  margin: 0;
+  font-size: 1.3rem;
+  color: rgba(var(--color-foreground), 0.7);
+}
+
+/* Reusable star rating (snippets/star-rating.liquid) --------------------- */
+.star-rating-premium {
+  display: inline-block;
+}
+
+.star-rating-premium .rating-star {
+  --letter-spacing: 0.7;
+  --font-size: 1.6;
+}
+
+@media screen and (max-width: 749px) {
+  .testimonial-premium-card {
+    padding: 2.4rem 2rem;
+  }
+}

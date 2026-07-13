@@ -1,0 +1,53 @@
+/* Recently Viewed Products - Milestone 5, Phase 2 ------------------------ */
+
+recently-viewed-premium {
+  display: block;
+}
+
+.recently-viewed-premium__header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.6rem;
+}
+
+.recently-viewed-premium__clear {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.recently-viewed-premium__card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.recently-viewed-premium__media {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: var(--card-corner-radius, 0);
+  background: rgba(var(--color-foreground), 0.04);
+}
+
+.recently-viewed-premium__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.recently-viewed-premium__title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.recently-viewed-premium__price {
+  font-size: 1.3rem;
+  color: rgba(var(--color-foreground), 0.7);
+}

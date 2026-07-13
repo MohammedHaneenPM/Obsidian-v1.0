@@ -1,0 +1,35 @@
+{% comment %}
+  Return Policy Badge - Milestone 5, Phase 2.
+
+  Accepts:
+  - block: {Object} The 'return_policy_premium' section block (required)
+{% endcomment %}
+
+{{ 'component-trust-info-badges-premium.css' | asset_url | stylesheet_tag }}
+
+<div class="trust-info-badge-premium" {{ block.shopify_attributes }}>
+  {%- if block.settings.icon != blank -%}
+    <span class="trust-info-badge-premium__icon">
+      {{- block.settings.icon | image_url: width: 60 | image_tag: loading: 'lazy', width: 24, height: 24 -}}
+    </span>
+  {%- else -%}
+    <span class="trust-info-badge-premium__icon trust-info-badge-premium__icon--placeholder" aria-hidden="true">
+      {{- 'icon-return.svg' | inline_asset_content -}}
+    </span>
+  {%- endif -%}
+
+  <span class="trust-info-badge-premium__text">
+    {{- 'general.return_policy.default_message' | t: days: block.settings.return_days -}}
+    {%- if block.settings.show_exchange or block.settings.show_refund -%}
+      <span class="trust-info-badge-premium__subtext">
+        {%- if block.settings.show_exchange and block.settings.show_refund -%}
+          {{- 'general.return_policy.exchange_and_refund' | t -}}
+        {%- elsif block.settings.show_exchange -%}
+          {{- 'general.return_policy.exchange_only' | t -}}
+        {%- else -%}
+          {{- 'general.return_policy.refund_only' | t -}}
+        {%- endif -%}
+      </span>
+    {%- endif -%}
+  </span>
+</div>

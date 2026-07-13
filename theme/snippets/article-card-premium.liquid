@@ -1,0 +1,111 @@
+{% comment %}
+  Renders a premium article card for the Featured Blog (premium) section.
+
+  This is intentionally a new, distinct card from snippets/article-card.liquid
+  (which stays untouched and in use on sections/featured-blog.liquid and
+  sections/main-blog.liquid). It follows the same pattern as
+  product-card-premium.liquid / collection-card-premium.liquid from earlier
+  Milestone 4 phases: a lighter-weight, homepage-focused card that reuses
+  existing snippets ('button', 'badge') rather than duplicating them.
+
+  Accepts:
+  - card_article: {Object} Article Liquid object (optional - renders an
+    onboarding placeholder card when blank)
+  - card_blog: {Object} The parent blog object, needed for comments_enabled? (optional)
+  - show_image: {Boolean} Default true (optional)
+  - show_date: {Boolean} Default true (optional)
+  - show_author: {Boolean} Default false (optional)
+  - show_tags: {Boolean} Default false (optional)
+  - show_excerpt: {Boolean} Default true (optional)
+  - excerpt_words: {Number} Default 20 (optional)
+  - read_more_text: {String} Default from locale (optional)
+  - lazy_load: {Boolean} Default true (optional)
+
+  Usage:
+  {% render 'article-card-premium', card_article: article, card_blog: blog %}
+{% endcomment %}
+{%- liquid
+  assign show_image = show_image | default: true
+  assign show_date = show_date | default: true
+  assign show_excerpt = show_excerpt | default: true
+  assign excerpt_words = excerpt_words | default: 20
+  if read_more_text == blank
+    assign read_more_text = 'general.featured_blog_premium.read_more' | t
+  endif
+-%}
+{%- if card_article and card_article != empty -%}
+  <div class="article-card-premium card-wrapper underline-links-hover">
+    {%- if show_image and card_article.image -%}
+      <a href="{{ card_article.url }}" class="article-card-premium__media-link" tabindex="-1" aria-hidden="true">
+        <div class="article-card-premium__media media">
+          <img
+            srcset="
+              {{ card_article.image | image_url: width: 375 }} 375w,
+              {{ card_article.image | image_url: width: 550 }} 550w,
+              {{ card_article.image | image_url: width: 750 }} 750w,
+              {{ card_article.image | image_url: width: 1100 }} 1100w
+            "
+            src="{{ card_article.image | image_url: width: 750 }}"
+            sizes="(min-width: 990px) 33vw, (min-width: 750px) 50vw, 100vw"
+            alt="{{ card_article.image.alt | escape }}"
+            width="{{ card_article.image.width }}"
+            height="{{ card_article.image.height }}"
+            {% unless lazy_load == false %}
+              loading="lazy"
+            {% endunless %}
+          >
+        </div>
+      </a>
+    {%- elsif show_image -%}
+      <div class="article-card-premium__media article-card-premium__media--placeholder media">
+        {{ 'lifestyle-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      </div>
+    {%- endif -%}
+    <div class="article-card-premium__content">
+      {%- if show_tags and card_article.tags.size > 0 -%}
+        <ul class="article-card-premium__tags list-unstyled" role="list">
+          {%- for tag in card_article.tags limit: 3 -%}
+            <li class="article-card-premium__tag">{{ tag | escape }}</li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+      <h3 class="article-card-premium__heading h4">
+        <a href="{{ card_article.url }}" class="full-unstyled-link">
+          {{ card_article.title | escape }}
+        </a>
+      </h3>
+      {%- if show_date or show_author -%}
+        <div class="article-card-premium__meta caption-with-letter-spacing">
+          {%- if show_date -%}
+            <span class="circle-divider">{{ card_article.published_at | time_tag: format: 'date' }}</span>
+          {%- endif -%}
+          {%- if show_author -%}
+            <span>{{ card_article.author }}</span>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+      {%- if show_excerpt -%}
+        {%- if card_article.excerpt.size > 0 -%}
+          <p class="article-card-premium__excerpt">{{ card_article.excerpt | strip_html | truncatewords: excerpt_words }}</p>
+        {%- elsif card_article.content.size > 0 -%}
+          <p class="article-card-premium__excerpt">{{ card_article.content | strip_html | truncatewords: excerpt_words }}</p>
+        {%- endif -%}
+      {%- endif -%}
+      <a href="{{ card_article.url }}" class="link link--text animate-arrow article-card-premium__read-more">
+        {{- read_more_text -}}
+        {{- 'icon-arrow.svg' | inline_asset_content -}}
+      </a>
+    </div>
+  </div>
+{%- else -%}
+  <div class="article-card-premium article-card-premium--placeholder card-wrapper">
+    {%- if show_image -%}
+      <div class="article-card-premium__media article-card-premium__media--placeholder media">
+        {{ 'lifestyle-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
+      </div>
+    {%- endif -%}
+    <div class="article-card-premium__content">
+      <h3 class="article-card-premium__heading h4">{{ 'general.featured_blog_premium.no_articles' | t }}</h3>
+    </div>
+  </div>
+{%- endif -%}

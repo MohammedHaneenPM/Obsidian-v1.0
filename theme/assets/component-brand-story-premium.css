@@ -1,0 +1,97 @@
+/* Brand Story (premium) - Milestone 4, Phase 2 -------------------------- */
+
+.brand-story-premium {
+  display: flex;
+  flex-direction: column;
+  gap: 3.2rem;
+  align-items: center;
+}
+
+@media screen and (min-width: 750px) {
+  .brand-story-premium--image-left,
+  .brand-story-premium--image-right {
+    flex-direction: row;
+    align-items: center;
+    gap: 5rem;
+  }
+
+  .brand-story-premium--image-right {
+    flex-direction: row-reverse;
+  }
+
+  .brand-story-premium--image-left .brand-story-premium__media,
+  .brand-story-premium--image-left .brand-story-premium__content,
+  .brand-story-premium--image-right .brand-story-premium__media,
+  .brand-story-premium--image-right .brand-story-premium__content {
+    flex: 1 1 50%;
+    min-width: 0;
+  }
+}
+
+.brand-story-premium--centered {
+  text-align: center;
+  max-width: 76rem;
+  margin-inline: auto;
+}
+
+.brand-story-premium__media {
+  width: 100%;
+  border-radius: var(--card-corner-radius, 0);
+  overflow: hidden;
+}
+
+.brand-story-premium__media--centered {
+  margin-top: 2rem;
+}
+
+.brand-story-premium__image,
+.brand-story-premium__video {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.brand-story-premium__content {
+  width: 100%;
+}
+
+.brand-story-premium__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 2.4rem;
+  margin-top: 2.8rem;
+}
+
+.brand-story-premium--centered .brand-story-premium__stats {
+  justify-items: center;
+}
+
+.brand-story-premium__stat-icon {
+  display: inline-flex;
+  width: 3.2rem;
+  height: 3.2rem;
+  margin-bottom: 0.8rem;
+}
+
+.brand-story-premium__stat-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.brand-story-premium__stat-number {
+  margin: 0;
+  font-size: clamp(2.4rem, 2rem + 1.2vw, 3.6rem);
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.brand-story-premium__stat-label {
+  margin: 0.4rem 0 0;
+  color: rgba(var(--color-foreground), 0.7);
+}
+
+.brand-story-premium__cta {
+  margin-top: 2.8rem;
+}

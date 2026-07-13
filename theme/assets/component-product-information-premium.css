@@ -1,0 +1,59 @@
+/* Product Information Premium - Milestone 5, Phase 1 --------------------- */
+
+.product-information-premium {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.product-information-premium__row {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+}
+
+.product-information-premium__label {
+  color: rgba(var(--color-foreground), 0.7);
+}
+
+.product-information-premium__link {
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+}
+
+.product-information-premium__row--tags {
+  align-items: baseline;
+}
+
+.product-information-premium__tags {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.product-information-premium__tag {
+  display: inline-block;
+  padding: 0.3rem 1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(var(--color-foreground), 0.2);
+  font-size: 1.3rem;
+  text-decoration: none;
+}
+
+.product-information-premium__tag:hover {
+  border-color: rgba(var(--color-foreground), 0.5);
+}
+
+.product-information-premium__delivery {
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.product-information-premium__delivery .svg-wrapper {
+  width: 1.8rem;
+  flex-shrink: 0;
+}

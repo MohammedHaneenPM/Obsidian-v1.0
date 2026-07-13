@@ -1,0 +1,124 @@
+/* Horizontal Gallery Premium - Milestone 4, Phase 4 ---------------------- */
+
+.horizontal-gallery-premium-wrapper {
+  position: relative;
+}
+
+.horizontal-gallery-premium__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.horizontal-gallery-premium {
+  position: relative;
+  margin-top: 2.4rem;
+}
+
+.horizontal-gallery-premium__track {
+  display: flex;
+  gap: 2rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 1.2rem;
+  margin: 0;
+  padding-inline-start: 0;
+  list-style: none;
+  scrollbar-width: thin;
+}
+
+.horizontal-gallery-premium__item {
+  scroll-snap-align: start;
+  flex: 0 0 auto;
+  width: 60vw;
+}
+
+.horizontal-gallery-premium__item--large {
+  width: 60vw;
+}
+
+.horizontal-gallery-premium__item--small {
+  width: 34vw;
+}
+
+@media screen and (min-width: 750px) {
+  .horizontal-gallery-premium__item--large {
+    width: 42rem;
+  }
+
+  .horizontal-gallery-premium__item--small {
+    width: 26rem;
+  }
+}
+
+.horizontal-gallery-premium__link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.horizontal-gallery-premium__media {
+  border-radius: var(--card-corner-radius, 0);
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+}
+
+.horizontal-gallery-premium__media img,
+.horizontal-gallery-premium__media .placeholder-svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.horizontal-gallery-premium__caption {
+  margin: 0.8rem 0 0;
+  font-size: 1.4rem;
+}
+
+.horizontal-gallery-premium__nav {
+  display: none;
+  gap: 0.8rem;
+  justify-content: flex-end;
+  margin-top: 1.6rem;
+}
+
+@media screen and (min-width: 750px) {
+  .horizontal-gallery-premium__nav {
+    display: flex;
+  }
+}
+
+.horizontal-gallery-premium__nav-button {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  border: 1px solid rgba(var(--color-foreground), 0.2);
+  background: rgb(var(--color-background));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.horizontal-gallery-premium__nav-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.horizontal-gallery-premium__nav-button .svg-wrapper {
+  width: 1.2rem;
+  transform: rotate(-90deg);
+}
+
+.horizontal-gallery-premium__nav-button--next .svg-wrapper {
+  transform: rotate(90deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .horizontal-gallery-premium__track {
+    scroll-behavior: auto;
+  }
+}

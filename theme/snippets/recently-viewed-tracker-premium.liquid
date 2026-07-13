@@ -1,0 +1,26 @@
+{% comment %}
+  Emits the current product's essential card data (id, handle, title, url,
+  image, price) as JSON, plus loads the tracker script. The script (in
+  product-merchandising.js) reads this and pushes it into a localStorage-
+  backed "recently viewed" list. Rendering data server-side like this,
+  rather than having JS re-fetch the product, avoids an extra request per
+  page view.
+
+  Accepts:
+  - product: {Object} The current product (required)
+{% endcomment %}
+{%- if product != blank -%}
+  <script type="application/json" data-recently-viewed-product>
+    {
+      "id": {{ product.id | json }},
+      "handle": {{ product.handle | json }},
+      "title": {{ product.title | json }},
+      "url": {{ product.url | json }},
+      "image": {{ product.featured_media | image_url: width: 400 | json }},
+      "price": {{ product.price | json }},
+      "priceFormatted": {{ product.price | money | json }},
+      "available": {{ product.available | json }}
+    }
+  </script>
+  <script src="{{ 'product-merchandising.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}

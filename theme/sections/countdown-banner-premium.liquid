@@ -1,0 +1,287 @@
+{% comment %}
+  Countdown Banner - Milestone 4, Phase 4.
+
+  Supports a fixed end date/time or an "evergreen" countdown that starts
+  fresh for each visitor (stored in localStorage, scoped per section id).
+  Timer logic lives in homepage.js (initCountdownBanners) - functionality
+  only, no animation. Reuses 'button' and 'section-header' is not used
+  here since this section has its own centered/split layouts.
+{% endcomment %}
+
+{{ 'component-countdown-banner-premium.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign timer_mode = section.settings.countdown_type
+  assign end_date_iso = section.settings.end_date
+  assign evergreen_hours = section.settings.evergreen_duration | times: 1
+  assign expiry_message = section.settings.expiry_message
+  if expiry_message == blank
+    assign expiry_message = 'general.countdown_banner.expired' | t
+  endif
+-%}
+
+<div
+  class="
+    color-{{ section.settings.color_scheme }} gradient
+    countdown-banner-premium
+    countdown-banner-premium--{{ section.settings.layout }}
+    section-{{ section.id }}-padding
+  "
+  {% if section.settings.background_image != blank %}
+    style="--countdown-bg: url('{{ section.settings.background_image | image_url: width: 1920 }}');"
+  {% endif %}
+  data-countdown-banner
+  data-countdown-mode="{{ timer_mode }}"
+  data-countdown-end="{{ end_date_iso }}"
+  data-countdown-evergreen-hours="{{ evergreen_hours }}"
+  data-countdown-storage-key="countdown-banner-{{ section.id }}"
+  data-countdown-expiry-behavior="{{ section.settings.expiry_behavior }}"
+  data-countdown-redirect-url="{{ section.settings.redirect_url }}"
+>
+  <div class="countdown-banner-premium__inner page-width">
+    {%- if section.settings.image != blank and section.settings.layout == 'split' -%}
+      <div class="countdown-banner-premium__media">
+        <img
+          src="{{ section.settings.image | image_url: width: 1000 }}"
+          srcset="
+            {{ section.settings.image | image_url: width: 500 }} 500w,
+            {{ section.settings.image | image_url: width: 750 }} 750w,
+            {{ section.settings.image | image_url: width: 1000 }} 1000w
+          "
+          sizes="(min-width: 750px) 40vw, 100vw"
+          alt="{{ section.settings.image.alt | escape }}"
+          width="{{ section.settings.image.width }}"
+          height="{{ section.settings.image.height }}"
+          loading="lazy"
+        >
+      </div>
+    {%- endif -%}
+
+    <div class="countdown-banner-premium__content">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="countdown-banner-premium__eyebrow caption-with-letter-spacing">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.heading != blank -%}
+        <h2 class="countdown-banner-premium__heading h1 inline-richtext">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+
+      {%- if section.settings.text != blank -%}
+        <div class="countdown-banner-premium__text rte">{{ section.settings.text }}</div>
+      {%- endif -%}
+
+      <div class="countdown-banner-premium__timer" data-countdown-timer>
+        <div class="countdown-banner-premium__unit">
+          <span class="countdown-banner-premium__value" data-countdown-days aria-hidden="true">00</span>
+          <span class="countdown-banner-premium__label">{{ 'general.countdown_banner.days' | t }}</span>
+        </div>
+        <div class="countdown-banner-premium__unit">
+          <span class="countdown-banner-premium__value" data-countdown-hours aria-hidden="true">00</span>
+          <span class="countdown-banner-premium__label">{{ 'general.countdown_banner.hours' | t }}</span>
+        </div>
+        <div class="countdown-banner-premium__unit">
+          <span class="countdown-banner-premium__value" data-countdown-minutes aria-hidden="true">00</span>
+          <span class="countdown-banner-premium__label">{{ 'general.countdown_banner.minutes' | t }}</span>
+        </div>
+        <div class="countdown-banner-premium__unit">
+          <span class="countdown-banner-premium__value" data-countdown-seconds aria-hidden="true">00</span>
+          <span class="countdown-banner-premium__label">{{ 'general.countdown_banner.seconds' | t }}</span>
+        </div>
+        <span class="visually-hidden" data-countdown-live aria-live="polite"></span>
+      </div>
+
+      <p class="countdown-banner-premium__expiry-message" data-countdown-expiry-message hidden>
+        {{ expiry_message }}
+      </p>
+
+      {%- if section.settings.button_text != blank -%}
+        <div class="countdown-banner-premium__cta">
+          {%- render 'button', text: section.settings.button_text, url: section.settings.button_url, style: section.settings.button_style -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+<script src="{{ 'homepage.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "Countdown banner",
+  "class": "section-countdown-banner-premium",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Countdown"
+    },
+    {
+      "type": "select",
+      "id": "countdown_type",
+      "label": "Countdown type",
+      "options": [
+        { "value": "fixed", "label": "Fixed date" },
+        { "value": "evergreen", "label": "Evergreen (per visitor)" }
+      ],
+      "default": "fixed"
+    },
+    {
+      "type": "text",
+      "id": "end_date",
+      "label": "End date and time",
+      "info": "Format: YYYY-MM-DD HH:MM (24-hour, your store's local time). Used when countdown type is \"Fixed date\".",
+      "placeholder": "2026-12-31 23:59"
+    },
+    {
+      "type": "range",
+      "id": "evergreen_duration",
+      "label": "Duration",
+      "min": 1,
+      "max": 168,
+      "step": 1,
+      "unit": "hrs",
+      "info": "Starts counting down the first time each visitor sees this section. Used when countdown type is \"Evergreen\".",
+      "default": 24
+    },
+    {
+      "type": "select",
+      "id": "expiry_behavior",
+      "label": "When the countdown ends",
+      "options": [
+        { "value": "message", "label": "Show a message" },
+        { "value": "hide", "label": "Hide this section" },
+        { "value": "redirect", "label": "Redirect visitors" }
+      ],
+      "default": "message"
+    },
+    {
+      "type": "text",
+      "id": "expiry_message",
+      "label": "Expiry message",
+      "default": "This offer has ended."
+    },
+    {
+      "type": "url",
+      "id": "redirect_url",
+      "label": "Redirect link",
+      "info": "Used when the expiry behavior above is set to \"Redirect visitors\"."
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "centered", "label": "Centered" },
+        { "value": "split", "label": "Split with image" }
+      ],
+      "default": "centered"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "Used in the split layout."
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image",
+      "info": "Optional full-bleed background, works with any layout."
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Limited time offer"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "options": [
+        { "value": "primary", "label": "Primary" },
+        { "value": "secondary", "label": "Secondary" },
+        { "value": "link", "label": "Text link" }
+      ],
+      "default": "primary"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 48
+    }
+  ],
+  "presets": [
+    {
+      "name": "Countdown banner"
+    }
+  ]
+}
+{% endschema %}

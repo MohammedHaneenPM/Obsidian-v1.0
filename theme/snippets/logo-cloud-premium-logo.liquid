@@ -1,0 +1,32 @@
+{% comment %}
+  Renders a single logo for sections/logo-cloud-premium.liquid. Extracted
+  so the grid/carousel path and the marquee path (which needs the same
+  markup rendered twice for its duplicated track) don't duplicate Liquid.
+
+  Accepts:
+  - block: {Object} A 'logo' block from logo-cloud-premium.liquid (required)
+
+  Usage:
+  {% render 'logo-cloud-premium-logo', block: block %}
+{% endcomment %}
+{%- if block.settings.image != blank -%}
+  {%- if block.settings.link != blank -%}
+    <a href="{{ block.settings.link }}" class="logo-cloud-premium__link">
+  {%- endif -%}
+  <img
+    src="{{ block.settings.image | image_url: width: 300 }}"
+    srcset="{{ block.settings.image | image_url: width: 150 }} 150w, {{ block.settings.image | image_url: width: 300 }} 300w"
+    alt="{{ block.settings.alt | default: block.settings.image.alt | escape }}"
+    width="{{ block.settings.image.width }}"
+    height="{{ block.settings.image.height }}"
+    class="logo-cloud-premium__image"
+    loading="lazy"
+  >
+  {%- if block.settings.link != blank -%}
+    </a>
+  {%- endif -%}
+{%- else -%}
+  <span class="logo-cloud-premium__image logo-cloud-premium__image--placeholder" aria-hidden="true">
+    {{- 'icon-shopify.svg' | inline_asset_content -}}
+  </span>
+{%- endif -%}

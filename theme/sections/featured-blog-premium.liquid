@@ -1,0 +1,296 @@
+{% comment %}
+  Featured Blog Premium - Milestone 4, Phase 3.
+
+  A new, standalone blog merchandising section, distinct from the existing
+  sections/featured-blog.liquid (untouched - single blog source, grid
+  only, no tags/excerpt/manual picks). This version adds: a choice between
+  pulling latest articles from a blog OR hand-picking specific articles via
+  blocks, a carousel layout option (reuses 'premium-grid'), tags, and a
+  "Read more" CTA per card. Card markup lives in the new
+  'article-card-premium' snippet so it isn't duplicated here.
+{% endcomment %}
+
+{{ 'component-featured-blog-premium.css' | asset_url | stylesheet_tag }}
+{{ 'component-premium-shared.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign article_list = blank
+  if section.settings.article_source == 'latest' and section.settings.blog != blank
+    assign article_list = section.settings.blog.articles
+  endif
+-%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div class="featured-blog-premium page-width section-{{ section.id }}-padding">
+    {%- render 'section-header',
+      eyebrow: section.settings.eyebrow,
+      heading: section.settings.heading,
+      description: section.settings.description,
+      button_text: section.settings.button_text,
+      button_url: section.settings.button_url | default: section.settings.blog.url,
+      alignment: section.settings.heading_alignment,
+      section_id: section.id
+    -%}
+
+    {%- if section.settings.article_source == 'latest' -%}
+      {%- if article_list != blank and article_list.size > 0 -%}
+        {%- capture items -%}
+          {%- for article in article_list limit: section.settings.post_limit -%}
+            <li class="featured-blog-premium__item grid__item">
+              {%- render 'article-card-premium',
+                card_article: article,
+                card_blog: section.settings.blog,
+                show_image: section.settings.show_image,
+                show_date: section.settings.show_date,
+                show_author: section.settings.show_author,
+                show_tags: section.settings.show_tags,
+                show_excerpt: section.settings.show_excerpt
+              -%}
+            </li>
+          {%- endfor -%}
+        {%- endcapture -%}
+        {%- render 'premium-grid',
+          items: items,
+          is_carousel: section.settings.layout == 'carousel',
+          columns_desktop: section.settings.columns_desktop,
+          columns_mobile: '1',
+          total_count: article_list.size,
+          section_id: section.id,
+          grid_class: 'featured-blog-premium__grid'
+        -%}
+      {%- else -%}
+        <div class="featured-blog-premium__empty-state premium-section-empty-state">
+          <p>{{ 'general.featured_blog_premium.no_blog' | t }}</p>
+        </div>
+      {%- endif -%}
+    {%- else -%}
+      {%- if section.blocks.size > 0 -%}
+        {%- capture items -%}
+          {%- for block in section.blocks -%}
+            <li class="featured-blog-premium__item grid__item" {{ block.shopify_attributes }}>
+              {%- render 'article-card-premium',
+                card_article: block.settings.article,
+                show_image: section.settings.show_image,
+                show_date: section.settings.show_date,
+                show_author: section.settings.show_author,
+                show_tags: section.settings.show_tags,
+                show_excerpt: section.settings.show_excerpt
+              -%}
+            </li>
+          {%- endfor -%}
+        {%- endcapture -%}
+        {%- render 'premium-grid',
+          items: items,
+          is_carousel: section.settings.layout == 'carousel',
+          columns_desktop: section.settings.columns_desktop,
+          columns_mobile: '1',
+          total_count: section.blocks.size,
+          section_id: section.id,
+          grid_class: 'featured-blog-premium__grid'
+        -%}
+      {%- else -%}
+        <div class="featured-blog-premium__empty-state premium-section-empty-state">
+          <p>{{ 'general.featured_blog_premium.no_articles' | t }}</p>
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Featured blog (premium)",
+  "class": "section-featured-blog-premium",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "From the journal"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Latest articles"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button label",
+      "default": "View all"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button link",
+      "info": "Optional. Defaults to the selected blog's page if left blank."
+    },
+    {
+      "type": "header",
+      "content": "Article source"
+    },
+    {
+      "type": "select",
+      "id": "article_source",
+      "label": "Show",
+      "options": [
+        { "value": "latest", "label": "Latest articles from a blog" },
+        { "value": "manual", "label": "Hand-picked articles" }
+      ],
+      "default": "latest"
+    },
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog",
+      "info": "Used when \"Show\" is set to latest articles."
+    },
+    {
+      "type": "range",
+      "id": "post_limit",
+      "label": "Number of articles to show",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "grid", "label": "Grid" },
+        { "value": "carousel", "label": "Carousel" }
+      ],
+      "default": "grid"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns on desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "header",
+      "content": "Card"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "label": "Show image",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "label": "Show date",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "label": "Show author",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tags",
+      "label": "Show tags",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_excerpt",
+      "label": "Show excerpt",
+      "default": true
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 52
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 52
+    }
+  ],
+  "blocks": [
+    {
+      "type": "article",
+      "name": "Article",
+      "settings": [
+        {
+          "type": "article",
+          "id": "article",
+          "label": "Article"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "Featured blog (premium)"
+    }
+  ]
+}
+{% endschema %}

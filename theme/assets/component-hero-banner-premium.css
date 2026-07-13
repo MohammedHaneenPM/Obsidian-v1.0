@@ -1,0 +1,352 @@
+/* Premium hero banner - Milestone 4, Phase 1 --------------------------- */
+
+.hero-banner-premium {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Height variants */
+.hero-banner-premium--height-small {
+  min-height: 40rem;
+}
+
+.hero-banner-premium--height-medium {
+  min-height: 55rem;
+}
+
+.hero-banner-premium--height-large {
+  min-height: 70rem;
+}
+
+.hero-banner-premium--height-full {
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
+@media screen and (max-width: 749px) {
+  .hero-banner-premium--height-large {
+    min-height: 60rem;
+  }
+
+  .hero-banner-premium--height-full {
+    min-height: 100svh;
+  }
+}
+
+/* Full-bleed layout: media fills the section, content overlays it */
+.hero-banner-premium--full {
+  align-items: center;
+}
+
+.hero-banner-premium--full .hero-banner-premium__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+/* Split layout: media and content side by side */
+.hero-banner-premium--split {
+  flex-direction: column;
+}
+
+@media screen and (min-width: 750px) {
+  .hero-banner-premium--split {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .hero-banner-premium--split .hero-banner-premium__media {
+    position: relative;
+    flex: 1 1 50%;
+    min-height: 100%;
+  }
+
+  .hero-banner-premium--split .hero-banner-premium__content {
+    flex: 1 1 50%;
+    display: flex;
+    align-items: center;
+    max-width: none;
+  }
+}
+
+.hero-banner-premium__media {
+  position: relative;
+  width: 100%;
+  min-height: 30rem;
+  overflow: hidden;
+}
+
+.hero-banner-premium__image,
+.hero-banner-premium__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.hero-banner-premium__overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Background pattern ---------------------------------------------------- */
+.hero-banner-premium__pattern {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: var(--hero-pattern-image);
+  background-repeat: repeat;
+  background-size: 20rem;
+  opacity: var(--hero-pattern-opacity, 0.2);
+}
+
+/* Floating decorative shapes (CSS only, no JS/GSAP) ---------------------- */
+.hero-banner-premium__shapes {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.hero-banner-premium__shape {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  filter: blur(3rem);
+}
+
+.hero-banner-premium__shape--1 {
+  width: 22rem;
+  height: 22rem;
+  top: -6rem;
+  right: -4rem;
+}
+
+.hero-banner-premium__shape--2 {
+  width: 14rem;
+  height: 14rem;
+  bottom: 8%;
+  left: -3rem;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.hero-banner-premium__shape--3 {
+  width: 9rem;
+  height: 9rem;
+  bottom: 20%;
+  right: 18%;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.hero-banner-premium--overlay-solid .hero-banner-premium__overlay {
+  background: rgb(var(--color-foreground));
+  opacity: var(--hero-overlay-opacity, 0.4);
+}
+
+.hero-banner-premium--overlay-gradient-bottom .hero-banner-premium__overlay {
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(var(--color-foreground), var(--hero-overlay-opacity, 0.4)) 100%
+  );
+}
+
+.hero-banner-premium--overlay-gradient-top .hero-banner-premium__overlay {
+  background: linear-gradient(
+    to top,
+    transparent 0%,
+    rgba(var(--color-foreground), var(--hero-overlay-opacity, 0.4)) 100%
+  );
+}
+
+/* Content positioning (full-bleed layout only) */
+.hero-banner-premium__content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  display: flex;
+}
+
+.hero-banner-premium--full .hero-banner-premium__content {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+.hero-banner-premium--content-top-left .hero-banner-premium__content {
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.hero-banner-premium--content-top-center .hero-banner-premium__content {
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.hero-banner-premium--content-top-right .hero-banner-premium__content {
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+
+.hero-banner-premium--content-middle-left .hero-banner-premium__content {
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.hero-banner-premium--content-middle-center .hero-banner-premium__content {
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-banner-premium--content-middle-right .hero-banner-premium__content {
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.hero-banner-premium--content-bottom-left .hero-banner-premium__content {
+  align-items: flex-end;
+  justify-content: flex-start;
+}
+
+.hero-banner-premium--content-bottom-center .hero-banner-premium__content {
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.hero-banner-premium--content-bottom-right .hero-banner-premium__content {
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.hero-banner-premium__content-inner {
+  max-width: 60rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
+.hero-banner-premium__content-inner--glass {
+  padding: 3.2rem;
+  border-radius: 1.2rem;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  -webkit-backdrop-filter: blur(1.2rem);
+  backdrop-filter: blur(1.2rem);
+}
+
+@media screen and (max-width: 749px) {
+  .hero-banner-premium__content-inner--glass {
+    padding: 2rem;
+  }
+}
+
+/* Badge style variants ---------------------------------------------------*/
+.hero-banner-premium__badge--minimal .badge {
+  background: transparent;
+  border-color: transparent;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.hero-banner-premium__badge--underline .badge {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid currentColor;
+  border-radius: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.hero-banner-premium--text-center .hero-banner-premium__content-inner {
+  align-items: center;
+  text-align: center;
+}
+
+.hero-banner-premium--text-right .hero-banner-premium__content-inner {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.hero-banner-premium--text-left .hero-banner-premium__content-inner {
+  align-items: flex-start;
+  text-align: left;
+}
+
+@media screen and (max-width: 749px) {
+  .hero-banner-premium--text-mobile-center .hero-banner-premium__content-inner {
+    align-items: center;
+    text-align: center;
+    margin-inline: auto;
+  }
+
+  .hero-banner-premium--text-mobile-left .hero-banner-premium__content-inner {
+    align-items: flex-start;
+    text-align: left;
+  }
+}
+
+.hero-banner-premium__heading {
+  margin: 0;
+}
+
+.hero-banner-premium__heading.h0 {
+  font-size: clamp(3.2rem, 2.2rem + 3.5vw, 6.2rem);
+  line-height: 1.05;
+}
+
+.hero-banner-premium__heading.h1 {
+  font-size: clamp(2.6rem, 2rem + 2vw, 4.4rem);
+  line-height: 1.1;
+}
+
+.hero-banner-premium__subheading {
+  max-width: 50rem;
+  font-size: clamp(1.5rem, 1.3rem + 0.4vw, 1.8rem);
+}
+
+.hero-banner-premium__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  margin-top: 0.4rem;
+}
+
+/* Scroll indicator */
+.hero-banner-premium__scroll-indicator {
+  position: absolute;
+  bottom: 2.4rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 1rem;
+  color: inherit;
+}
+
+.hero-banner-premium__scroll-indicator .icon {
+  width: 2rem;
+  height: 2rem;
+  transform: rotate(90deg);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-banner-premium__scroll-indicator .icon {
+    animation: hero-scroll-bounce 1.6s ease-in-out infinite;
+  }
+}
+
+@keyframes hero-scroll-bounce {
+  0%,
+  100% {
+    transform: rotate(90deg) translateX(0);
+  }
+  50% {
+    transform: rotate(90deg) translateX(0.4rem);
+  }
+}

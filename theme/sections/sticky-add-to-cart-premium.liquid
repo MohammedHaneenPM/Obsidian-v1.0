@@ -1,0 +1,177 @@
+{% comment %}
+  Sticky Add To Cart - Milestone 5, Phase 1.
+
+  A floating bar that appears once the main product form scrolls out of
+  view, and hides again while it's visible. Deliberately does NOT
+  reimplement cart logic: its "Add to cart" button syncs quantity into the
+  real product form and delegates the actual submit to Dawn's existing
+  <product-form> element (assets/product-form.js), so AJAX add, the cart
+  drawer/notification, and error handling all keep working exactly as
+  they already do. Price/availability stay in sync by subscribing to the
+  theme's existing PUB_SUB_EVENTS.variantChange event (assets/pubsub.js,
+  published by assets/product-info.js on every variant change) rather
+  than re-implementing variant-price formatting logic.
+
+  Add this section to templates/product.json to enable it; it renders
+  nothing (and adds no markup) if `product` isn't available, so it's
+  harmless if accidentally added elsewhere.
+{% endcomment %}
+
+{%- if product -%}
+  {{ 'component-sticky-add-to-cart-premium.css' | asset_url | stylesheet_tag }}
+
+  {%- liquid
+    assign current_variant = product.selected_or_first_available_variant
+    assign is_sold_out = true
+    if current_variant and current_variant.available
+      assign is_sold_out = false
+    endif
+  -%}
+
+  <sticky-add-to-cart-premium
+    class="
+      sticky-add-to-cart-premium
+      color-{{ section.settings.color_scheme }} gradient
+      {% unless section.settings.enable_desktop %}sticky-add-to-cart-premium--no-desktop{% endunless %}
+      {% unless section.settings.enable_mobile %}sticky-add-to-cart-premium--no-mobile{% endunless %}
+    "
+    data-product-url="{{ product.url }}"
+  >
+    <div class="sticky-add-to-cart-premium__inner page-width">
+      {%- if section.settings.show_image and current_variant.featured_media -%}
+        <a href="{{ product.url }}" class="sticky-add-to-cart-premium__media">
+          <img
+            src="{{ current_variant.featured_media | image_url: width: 160 }}"
+            alt="{{ current_variant.featured_media.alt | escape }}"
+            width="80"
+            height="80"
+            loading="lazy"
+            data-sticky-atc-image
+          >
+        </a>
+      {%- endif -%}
+
+      <div class="sticky-add-to-cart-premium__info">
+        <p class="sticky-add-to-cart-premium__title">{{ product.title | escape }}</p>
+        {%- if section.settings.show_variant_title -%}
+          <p class="sticky-add-to-cart-premium__variant" data-sticky-atc-variant-title>
+            {{- current_variant.title | escape -}}
+          </p>
+        {%- endif -%}
+      </div>
+
+      <div class="sticky-add-to-cart-premium__price" data-sticky-atc-price>
+        {%- render 'price', product: product, use_variant: true, show_badges: true -%}
+      </div>
+
+      {%- if section.settings.show_quantity -%}
+        <div class="sticky-add-to-cart-premium__quantity">
+          <label class="visually-hidden" for="StickyQuantity-{{ section.id }}">
+            {{- 'products.product.quantity.label' | t -}}
+          </label>
+          <input
+            type="number"
+            id="StickyQuantity-{{ section.id }}"
+            name="sticky-quantity"
+            value="1"
+            min="1"
+            inputmode="numeric"
+            data-sticky-atc-quantity
+          >
+        </div>
+      {%- endif -%}
+
+      <button
+        type="button"
+        class="sticky-add-to-cart-premium__submit button button--primary"
+        data-sticky-atc-submit
+        {% if is_sold_out %}disabled{% endif %}
+      >
+        <span data-sticky-atc-submit-text>
+          {%- if is_sold_out -%}
+            {{- 'products.product.sold_out' | t -}}
+          {%- else -%}
+            {{- 'products.product.add_to_cart' | t -}}
+          {%- endif -%}
+        </span>
+      </button>
+
+      {%- if section.settings.show_dynamic_checkout -%}
+        <div class="sticky-add-to-cart-premium__dynamic-checkout" data-sticky-atc-dynamic-checkout>
+          {%- form 'product', product, id: 'sticky-product-form-' | append: section.id -%}
+            <input
+              type="hidden"
+              name="id"
+              value="{{ current_variant.id }}"
+              data-sticky-atc-variant-input
+              {% if is_sold_out %}disabled{% endif %}
+            >
+            {{ form | payment_button }}
+          {%- endform -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </sticky-add-to-cart-premium>
+
+  <script src="{{ 'sticky-add-to-cart.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Sticky add to cart",
+  "class": "section-sticky-add-to-cart-premium",
+  "tag": "section",
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Appears once the main product form has scrolled out of view. Works alongside the Main product section - it doesn't replace it."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_desktop",
+      "label": "Show on desktop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_mobile",
+      "label": "Show on mobile",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "label": "Show product image",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_variant_title",
+      "label": "Show selected variant",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quantity",
+      "label": "Show quantity selector",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dynamic_checkout",
+      "label": "Show dynamic checkout button",
+      "info": "Shows an additional express checkout button (e.g. Shop Pay) alongside Add to cart, using Shopify's native dynamic checkout button.",
+      "default": false
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    }
+  ]
+}
+{% endschema %}

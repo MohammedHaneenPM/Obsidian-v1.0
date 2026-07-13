@@ -1,0 +1,86 @@
+{% comment %}
+  Product Information (premium) - Milestone 5, Phase 1.
+
+  Fills a real gap in Dawn's product template: vendor, barcode, product
+  type, collections, tags, and a delivery-estimate placeholder are never
+  rendered anywhere in the stock sections/main-product.liquid (confirmed
+  by searching the file - zero references to product.vendor, product.type,
+  product.tags, or product.collections before this snippet existed).
+  SKU and inventory/availability already have their own dedicated Dawn
+  blocks ('sku', 'inventory') and are intentionally left alone here to
+  avoid duplicating them.
+
+  Accepts:
+  - product: {Object} The current product (required)
+  - block: {Object} The 'product_information_premium' section block (required)
+
+  Usage:
+  {% render 'product-information-premium', product: product, block: block %}
+{% endcomment %}
+
+{{ 'component-product-information-premium.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign text_style_class = ''
+  if block.settings.text_style == 'uppercase'
+    assign text_style_class = ' caption-with-letter-spacing'
+  elsif block.settings.text_style == 'subtitle'
+    assign text_style_class = ' subtitle'
+  endif
+-%}
+
+<div class="product-information-premium{{ text_style_class }}" {{ block.shopify_attributes }}>
+  {%- if block.settings.show_vendor and product.vendor != blank -%}
+    <p class="product-information-premium__row">
+      <span class="product-information-premium__label">{{ 'general.product_information.vendor' | t }}:</span>
+      <span class="product-information-premium__value">{{ product.vendor }}</span>
+    </p>
+  {%- endif -%}
+
+  {%- if block.settings.show_barcode and product.selected_or_first_available_variant.barcode != blank -%}
+    <p class="product-information-premium__row" id="Barcode-{{ block.id }}" role="status">
+      <span class="product-information-premium__label">{{ 'general.product_information.barcode' | t }}:</span>
+      <span class="product-information-premium__value">{{ product.selected_or_first_available_variant.barcode }}</span>
+    </p>
+  {%- endif -%}
+
+  {%- if block.settings.show_product_type and product.type != blank -%}
+    <p class="product-information-premium__row">
+      <span class="product-information-premium__label">{{ 'general.product_information.product_type' | t }}:</span>
+      <a href="{{ product.type | url_for_type }}" class="product-information-premium__value product-information-premium__link">{{ product.type }}</a>
+    </p>
+  {%- endif -%}
+
+  {%- if block.settings.show_collections and product.collections.size > 0 -%}
+    <p class="product-information-premium__row">
+      <span class="product-information-premium__label">{{ 'general.product_information.collections' | t }}:</span>
+      <span class="product-information-premium__value">
+        {%- for collection in product.collections -%}
+          <a href="{{ collection.url }}" class="product-information-premium__link">{{ collection.title }}</a>{% unless forloop.last %}, {% endunless %}
+        {%- endfor -%}
+      </span>
+    </p>
+  {%- endif -%}
+
+  {%- if block.settings.show_tags and product.tags.size > 0 -%}
+    <div class="product-information-premium__row product-information-premium__row--tags">
+      <span class="product-information-premium__label">{{ 'general.product_information.tags' | t }}:</span>
+      <ul class="product-information-premium__tags" role="list">
+        {%- for tag in product.tags limit: block.settings.max_tags -%}
+          <li>
+            <a href="/search?q=tag:{{ tag | url_param_escape }}" class="product-information-premium__tag">
+              {{- tag -}}
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  {%- endif -%}
+
+  {%- if block.settings.show_delivery_estimate and block.settings.delivery_estimate_text != blank -%}
+    <p class="product-information-premium__row product-information-premium__delivery">
+      <span class="svg-wrapper" aria-hidden="true">{{- 'icon-truck.svg' | inline_asset_content -}}</span>
+      <span>{{ block.settings.delivery_estimate_text | escape }}</span>
+    </p>
+  {%- endif -%}
+</div>

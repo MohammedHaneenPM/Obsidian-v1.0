@@ -1,0 +1,86 @@
+/* FAQ Premium - Milestone 4, Phase 3 -------------------------------------- */
+
+.faq-premium__controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.6rem;
+  margin-bottom: 3.2rem;
+}
+
+.faq-premium__search {
+  width: 100%;
+  max-width: 44rem;
+  position: relative;
+}
+
+.faq-premium__search .field__input {
+  padding-right: 4.4rem;
+}
+
+.faq-premium__search-icon {
+  position: absolute;
+  top: 50%;
+  right: 1.6rem;
+  transform: translateY(-50%);
+  width: 1.8rem;
+  height: 1.8rem;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.faq-premium__categories {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.8rem;
+}
+
+.faq-premium__category-pill {
+  padding: 0.6rem 1.6rem;
+  border-radius: 999px;
+  border: 0.1rem solid rgba(var(--color-foreground), 0.2);
+  background: transparent;
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: rgb(var(--color-foreground));
+}
+
+.faq-premium__category-pill.is-active {
+  background: rgb(var(--color-foreground));
+  color: rgb(var(--color-background));
+  border-color: rgb(var(--color-foreground));
+}
+
+.faq-premium__expand-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 1.3rem;
+}
+
+.faq-premium__expand-controls button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.faq-premium__list {
+  max-width: 76rem;
+  margin: 0 auto;
+}
+
+.faq-premium__item[hidden] {
+  display: none;
+}
+
+.faq-premium__no-results {
+  text-align: center;
+  color: rgba(var(--color-foreground), 0.7);
+  padding: 2.4rem 0;
+}
+
+.faq-premium__no-results[hidden] {
+  display: none;
+}

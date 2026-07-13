@@ -1,0 +1,61 @@
+{% comment %}
+  Secure Checkout Section - Milestone 5, Phase 2.
+  Reuses the theme's existing payment-icon rendering pattern (the same
+  `shop.enabled_payment_types` + `payment_type_svg_tag` + `.list-payment`
+  markup/CSS already used in sections/footer.liquid) rather than
+  duplicating it.
+
+  Accepts:
+  - block: {Object} The 'secure_checkout_premium' section block (required)
+{% endcomment %}
+
+{{ 'component-trust-info-badges-premium.css' | asset_url | stylesheet_tag }}
+
+<div class="secure-checkout-premium" {{ block.shopify_attributes }}>
+  {%- if block.settings.heading != blank -%}
+    <p class="secure-checkout-premium__heading">
+      {%- if block.settings.show_ssl_badge -%}
+        <span class="secure-checkout-premium__lock-icon" aria-hidden="true">{{- 'icon-lock.svg' | inline_asset_content -}}</span>
+      {%- endif -%}
+      {{- block.settings.heading | escape -}}
+    </p>
+  {%- endif -%}
+
+  {%- if block.settings.message != blank -%}
+    <div class="secure-checkout-premium__message rte">{{ block.settings.message }}</div>
+  {%- endif -%}
+
+  {%- if block.settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
+    <div class="secure-checkout-premium__payment">
+      <span class="visually-hidden">{{ 'sections.footer.payment' | t }}</span>
+      <ul class="list list-payment" role="list">
+        {%- for type in shop.enabled_payment_types -%}
+          <li class="list-payment__item">
+            {{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  {%- endif -%}
+
+  {%- if block.settings.custom_icon_1 != blank or block.settings.custom_icon_2 != blank -%}
+    <ul class="secure-checkout-premium__custom-icons" role="list">
+      {%- if block.settings.custom_icon_1 != blank -%}
+        <li class="secure-checkout-premium__custom-icon">
+          {{- block.settings.custom_icon_1 | image_url: width: 60 | image_tag: loading: 'lazy', width: 28, height: 28 -}}
+          {%- if block.settings.custom_icon_1_text != blank -%}
+            <span>{{ block.settings.custom_icon_1_text | escape }}</span>
+          {%- endif -%}
+        </li>
+      {%- endif -%}
+      {%- if block.settings.custom_icon_2 != blank -%}
+        <li class="secure-checkout-premium__custom-icon">
+          {{- block.settings.custom_icon_2 | image_url: width: 60 | image_tag: loading: 'lazy', width: 28, height: 28 -}}
+          {%- if block.settings.custom_icon_2_text != blank -%}
+            <span>{{ block.settings.custom_icon_2_text | escape }}</span>
+          {%- endif -%}
+        </li>
+      {%- endif -%}
+    </ul>
+  {%- endif -%}
+</div>

@@ -1,0 +1,319 @@
+{% comment %}
+  Testimonials Premium - Milestone 4, Phase 3.
+
+  A new, standalone testimonials/reviews section. Does not modify or
+  replace any existing section. Reuses 'section-header', 'button',
+  'badge', and the Phase 2 'premium-grid' snippet for its grid/carousel
+  markup, plus the new 'star-rating' snippet for the per-testimonial
+  rating display.
+{% endcomment %}
+
+{{ 'component-rating.css' | asset_url | stylesheet_tag }}
+{{ 'component-testimonials-premium.css' | asset_url | stylesheet_tag }}
+{{ 'component-premium-shared.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div class="testimonials-premium page-width section-{{ section.id }}-padding">
+    {%- render 'section-header',
+      eyebrow: section.settings.eyebrow,
+      heading: section.settings.heading,
+      description: section.settings.description,
+      button_text: section.settings.button_text,
+      button_url: section.settings.button_url,
+      alignment: section.settings.heading_alignment,
+      section_id: section.id
+    -%}
+
+    {%- if section.blocks.size > 0 -%}
+      {%- capture items -%}
+        {%- for block in section.blocks -%}
+          <li
+            id="Testimonial-{{ block.id }}"
+            class="testimonials-premium__item grid__item"
+            {{ block.shopify_attributes }}
+          >
+            <div
+              class="
+                testimonial-premium-card
+                testimonial-premium-card--{{ section.settings.card_style }}
+                {% if block.settings.block_color_scheme != blank %}color-{{ block.settings.block_color_scheme }} gradient{% endif %}
+              "
+            >
+              <span class="testimonial-premium-card__quote-icon" aria-hidden="true">
+                {{- 'icon-chat-bubble.svg' | inline_asset_content -}}
+              </span>
+
+              {%- if block.settings.show_rating and block.settings.rating > 0 -%}
+                {%- render 'star-rating', rating: block.settings.rating -%}
+              {%- endif -%}
+
+              {%- if block.settings.quote != blank -%}
+                <blockquote class="testimonial-premium-card__quote rte">
+                  {{ block.settings.quote }}
+                </blockquote>
+              {%- endif -%}
+
+              {%- if block.settings.product != blank -%}
+                <a href="{{ block.settings.product.url }}" class="testimonial-premium-card__product">
+                  {%- if block.settings.product.featured_media -%}
+                    <img
+                      src="{{ block.settings.product.featured_media | image_url: width: 80 }}"
+                      alt=""
+                      width="40"
+                      height="40"
+                      loading="lazy"
+                    >
+                  {%- endif -%}
+                  <span class="link">{{ block.settings.product.title | escape }}</span>
+                </a>
+              {%- endif -%}
+
+              <footer class="testimonial-premium-card__footer">
+                {%- if block.settings.customer_photo != blank -%}
+                  <img
+                    src="{{ block.settings.customer_photo | image_url: width: 96 }}"
+                    alt="{{ block.settings.customer_photo.alt | default: block.settings.customer_name | escape }}"
+                    width="48"
+                    height="48"
+                    class="testimonial-premium-card__avatar"
+                    loading="lazy"
+                  >
+                {%- else -%}
+                  <span class="testimonial-premium-card__avatar testimonial-premium-card__avatar--placeholder" aria-hidden="true">
+                    {{- block.settings.customer_name | slice: 0 -}}
+                  </span>
+                {%- endif -%}
+                <div class="testimonial-premium-card__identity">
+                  <p class="testimonial-premium-card__name">
+                    {{- block.settings.customer_name | escape -}}
+                  </p>
+                  {%- if block.settings.customer_location != blank -%}
+                    <p class="testimonial-premium-card__location">{{ block.settings.customer_location | escape }}</p>
+                  {%- endif -%}
+                </div>
+                {%- if block.settings.verified -%}
+                  {%- render 'badge', text: 'general.testimonials_premium.verified' | t, type: 'new', classes: 'testimonial-premium-card__verified-badge' -%}
+                {%- endif -%}
+              </footer>
+            </div>
+          </li>
+        {%- endfor -%}
+      {%- endcapture -%}
+
+      {%- render 'premium-grid',
+        items: items,
+        is_carousel: section.settings.layout == 'carousel',
+        columns_desktop: section.settings.columns_desktop,
+        columns_mobile: '1',
+        total_count: section.blocks.size,
+        section_id: section.id,
+        grid_class: 'testimonials-premium__grid'
+      -%}
+    {%- else -%}
+      <div class="testimonials-premium__empty-state premium-section-empty-state">
+        <p>{{ 'general.testimonials_premium.no_testimonials' | t }}</p>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Testimonials (premium)",
+  "class": "section-testimonials-premium",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Testimonials"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "What our customers say"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "grid", "label": "Grid" },
+        { "value": "carousel", "label": "Carousel" }
+      ],
+      "default": "carousel"
+    },
+    {
+      "type": "select",
+      "id": "card_style",
+      "label": "Card style",
+      "options": [
+        { "value": "card", "label": "Card" },
+        { "value": "minimal", "label": "Minimal" }
+      ],
+      "default": "card"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns on desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 52
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 52
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "quote",
+          "label": "Quote",
+          "default": "<p>This product completely changed how I shop. Fast shipping, great quality, would buy again.</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_rating",
+          "label": "Show star rating",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Rating",
+          "min": 0,
+          "max": 5,
+          "step": 0.5,
+          "default": 5
+        },
+        {
+          "type": "image_picker",
+          "id": "customer_photo",
+          "label": "Customer photo"
+        },
+        {
+          "type": "text",
+          "id": "customer_name",
+          "label": "Customer name",
+          "default": "Jordan Smith"
+        },
+        {
+          "type": "text",
+          "id": "customer_location",
+          "label": "Customer location",
+          "default": "Austin, TX"
+        },
+        {
+          "type": "checkbox",
+          "id": "verified",
+          "label": "Show verified badge",
+          "default": true
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product reference"
+        },
+        {
+          "type": "color_scheme",
+          "id": "block_color_scheme",
+          "label": "Color scheme override"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 24,
+  "presets": [
+    {
+      "name": "Testimonials (premium)",
+      "blocks": [
+        { "type": "testimonial" },
+        { "type": "testimonial" },
+        { "type": "testimonial" }
+      ]
+    }
+  ]
+}
+{% endschema %}

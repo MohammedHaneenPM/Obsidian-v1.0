@@ -1,0 +1,65 @@
+{% comment %}
+  Estimated Shipping Badge - Milestone 5, Phase 2.
+
+  Accepts:
+  - block: {Object} The 'shipping_estimate_premium' section block (required)
+{% endcomment %}
+
+{{ 'component-trust-info-badges-premium.css' | asset_url | stylesheet_tag }}
+
+<div class="trust-info-badge-premium" {{ block.shopify_attributes }}>
+  {%- if block.settings.icon != blank -%}
+    <span class="trust-info-badge-premium__icon">
+      {{- block.settings.icon | image_url: width: 60 | image_tag: loading: 'lazy', width: 24, height: 24 -}}
+    </span>
+  {%- else -%}
+    <span class="trust-info-badge-premium__icon trust-info-badge-premium__icon--placeholder" aria-hidden="true">
+      {{- 'icon-truck.svg' | inline_asset_content -}}
+    </span>
+  {%- endif -%}
+
+  <span class="trust-info-badge-premium__text">
+    {%- if block.settings.mode == 'static' -%}
+      {{- block.settings.static_message | escape -}}
+    {%- else -%}
+      {%- liquid
+        assign min_days = block.settings.min_days
+        assign max_days = block.settings.max_days | at_least: min_days
+
+        assign min_timestamp = 'now' | date: '%s'
+        assign min_business_days_added = 0
+        if min_days > 0
+          for i in (1..30)
+            assign min_timestamp = min_timestamp | plus: 86400
+            assign weekday = min_timestamp | date: '%w'
+            unless weekday == '0' or weekday == '6'
+              assign min_business_days_added = min_business_days_added | plus: 1
+            endunless
+            if min_business_days_added == min_days
+              break
+            endif
+          endfor
+        endif
+
+        assign max_timestamp = 'now' | date: '%s'
+        assign max_business_days_added = 0
+        if max_days > 0
+          for i in (1..30)
+            assign max_timestamp = max_timestamp | plus: 86400
+            assign weekday = max_timestamp | date: '%w'
+            unless weekday == '0' or weekday == '6'
+              assign max_business_days_added = max_business_days_added | plus: 1
+            endunless
+            if max_business_days_added == max_days
+              break
+            endif
+          endfor
+        endif
+
+        assign min_date_formatted = min_timestamp | date: '%b %d'
+        assign max_date_formatted = max_timestamp | date: '%b %d'
+      -%}
+      {{- 'general.shipping_estimate.default_message' | t: min: min_date_formatted, max: max_date_formatted -}}
+    {%- endif -%}
+  </span>
+</div>

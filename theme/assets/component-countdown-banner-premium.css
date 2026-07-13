@@ -1,0 +1,105 @@
+/* Countdown Banner Premium - Milestone 4, Phase 4 ------------------------ */
+
+.countdown-banner-premium {
+  position: relative;
+  background-image: var(--countdown-bg);
+  background-size: cover;
+  background-position: center;
+}
+
+.countdown-banner-premium__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 2rem;
+}
+
+.countdown-banner-premium--split .countdown-banner-premium__inner {
+  flex-direction: column;
+  text-align: center;
+}
+
+@media screen and (min-width: 750px) {
+  .countdown-banner-premium--split .countdown-banner-premium__inner {
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+    gap: 4rem;
+  }
+}
+
+.countdown-banner-premium__media {
+  flex: 0 0 40%;
+  width: 100%;
+}
+
+.countdown-banner-premium__media img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--card-corner-radius, 0);
+}
+
+.countdown-banner-premium__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.4rem;
+  max-width: 60rem;
+}
+
+.countdown-banner-premium--split .countdown-banner-premium__content {
+  align-items: flex-start;
+}
+
+.countdown-banner-premium__eyebrow,
+.countdown-banner-premium__heading,
+.countdown-banner-premium__text {
+  margin: 0;
+}
+
+.countdown-banner-premium__timer {
+  display: flex;
+  gap: 1.2rem;
+}
+
+.countdown-banner-premium__unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 6.4rem;
+  padding: 1.2rem 0.8rem;
+  border-radius: var(--card-corner-radius, 0);
+  background: rgba(var(--color-foreground), 0.06);
+}
+
+.countdown-banner-premium__value {
+  font-size: 3rem;
+  font-weight: 600;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.countdown-banner-premium__label {
+  margin-top: 0.4rem;
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(var(--color-foreground), 0.7);
+}
+
+.countdown-banner-premium__expiry-message[hidden] {
+  display: none;
+}
+
+@media screen and (max-width: 749px) {
+  .countdown-banner-premium__unit {
+    min-width: 5.4rem;
+    padding: 1rem 0.6rem;
+  }
+
+  .countdown-banner-premium__value {
+    font-size: 2.2rem;
+  }
+}

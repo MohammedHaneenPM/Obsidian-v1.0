@@ -1,0 +1,73 @@
+{% comment %}
+  Renders a responsive grid-or-carousel wrapper. Extracted during Phase 2
+  to remove duplicated <slider-component> boilerplate that was repeated
+  across featured-collections-premium.liquid, featured-products-premium.liquid,
+  best-sellers-premium.liquid, and new-arrivals-premium.liquid in Phase 1.
+  The carousel mode reuses the theme's existing <slider-component> from
+  assets/global.js - no new JS.
+
+  Accepts:
+  - items: {String} Pre-rendered <li> markup - build this with {% capture %}
+  - section_id: {String} The section's id, used for slider element ids
+  - is_carousel: {Boolean} Carousel (true) or static grid (false)
+  - columns_desktop: {Number} 1-6
+  - columns_mobile: {String|Number} 1 or 2
+  - total_count: {Number} Item count, shown in the carousel's slide counter
+  - grid_class: {String} Extra BEM class for the <ul>, e.g. 'featured-products-premium__grid'
+
+  Usage:
+  {% capture items %}
+    {% for product in products %}<li>...</li>{% endfor %}
+  {% endcapture %}
+  {% render 'premium-grid',
+    items: items,
+    is_carousel: true,
+    columns_desktop: 4,
+    columns_mobile: '2',
+    total_count: products.size,
+    section_id: section.id,
+    grid_class: 'featured-products-premium__grid'
+  %}
+{% endcomment %}
+{%- if is_carousel -%}
+  <slider-component class="slider-mobile-gutter">
+    <ul
+      class="{{ grid_class }} grid grid--{{ columns_desktop }}-col-desktop grid--{{ columns_mobile }}-col-tablet-down slider slider--tablet grid--peek"
+      id="Slider-{{ section_id }}"
+      role="list"
+    >
+      {{- items -}}
+    </ul>
+    <div class="slider-buttons">
+      <button
+        type="button"
+        class="slider-button slider-button--prev"
+        name="previous"
+        aria-label="{{ 'general.slider.previous_slide' | t }}"
+      >
+        <span class="svg-wrapper">{{- 'icon-caret.svg' | inline_asset_content -}}</span>
+      </button>
+      <div class="slider-counter caption">
+        <span class="slider-counter--current">1</span>
+        <span aria-hidden="true"> / </span>
+        <span class="visually-hidden">{{ 'general.slider.of' | t }}</span>
+        <span class="slider-counter--total">{{ total_count }}</span>
+      </div>
+      <button
+        type="button"
+        class="slider-button slider-button--next"
+        name="next"
+        aria-label="{{ 'general.slider.next_slide' | t }}"
+      >
+        <span class="svg-wrapper">{{- 'icon-caret.svg' | inline_asset_content -}}</span>
+      </button>
+    </div>
+  </slider-component>
+{%- else -%}
+  <ul
+    class="{{ grid_class }} grid grid--{{ columns_desktop }}-col-desktop grid--{{ columns_mobile }}-col-tablet-down"
+    role="list"
+  >
+    {{- items -}}
+  </ul>
+{%- endif -%}

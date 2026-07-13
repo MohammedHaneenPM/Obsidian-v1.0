@@ -1,0 +1,81 @@
+/* swatch-input lives in its own file for reusability of the swatch in other areas than the product form context */
+.swatch-input__input + .swatch-input__label {
+  --swatch-input--border-radius: 50%;
+  display: inline-block;
+  max-width: 100%;
+  border-radius: var(--swatch-input--border-radius);
+  cursor: pointer;
+  outline-offset: 0.2rem;
+  outline-color: transparent;
+  outline-style: solid;
+  outline-width: 0.15rem;
+  transition: all var(--duration-default) ease;
+  forced-color-adjust: none;
+  transform: scale(1);
+}
+
+.swatch-input__input + .swatch-input__label.swatch-input__label--square {
+  --swatch-input--border-radius: 0.2rem;
+}
+
+/* Active state */
+.swatch-input__input:checked + .swatch-input__label {
+  outline-color: rgb(var(--color-foreground));
+  outline-offset: 0.3rem;
+}
+
+/* Hover state */
+.swatch-input__input:not(:checked) + .swatch-input__label:hover {
+  outline-color: rgba(var(--color-foreground), 0.3);
+  outline-offset: 0.3rem;
+}
+
+/* Click animation */
+.swatch-input__input:active + .swatch-input__label {
+  transform: scale(0.92);
+}
+
+/* Focus visible */
+.swatch-input__input:focus-visible + .swatch-input__label {
+  outline-color: rgb(var(--color-foreground));
+  outline-offset: 0.4rem;
+  outline-width: 0.2rem;
+  box-shadow: none;
+}
+
+/* Visually disabled */
+.swatch-input__input.visually-disabled:not(:active):not(:checked) + .swatch-input__label {
+  transition: none;
+}
+.swatch-input__input.visually-disabled:not(:active):not(:checked) + .swatch-input__label:hover {
+  outline-color: transparent;
+}
+
+/* Actually disabled */
+.swatch-input__input:disabled + .swatch-input__label {
+  pointer-events: none;
+}
+
+/* Premium disabled styling */
+.swatch-input__input:disabled + .swatch-input__label > .swatch,
+.swatch-input__input.visually-disabled + .swatch-input__label > .swatch {
+  position: relative;
+  overflow: hidden;
+  opacity: 0.3;
+  filter: grayscale(80%);
+}
+
+/* Cross line for disabled */
+.swatch-input__input:disabled + .swatch-input__label > .swatch::after,
+.swatch-input__input.visually-disabled + .swatch-input__label > .swatch::after {
+  --diagonal--size: calc(var(--swatch-input--size) * 1.414);
+  --crossed-line--size: 0.15rem;
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--diagonal--size);
+  height: var(--crossed-line--size);
+  background-color: rgb(var(--color-foreground));
+  transform: translate(-50%, -50%) rotate(-45deg);
+}

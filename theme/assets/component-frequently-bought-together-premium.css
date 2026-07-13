@@ -1,0 +1,49 @@
+/* Frequently Bought Together - Milestone 5, Phase 2 ---------------------- */
+
+.fbt-premium__list {
+  margin: 0 0 2rem;
+  padding: 0;
+  list-style: none;
+}
+
+.fbt-premium__list .bundle-item-premium + .bundle-item-premium {
+  border-top: 1px solid rgba(var(--color-foreground), 0.08);
+}
+
+.fbt-premium__summary {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.8rem;
+  padding-top: 1.6rem;
+  border-top: 1px solid rgba(var(--color-foreground), 0.12);
+}
+
+.fbt-premium__discount-note {
+  margin: 0;
+  color: rgb(var(--color-foreground));
+  font-size: 1.4rem;
+}
+
+.fbt-premium__total {
+  display: flex;
+  gap: 0.8rem;
+  align-items: baseline;
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.fbt-premium__add-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.product-bundle-premium__optional-tag {
+  display: inline-block;
+  margin-left: 5.6rem;
+  margin-top: -0.6rem;
+  padding-bottom: 0.6rem;
+  color: rgba(var(--color-foreground), 0.6);
+}

@@ -1,0 +1,56 @@
+{% comment %}
+  Inventory Urgency Bar - Milestone 5, Phase 2.
+  A visual stock-level bar, additive alongside Dawn's native 'inventory'
+  block (which already handles the low-stock text/threshold/quantity).
+  Updates live on variant change by subscribing to the existing
+  PUB_SUB_EVENTS.variantChange event (published by product-info.js) rather
+  than modifying product-info.js's own hardcoded update-element list.
+
+  Accepts:
+  - product: {Object} The current product (required)
+  - block: {Object} The 'inventory_urgency_premium' section block (required)
+{% endcomment %}
+
+{{ 'component-inventory-urgency-premium.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign variant = product.selected_or_first_available_variant
+  assign quantity = variant.inventory_quantity
+  assign tracks_inventory = false
+  if variant.inventory_management != blank
+    assign tracks_inventory = true
+  endif
+  assign show_bar = false
+  if tracks_inventory and quantity > 0 and quantity <= block.settings.urgency_threshold
+    assign show_bar = true
+  endif
+  assign fill_percent = quantity | times: 100 | divided_by: block.settings.assumed_full_stock | at_most: 100
+-%}
+
+<div
+  class="inventory-urgency-premium"
+  data-inventory-urgency
+  data-section-id="{{ section.id }}"
+  data-threshold="{{ block.settings.urgency_threshold }}"
+  data-full-stock="{{ block.settings.assumed_full_stock }}"
+  data-hide-exact-quantity="{{ block.settings.hide_exact_quantity }}"
+  data-low-stock-template="{{ 'general.inventory_urgency.low_stock' | t: count: '__COUNT__' | escape }}"
+  data-generic-text="{{ 'products.product.inventory_low_stock' | t | escape }}"
+  {% unless show_bar %}
+    hidden
+  {% endunless %}
+  {{ block.shopify_attributes }}
+>
+  <div class="inventory-urgency-premium__track">
+    <div class="inventory-urgency-premium__fill" data-inventory-urgency-fill style="width: {{ fill_percent }}%;"></div>
+  </div>
+  <p class="inventory-urgency-premium__label" data-inventory-urgency-label role="status">
+    {%- unless block.settings.hide_exact_quantity -%}
+      {{- 'general.inventory_urgency.low_stock' | t: count: quantity -}}
+    {%- else -%}
+      {{- 'products.product.inventory_low_stock' | t -}}
+    {%- endunless -%}
+  </p>
+</div>
+
+<script src="{{ 'product-merchandising.js' | asset_url }}" defer="defer"></script>

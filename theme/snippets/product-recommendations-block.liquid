@@ -1,0 +1,94 @@
+{% comment %}
+  Renders an automatic product-recommendations block (reusing the existing
+  <product-recommendations> custom element from assets/global.js, the same
+  one Dawn's native related-products.liquid and main-product.liquid
+  'complementary' block already use) with a manual block-based fallback
+  when Shopify has no recommendations to return. Shared by
+  sections/complementary-products-premium.liquid and
+  sections/product-recommendations-premium.liquid so the two features
+  don't duplicate this logic - only their schema/presets differ.
+
+  Expects the calling section to define these settings (same IDs in both
+  callers): layout, columns_desktop, columns_mobile, products_to_show,
+  and product blocks (type "product", setting id "product") for the
+  manual fallback.
+
+  Accepts:
+  - section: {Object} The calling section (required)
+  - intent: {String} 'complementary' or 'related' (required)
+  - empty_state_key: {String} Locale key for the "no results" message (optional)
+
+  Usage:
+  {% render 'product-recommendations-block', section: section, intent: 'complementary' %}
+{% endcomment %}
+{%- if product != blank -%}
+  {%- liquid
+    assign is_carousel = false
+    if section.settings.layout == 'carousel'
+      assign is_carousel = true
+    endif
+  -%}
+  <product-recommendations
+    class="product-recommendations-premium"
+    data-url="{{ routes.product_recommendations_url }}?limit={{ section.settings.products_to_show }}&intent={{ intent }}"
+    data-section-id="{{ section.id }}"
+    data-product-id="{{ product.id }}"
+    data-manual-fallback="{% if section.blocks.size > 0 %}true{% else %}false{% endif %}"
+  >
+    {%- if recommendations.performed and recommendations.products_count > 0 -%}
+      {%- capture recommendation_items -%}
+        {%- for recommendation in recommendations.products -%}
+          <li id="Slide-{{ section.id }}-{{ forloop.index }}" class="product-recommendations-premium__item grid__item{% if is_carousel %} slider__slide{% endif %}">
+            {%- render 'product-card-premium',
+              card_product: recommendation,
+              media_aspect_ratio: 'square',
+              show_vendor: false,
+              show_quick_add: true,
+              section_id: section.id
+            -%}
+          </li>
+        {%- endfor -%}
+      {%- endcapture -%}
+      {%- render 'premium-grid',
+        items: recommendation_items,
+        is_carousel: is_carousel,
+        columns_desktop: section.settings.columns_desktop,
+        columns_mobile: section.settings.columns_mobile,
+        total_count: recommendations.products_count,
+        section_id: section.id,
+        grid_class: 'product-recommendations-premium__grid'
+      -%}
+    {%- elsif section.blocks.size > 0 -%}
+      {%- capture manual_items -%}
+        {%- for block in section.blocks -%}
+          {%- if block.settings.product != blank -%}
+            <li
+              id="Slide-{{ section.id }}-{{ forloop.index }}"
+              class="product-recommendations-premium__item grid__item{% if is_carousel %} slider__slide{% endif %}"
+              {{ block.shopify_attributes }}
+            >
+              {%- render 'product-card-premium',
+                card_product: block.settings.product,
+                media_aspect_ratio: 'square',
+                show_vendor: false,
+                show_quick_add: true,
+                section_id: section.id
+              -%}
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endcapture -%}
+      {%- render 'premium-grid',
+        items: manual_items,
+        is_carousel: is_carousel,
+        columns_desktop: section.settings.columns_desktop,
+        columns_mobile: section.settings.columns_mobile,
+        total_count: section.blocks.size,
+        section_id: section.id,
+        grid_class: 'product-recommendations-premium__grid'
+      -%}
+    {%- elsif request.design_mode -%}
+      <p class="premium-section-empty-state">{{ empty_state_key | default: 'general.complementary_premium.no_results' | t }}</p>
+    {%- endif -%}
+  </product-recommendations>
+{%- endif -%}

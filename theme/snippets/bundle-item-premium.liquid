@@ -1,0 +1,72 @@
+{% comment %}
+  Renders one selectable row for a bundle-style add-to-cart UI: checkbox,
+  thumbnail, title, variant (first available, see note below), and price.
+  Shared by sections/frequently-bought-together-premium.liquid and
+  sections/product-bundle-premium.liquid so the two features don't
+  duplicate this markup.
+
+  Scope note: this renders the product's first available variant only.
+  Full per-item variant pickers inside a bundle/FBT widget are a
+  significant additional UI surface (a variant picker per row, each
+  needing its own variant-availability logic); v1 intentionally scopes to
+  "add the default variant," which covers single-variant products fully
+  and multi-variant products reasonably (the customer can still open the
+  product page to choose a different variant). Flagging this as a
+  deliberate scope decision, not an oversight.
+
+  Accepts:
+  - bundle_product: {Object} Product Liquid object (required)
+  - required: {Boolean} If true, the checkbox is checked and disabled
+    (can't be removed from the bundle) (optional)
+  - checked: {Boolean} Initial checked state for optional items (optional, default true)
+  - input_name: {String} A unique name/id fragment for the checkbox (required)
+
+  Usage:
+  {% render 'bundle-item-premium', bundle_product: product, required: false, checked: true, input_name: 'fbt-1' %}
+{% endcomment %}
+{%- liquid
+  assign variant = bundle_product.selected_or_first_available_variant
+  assign checked = checked | default: true
+-%}
+<li class="bundle-item-premium" data-bundle-item data-product-id="{{ bundle_product.id }}" data-variant-id="{{ variant.id }}" data-price="{{ variant.price }}">
+  <label class="bundle-item-premium__label">
+    <input
+      type="checkbox"
+      class="bundle-item-premium__checkbox"
+      id="BundleItem-{{ input_name }}"
+      data-bundle-item-checkbox
+      {% if required %}
+        checked
+        disabled
+      {% elsif checked %}
+        checked
+      {% endif %}
+      {% if variant.available == false %}
+        disabled
+      {% endif %}
+    >
+    <span class="bundle-item-premium__media">
+      {%- if bundle_product.featured_media -%}
+        <img
+          src="{{ bundle_product.featured_media | image_url: width: 200 }}"
+          srcset="{{ bundle_product.featured_media | image_url: width: 200 }} 1x, {{ bundle_product.featured_media | image_url: width: 400 }} 2x"
+          alt="{{ bundle_product.featured_media.alt | escape }}"
+          loading="lazy"
+          width="100"
+          height="100"
+          class="bundle-item-premium__image"
+        >
+      {%- else -%}
+        {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg bundle-item-premium__image' }}
+      {%- endif -%}
+    </span>
+    <span class="bundle-item-premium__details">
+      <span class="bundle-item-premium__title">{{ bundle_product.title | escape }}</span>
+      {%- if variant.available == false -%}
+        <span class="bundle-item-premium__unavailable">{{ 'products.product.sold_out' | t }}</span>
+      {%- else -%}
+        {%- render 'price', product: bundle_product, use_variant: true, show_compare_at_price: true -%}
+      {%- endif -%}
+    </span>
+  </label>
+</li>

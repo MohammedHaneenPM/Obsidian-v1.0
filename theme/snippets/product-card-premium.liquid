@@ -1,0 +1,209 @@
+{% comment %}
+  Renders a premium product card for Milestone 4 homepage sections.
+
+  This is intentionally a new, lighter-weight card distinct from
+  snippets/card-product.liquid (which stays untouched and in use across
+  collection/search/related-products pages). It reuses the existing
+  'price', 'swatch', 'badge', and 'button' snippets rather than
+  duplicating their logic.
+
+  Accepts:
+  - card_product: {Object} Product Liquid object (optional - renders an
+    onboarding placeholder card when blank)
+  - media_aspect_ratio: {String} 'square' (default), 'portrait', or 'landscape' (optional)
+  - show_vendor: {Boolean} Show the product vendor (optional)
+  - show_rating: {Boolean} Show a rating placeholder, for use with a
+    reviews app that isn't installed yet (optional)
+  - show_quick_add: {Boolean} Show a quick-add affordance. This is a
+    placeholder per the Milestone 4 spec: it links to the product page
+    rather than adding to cart, since cart interactions are scoped to a
+    later milestone (optional)
+  - show_wishlist: {Boolean} Show a wishlist toggle placeholder (visual
+    only - no persistence yet, ready for a future wishlist integration) (optional)
+  - show_swatches: {Boolean} Show real color swatches from the product's
+    "Color"/"Colour" option, if present (optional)
+  - new_badge_days: {Number} Show a "New" badge if the product was
+    published within this many days. Default 30 (optional)
+  - lazy_load: {Boolean} Default true (optional)
+  - section_id: {String} The ID of the section that contains this card (optional)
+  - placeholder_image: {String} Placeholder image key when no product exists (optional)
+
+  Usage:
+  {% render 'product-card-premium', card_product: product, show_vendor: true %}
+{% endcomment %}
+{%- liquid
+  assign ratio = 1
+  if media_aspect_ratio == 'portrait'
+    assign ratio = 0.8
+  elsif media_aspect_ratio == 'landscape'
+    assign ratio = 1.33
+  endif
+
+  assign new_badge_days = new_badge_days | default: 30
+  assign is_new = false
+  if card_product.created_at
+    assign new_badge_seconds = new_badge_days | times: 86400
+    assign new_cutoff = 'now' | date: '%s' | minus: new_badge_seconds
+    assign created_seconds = card_product.created_at | date: '%s' | plus: 0
+    if created_seconds > new_cutoff
+      assign is_new = true
+    endif
+  endif
+
+  assign color_option = null
+  if show_swatches
+    for option in card_product.options_with_values
+      assign option_name_downcase = option.name | downcase
+      if option_name_downcase == 'color' or option_name_downcase == 'colour'
+        assign color_option = option
+      endif
+    endfor
+  endif
+
+  assign display_title = card_product.title
+  if display_title == blank
+    assign display_title = 'onboarding.product_title' | t
+  endif
+-%}
+
+<div class="product-card-premium-wrapper">
+  <div
+    class="product-card-premium"
+    style="--ratio-percent: {{ 1 | divided_by: ratio | times: 100 }}%;"
+  >
+    <div class="product-card-premium__media-wrapper">
+      <a
+        href="{{ card_product.url | default: '#' }}"
+        class="product-card-premium__media-link"
+        {% if card_product == blank %}
+          role="link" aria-disabled="true"
+        {% endif %}
+        tabindex="-1"
+        aria-hidden="true"
+      >
+        <div class="product-card-premium__media">
+          {%- if card_product.featured_media -%}
+            {% comment %}theme-check-disable ImgLazyLoading{% endcomment %}
+            <img
+              srcset="
+                {%- if card_product.featured_media.width >= 165 -%}{{ card_product.featured_media | image_url: width: 165 }} 165w,{%- endif -%}
+                {%- if card_product.featured_media.width >= 360 -%}{{ card_product.featured_media | image_url: width: 360 }} 360w,{%- endif -%}
+                {%- if card_product.featured_media.width >= 533 -%}{{ card_product.featured_media | image_url: width: 533 }} 533w,{%- endif -%}
+                {%- if card_product.featured_media.width >= 720 -%}{{ card_product.featured_media | image_url: width: 720 }} 720w,{%- endif -%}
+                {{ card_product.featured_media | image_url }} {{ card_product.featured_media.width }}w
+              "
+              src="{{ card_product.featured_media | image_url: width: 533 }}"
+              sizes="(min-width: 990px) 25vw, (min-width: 750px) 33vw, 50vw"
+              alt="{{ card_product.featured_media.alt | escape }}"
+              class="product-card-premium__image product-card-premium__image--primary motion-reduce"
+              {% unless lazy_load == false %}
+                loading="lazy"
+              {% endunless %}
+              width="{{ card_product.featured_media.width }}"
+              height="{{ card_product.featured_media.height }}"
+            >
+            {%- if card_product.media[1] -%}
+              <img
+                srcset="
+                  {%- if card_product.media[1].width >= 165 -%}{{ card_product.media[1] | image_url: width: 165 }} 165w,{%- endif -%}
+                  {%- if card_product.media[1].width >= 360 -%}{{ card_product.media[1] | image_url: width: 360 }} 360w,{%- endif -%}
+                  {%- if card_product.media[1].width >= 533 -%}{{ card_product.media[1] | image_url: width: 533 }} 533w,{%- endif -%}
+                  {%- if card_product.media[1].width >= 720 -%}{{ card_product.media[1] | image_url: width: 720 }} 720w,{%- endif -%}
+                  {{ card_product.media[1] | image_url }} {{ card_product.media[1].width }}w
+                "
+                src="{{ card_product.media[1] | image_url: width: 533 }}"
+                sizes="(min-width: 990px) 25vw, (min-width: 750px) 33vw, 50vw"
+                alt=""
+                class="product-card-premium__image product-card-premium__image--secondary motion-reduce"
+                loading="lazy"
+                width="{{ card_product.media[1].width }}"
+                height="{{ card_product.media[1].height }}"
+              >
+            {%- endif -%}
+            {% comment %}theme-check-enable ImgLazyLoading{% endcomment %}
+          {%- else -%}
+            {{ placeholder_image | default: 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg product-card-premium__image' }}
+          {%- endif -%}
+        </div>
+      </a>
+
+      <div class="product-card-premium__badges">
+        {%- if card_product.available == false -%}
+          {%- render 'badge', text: 'products.product.sold_out' | t, type: 'sold_out' -%}
+        {%- elsif card_product.compare_at_price > card_product.price and card_product.available -%}
+          {%- render 'badge', text: 'products.product.on_sale' | t, type: 'sale' -%}
+        {%- endif -%}
+        {%- if is_new -%}
+          {%- render 'badge', text: 'general.badges.new' | t, type: 'new' -%}
+        {%- endif -%}
+      </div>
+
+      {%- if show_wishlist -%}
+        <button
+          type="button"
+          class="product-card-premium__wishlist"
+          data-wishlist-toggle
+          data-label-add="{{ 'general.wishlist.add' | t }}"
+          data-label-remove="{{ 'general.wishlist.remove' | t }}"
+          aria-pressed="false"
+          aria-label="{{ 'general.wishlist.add' | t }}"
+        >
+          <span class="svg-wrapper">{{ 'icon-heart.svg' | inline_asset_content }}</span>
+        </button>
+      {%- endif -%}
+
+      {%- if show_quick_add -%}
+        <a
+          href="{{ card_product.url | default: '#' }}"
+          class="product-card-premium__quick-add link"
+          {% if card_product == blank %}
+            role="link" aria-disabled="true"
+          {% endif %}
+          aria-label="{{ 'general.quick_add.view_options' | t }}: {{ card_product.title | escape }}"
+        >
+          {{ 'general.quick_add.label' | t }}
+        </a>
+      {%- endif -%}
+    </div>
+
+    <div class="product-card-premium__content">
+      {%- if show_vendor and card_product.vendor != blank -%}
+        <p class="product-card-premium__vendor caption-with-letter-spacing">{{ card_product.vendor | escape }}</p>
+      {%- endif -%}
+
+      <h3 class="product-card-premium__title">
+        <a
+          href="{{ card_product.url | default: '#' }}"
+          class="full-unstyled-link"
+          {% if card_product == blank %}
+            role="link" aria-disabled="true"
+          {% endif %}
+        >
+          {{- display_title | escape -}}
+        </a>
+      </h3>
+
+      {%- if show_rating -%}
+        {% comment %} Rating placeholder - hooks up to a reviews app metafield later. {% endcomment %}
+        <div class="product-card-premium__rating" aria-hidden="true" data-rating-placeholder>
+          {%- for i in (1..5) -%}
+            <span class="svg-wrapper">{{ 'icon-star.svg' | inline_asset_content }}</span>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      {%- if color_option -%}
+        <div class="product-card-premium__swatches">
+          {%- for value in color_option.values limit: 5 -%}
+            {%- render 'swatch', swatch: value.swatch -%}
+          {%- endfor -%}
+          {%- if color_option.values.size > 5 -%}
+            <span class="product-card-premium__swatches-more caption">+{{ color_option.values.size | minus: 5 }}</span>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      {%- render 'price', product: card_product, placeholder: card_product == blank, show_compare_at_price: true -%}
+    </div>
+  </div>
+</div>

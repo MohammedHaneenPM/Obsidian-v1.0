@@ -1,0 +1,218 @@
+{% comment %}
+  Frequently Bought Together - Milestone 5, Phase 2.
+  Only renders on the product template (uses the global `product` object).
+  Automatic mode reuses the existing <product-recommendations> custom
+  element (assets/global.js) with intent=complementary, the same endpoint
+  Dawn's native 'complementary' block in main-product.liquid already uses -
+  no new recommendation-fetching logic was written. Manual mode uses blocks.
+{% endcomment %}
+
+{{ 'component-bundle-item-premium.css' | asset_url | stylesheet_tag }}
+{{ 'component-frequently-bought-together-premium.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- if product != blank -%}
+  <div class="color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
+    <div class="page-width">
+      {%- render 'section-header',
+        heading: section.settings.heading,
+        description: section.settings.description,
+        alignment: 'left',
+        section_id: section.id
+      -%}
+
+      <frequently-bought-together-premium
+        class="fbt-premium"
+        data-money-format="{{ shop.money_format | escape }}"
+        data-discount-percent="{{ section.settings.discount_percent }}"
+        data-select-at-least-one-text="{{ 'general.fbt.select_at_least_one' | t }}"
+        data-added-text="{{ 'general.fbt.added' | t }}"
+      >
+        <ul class="fbt-premium__list" role="list">
+          {%- render 'bundle-item-premium', bundle_product: product, required: true, input_name: 'fbt-current' -%}
+
+          {%- if section.settings.source == 'automatic' -%}
+            <product-recommendations
+              class="fbt-premium__recommendations"
+              data-url="{{ routes.product_recommendations_url }}?limit={{ section.settings.products_to_show }}&intent=complementary"
+              data-section-id="{{ section.id }}"
+              data-product-id="{{ product.id }}"
+              data-bundle-recommendations
+            >
+              {%- if recommendations.performed and recommendations.products_count > 0 -%}
+                {%- for recommendation in recommendations.products -%}
+                  {%- render 'bundle-item-premium', bundle_product: recommendation, required: false, checked: true, input_name: 'fbt-rec-' | append: forloop.index -%}
+                {%- endfor -%}
+              {%- endif -%}
+            </product-recommendations>
+          {%- else -%}
+            {%- for block in section.blocks -%}
+              {%- if block.settings.product != blank -%}
+                <div {{ block.shopify_attributes }}>
+                  {%- render 'bundle-item-premium', bundle_product: block.settings.product, required: false, checked: block.settings.checked_by_default, input_name: 'fbt-block-' | append: forloop.index -%}
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
+        </ul>
+
+        <div class="fbt-premium__summary">
+          {%- if section.settings.discount_percent > 0 -%}
+            <p class="fbt-premium__discount-note">
+              {{- 'general.fbt.discount_note' | t: percent: section.settings.discount_percent -}}
+            </p>
+          {%- endif -%}
+          <p class="fbt-premium__total">
+            <span>{{ 'general.fbt.total_price' | t }}</span>
+            <span data-bundle-total>{{ product.price | money }}</span>
+          </p>
+          <button type="button" class="button button--primary fbt-premium__add-all" data-bundle-add-all>
+            <span>{{ 'general.fbt.add_all_to_cart' | t }}</span>
+            <div class="loading__spinner hidden">
+              <svg aria-hidden="true" focusable="false" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+              </svg>
+            </div>
+          </button>
+          <p class="fbt-premium__status visually-hidden" role="status" data-bundle-status></p>
+        </div>
+      </frequently-bought-together-premium>
+    </div>
+  </div>
+
+  <script src="{{ 'product-merchandising.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Frequently bought together",
+  "class": "section-frequently-bought-together-premium",
+  "tag": "section",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Only displays on product pages."
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Frequently bought together"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "header",
+      "content": "Products"
+    },
+    {
+      "type": "select",
+      "id": "source",
+      "label": "Source",
+      "options": [
+        { "value": "automatic", "label": "Automatic (Shopify Search & Discovery)" },
+        { "value": "manual", "label": "Manual selection" }
+      ],
+      "default": "automatic",
+      "info": "Automatic uses your Search & Discovery app's complementary product recommendations, where available. If none are configured for a product, no extra items will show - use Manual selection as a guaranteed fallback."
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Additional products to show",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 2,
+      "info": "Only used in Automatic mode. Does not include the current product."
+    },
+    {
+      "type": "range",
+      "id": "discount_percent",
+      "label": "Bundle discount",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "unit": "%",
+      "default": 0,
+      "info": "Shown as a note only. Shopify doesn't support conditional multi-product discounts natively - create a matching discount code or Shopify Function for the discount to actually apply at checkout."
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.colors.label"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "checkbox",
+          "id": "checked_by_default",
+          "label": "Checked by default",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Frequently bought together"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,81 @@
+/* Video Banner (premium) - Milestone 4, Phase 2 -------------------------- */
+
+.video-banner-premium {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.video-banner-premium--small {
+  min-height: 36rem;
+}
+
+.video-banner-premium--medium {
+  min-height: 50rem;
+}
+
+.video-banner-premium--large {
+  min-height: 66rem;
+}
+
+.video-banner-premium--full {
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
+.video-banner-premium__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.video-banner-premium__video,
+.video-banner-premium__iframe,
+.video-banner-premium__poster-only {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: none;
+  pointer-events: none;
+}
+
+/* Scale the iframe up so cover-fit crops it like object-fit: cover would
+   for a native <video> (iframes don't support object-fit directly). */
+.video-banner-premium__iframe {
+  width: 177.77vh; /* 16:9 */
+  min-width: 100%;
+  height: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.video-banner-premium__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgb(0, 0, 0);
+  opacity: var(--video-overlay-opacity, 0.3);
+  z-index: 1;
+}
+
+.video-banner-premium__content {
+  position: relative;
+  z-index: 2;
+  max-width: 60rem;
+  text-align: center;
+  color: #fff;
+  padding: 4rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.4rem;
+}
+
+.video-banner-premium__heading,
+.video-banner-premium__subheading {
+  color: inherit;
+  margin: 0;
+}

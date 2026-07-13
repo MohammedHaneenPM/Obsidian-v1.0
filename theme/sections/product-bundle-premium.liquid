@@ -1,0 +1,194 @@
+{% comment %}
+  Product Bundles - Milestone 5, Phase 2.
+  Manually curated bundle of products (always manual - unlike Frequently
+  Bought Together, which can also pull from Search & Discovery). Reuses
+  snippets/bundle-item-premium.liquid and the FrequentlyBoughtTogetherPremium
+  JS class (registered under the <product-bundle-premium> tag) rather than
+  duplicating the selection/total/add-to-cart logic.
+{% endcomment %}
+
+{{ 'component-bundle-item-premium.css' | asset_url | stylesheet_tag }}
+{{ 'component-frequently-bought-together-premium.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign has_required_products = false
+  for block in section.blocks
+    if block.settings.product != blank
+      assign has_required_products = true
+    endif
+  endfor
+-%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
+  <div class="page-width">
+    {%- render 'section-header',
+      heading: section.settings.heading,
+      description: section.settings.description,
+      alignment: 'left',
+      section_id: section.id
+    -%}
+
+    {%- if has_required_products -%}
+      <product-bundle-premium
+        class="fbt-premium"
+        data-money-format="{{ shop.money_format | escape }}"
+        data-discount-percent="{{ section.settings.discount_percent }}"
+        data-select-at-least-one-text="{{ 'general.fbt.select_at_least_one' | t }}"
+        data-added-text="{{ 'general.fbt.added' | t }}"
+      >
+        <ul class="fbt-premium__list" role="list">
+          {%- for block in section.blocks -%}
+            {%- if block.settings.product != blank -%}
+              <div {{ block.shopify_attributes }}>
+                {%- render 'bundle-item-premium',
+                  bundle_product: block.settings.product,
+                  required: block.settings.required,
+                  checked: true,
+                  input_name: 'bundle-' | append: forloop.index
+                -%}
+                {%- unless block.settings.required -%}
+                  <span class="product-bundle-premium__optional-tag caption">{{ 'general.product_bundle.optional' | t }}</span>
+                {%- endunless -%}
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+
+        <div class="fbt-premium__summary">
+          {%- if section.settings.discount_percent > 0 -%}
+            <p class="fbt-premium__discount-note">
+              {{- 'general.fbt.discount_note' | t: percent: section.settings.discount_percent -}}
+            </p>
+          {%- endif -%}
+          <p class="fbt-premium__total">
+            <span>{{ 'general.product_bundle.bundle_price' | t }}</span>
+            <span data-bundle-total>{{ product.price | money }}</span>
+          </p>
+          <button type="button" class="button button--primary fbt-premium__add-all" data-bundle-add-all>
+            <span>{{ 'general.product_bundle.add_bundle_to_cart' | t }}</span>
+            <div class="loading__spinner hidden">
+              <svg aria-hidden="true" focusable="false" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+              </svg>
+            </div>
+          </button>
+          <p class="fbt-premium__status visually-hidden" role="status" data-bundle-status></p>
+        </div>
+      </product-bundle-premium>
+
+      <script src="{{ 'product-merchandising.js' | asset_url }}" defer="defer"></script>
+    {%- elsif request.design_mode -%}
+      <p class="premium-section-empty-state">{{ 'general.onboarding.add_bundle_products' | t }}</p>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product bundle",
+  "class": "section-product-bundle-premium",
+  "tag": "section",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Build your bundle"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "range",
+      "id": "discount_percent",
+      "label": "Bundle discount",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "unit": "%",
+      "default": 10,
+      "info": "Shown as a note only. Shopify doesn't support conditional multi-product discounts natively - create a matching discount code or Shopify Function for the discount to actually apply at checkout."
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.colors.label"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Bundle product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "Required (can't be removed from the bundle)",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product bundle",
+      "blocks": [
+        { "type": "product" },
+        { "type": "product" }
+      ]
+    }
+  ]
+}
+{% endschema %}

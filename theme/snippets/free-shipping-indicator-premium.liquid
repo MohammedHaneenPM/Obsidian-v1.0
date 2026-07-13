@@ -1,0 +1,44 @@
+{% comment %}
+  Free Shipping Indicator - Milestone 5, Phase 2.
+  Compares this product's price against a merchant-set threshold. This is
+  a product-price indicator, not a live cart-total tracker (Dawn's cart
+  drawer doesn't ship a free-shipping-progress feature to extend here,
+  and building a full cart-total version is a bigger, separate feature -
+  flagging that scope boundary rather than quietly under-delivering).
+
+  Accepts:
+  - block: {Object} The 'free_shipping_indicator_premium' section block (required)
+{% endcomment %}
+
+{{ 'component-trust-info-badges-premium.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign threshold_number = block.settings.threshold | times: 1.0
+  assign threshold_cents = threshold_number | times: 100 | round
+  assign is_eligible = false
+  if product.price >= threshold_cents
+    assign is_eligible = true
+  endif
+  assign remaining_cents = threshold_cents | minus: product.price
+  assign remaining_formatted = remaining_cents | money
+-%}
+
+<div class="trust-info-badge-premium free-shipping-indicator-premium" {{ block.shopify_attributes }}>
+  {%- if block.settings.icon != blank -%}
+    <span class="trust-info-badge-premium__icon">
+      {{- block.settings.icon | image_url: width: 60 | image_tag: loading: 'lazy', width: 24, height: 24 -}}
+    </span>
+  {%- else -%}
+    <span class="trust-info-badge-premium__icon trust-info-badge-premium__icon--placeholder" aria-hidden="true">
+      {{- 'icon-truck.svg' | inline_asset_content -}}
+    </span>
+  {%- endif -%}
+
+  <span class="trust-info-badge-premium__text">
+    {%- if is_eligible -%}
+      {{- 'general.free_shipping.eligible' | t -}}
+    {%- else -%}
+      {{- 'general.free_shipping.remaining' | t: amount: remaining_formatted -}}
+    {%- endif -%}
+  </span>
+</div>

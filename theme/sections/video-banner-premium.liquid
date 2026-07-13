@@ -1,0 +1,309 @@
+{% comment %}
+  Video Banner (premium) - Milestone 4, Phase 2.
+  Supports Shopify-hosted video, a pasted external MP4 URL, or a YouTube/
+  Vimeo URL. Distinct from sections/video.liquid (untouched, still
+  available - that section is a click-to-play "deferred media" pattern,
+  while this one is a background-style banner with autoplay/loop/mute).
+{% endcomment %}
+
+{{ 'component-video-banner-premium.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign video_type = 'none'
+  if section.settings.shopify_video != blank
+    assign video_type = 'shopify'
+  elsif section.settings.video_url != blank
+    assign video_type = section.settings.video_url.type
+  elsif section.settings.external_mp4_url != blank
+    assign video_type = 'external_mp4'
+  endif
+
+  assign shopify_source = section.settings.shopify_video.sources | last
+
+  assign embed_params = 'controls=0&showinfo=0&modestbranding=1&playsinline=1'
+  if section.settings.autoplay
+    assign embed_params = embed_params | append: '&autoplay=1'
+  endif
+  if section.settings.mute
+    assign embed_params = embed_params | append: '&mute=1'
+  endif
+  if section.settings.loop and video_type == 'youtube'
+    assign embed_params = embed_params | append: '&loop=1&playlist=' | append: section.settings.video_url.id
+  elsif section.settings.loop and video_type == 'vimeo'
+    assign embed_params = embed_params | append: '&loop=1&background=1'
+  endif
+-%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
+  <div class="{% unless section.settings.full_bleed %}page-width{% endunless %}">
+    <div class="video-banner-premium video-banner-premium--{{ section.settings.height }}">
+      <div class="video-banner-premium__media" data-video-banner data-autoplay="{{ section.settings.autoplay }}">
+        {%- case video_type -%}
+          {%- when 'shopify' -%}
+            <video
+              class="video-banner-premium__video"
+              {% if section.settings.autoplay %}autoplay{% endif %}
+              {% if section.settings.mute %}muted{% endif %}
+              {% if section.settings.loop %}loop{% endif %}
+              playsinline
+              preload="none"
+              {% if section.settings.poster_image != blank %}
+                poster="{{ section.settings.poster_image | image_url: width: 1920 }}"
+              {% endif %}
+              {% unless section.settings.autoplay %}
+                controls
+              {% endunless %}
+            >
+              {%- if shopify_source != blank -%}
+                <source src="{{ shopify_source.url }}" type="{{ shopify_source.mime_type }}">
+              {%- endif -%}
+            </video>
+          {%- when 'external_mp4' -%}
+            <video
+              class="video-banner-premium__video"
+              {% if section.settings.autoplay %}autoplay{% endif %}
+              {% if section.settings.mute %}muted{% endif %}
+              {% if section.settings.loop %}loop{% endif %}
+              playsinline
+              preload="none"
+              {% if section.settings.poster_image != blank %}
+                poster="{{ section.settings.poster_image | image_url: width: 1920 }}"
+              {% endif %}
+              {% unless section.settings.autoplay %}
+                controls
+              {% endunless %}
+            >
+              <source src="{{ section.settings.external_mp4_url }}" type="video/mp4">
+            </video>
+          {%- when 'youtube' -%}
+            <iframe
+              class="video-banner-premium__iframe"
+              src="https://www.youtube.com/embed/{{ section.settings.video_url.id }}?{{ embed_params }}"
+              title="{{ section.settings.heading | strip_html | escape | default: 'Video' }}"
+              allow="autoplay; encrypted-media"
+              loading="lazy"
+            ></iframe>
+          {%- when 'vimeo' -%}
+            <iframe
+              class="video-banner-premium__iframe"
+              src="https://player.vimeo.com/video/{{ section.settings.video_url.id }}?{{ embed_params }}"
+              title="{{ section.settings.heading | strip_html | escape | default: 'Video' }}"
+              allow="autoplay; encrypted-media"
+              loading="lazy"
+            ></iframe>
+          {%- else -%}
+            {%- if section.settings.poster_image != blank -%}
+              <img
+                src="{{ section.settings.poster_image | image_url: width: 1920 }}"
+                alt="{{ section.settings.poster_image.alt | escape }}"
+                class="video-banner-premium__poster-only"
+                loading="lazy"
+                width="{{ section.settings.poster_image.width }}"
+                height="{{ section.settings.poster_image.height }}"
+              >
+            {%- else -%}
+              {{ 'hero-apparel-2' | placeholder_svg_tag: 'placeholder-svg video-banner-premium__poster-only' }}
+            {%- endif -%}
+        {%- endcase -%}
+        <div
+          class="video-banner-premium__overlay"
+          style="--video-overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};"
+          aria-hidden="true"
+        ></div>
+      </div>
+
+      {%- if section.settings.heading != blank or section.settings.button_text != blank -%}
+        <div class="video-banner-premium__content">
+          {%- if section.settings.heading != blank -%}
+            <h2 class="video-banner-premium__heading h1 inline-richtext">{{ section.settings.heading }}</h2>
+          {%- endif -%}
+          {%- if section.settings.subheading != blank -%}
+            <div class="video-banner-premium__subheading rte">{{ section.settings.subheading }}</div>
+          {%- endif -%}
+          {%- if section.settings.button_text != blank -%}
+            {%- render 'button', text: section.settings.button_text, url: section.settings.button_url, style: section.settings.button_style -%}
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Video banner (premium)",
+  "class": "section-video-banner-premium",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Add ONE video source below: a Shopify-hosted video, a pasted MP4 URL, or a YouTube/Vimeo link. If more than one is set, Shopify video takes priority, then the MP4 URL, then YouTube/Vimeo."
+    },
+    {
+      "type": "video",
+      "id": "shopify_video",
+      "label": "Shopify-hosted video"
+    },
+    {
+      "type": "url",
+      "id": "external_mp4_url",
+      "label": "External MP4 URL"
+    },
+    {
+      "type": "video_url",
+      "id": "video_url",
+      "label": "YouTube or Vimeo URL",
+      "accept": ["youtube", "vimeo"]
+    },
+    {
+      "type": "image_picker",
+      "id": "poster_image",
+      "label": "Poster image",
+      "info": "Shown before the video loads, and as a fallback if no video source is set."
+    },
+    {
+      "type": "header",
+      "content": "Playback"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "loop",
+      "label": "Loop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "mute",
+      "label": "Mute",
+      "info": "Most browsers block autoplay unless the video is muted.",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "Height",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" },
+        { "value": "full", "label": "Full screen" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_bleed",
+      "label": "Full width (edge to edge)",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "options": [
+        { "value": "primary", "label": "Primary" },
+        { "value": "secondary", "label": "Secondary" },
+        { "value": "link", "label": "Text link" }
+      ],
+      "default": "primary"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.colors.label"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Video banner (premium)"
+    }
+  ]
+}
+{% endschema %}

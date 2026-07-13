@@ -1,0 +1,200 @@
+{% comment %}
+  Recently Viewed Products - Milestone 5, Phase 2.
+  Reads from localStorage (populated by snippets/recently-viewed-tracker-premium.liquid,
+  rendered once via the single additive line in main-product.liquid) and
+  renders cards client-side. Can be placed on any template.
+{% endcomment %}
+
+{{ 'component-recently-viewed-premium.css' | asset_url | stylesheet_tag }}
+{{ 'component-slider.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
+  <div class="page-width">
+    <recently-viewed-premium
+      data-limit="{{ section.settings.products_to_show }}"
+      {% if product != blank %}
+        data-exclude-product-id="{{ product.id }}"
+      {% endif %}
+      data-hide-when-empty="{{ section.settings.hide_when_empty }}"
+    >
+      <div class="recently-viewed-premium__header-row">
+        {%- render 'section-header',
+          heading: section.settings.heading,
+          description: section.settings.description,
+          alignment: 'left',
+          section_id: section.id
+        -%}
+        {%- if section.settings.show_clear_history -%}
+          <button type="button" class="link link--text recently-viewed-premium__clear" data-recently-viewed-clear hidden>
+            {{- 'general.recently_viewed.clear_history' | t -}}
+          </button>
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.layout == 'carousel' -%}
+        <slider-component class="slider-mobile-gutter">
+          <ul
+            class="recently-viewed-premium__grid grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down slider slider--tablet grid--peek"
+            id="Slider-{{ section.id }}"
+            role="list"
+            data-recently-viewed-list
+          ></ul>
+          <div class="slider-buttons" data-recently-viewed-slider-buttons hidden>
+            <button type="button" class="slider-button slider-button--prev" name="previous" aria-label="{{ 'general.slider.previous_slide' | t }}">
+              <span class="svg-wrapper">{{- 'icon-caret.svg' | inline_asset_content -}}</span>
+            </button>
+            <div class="slider-counter caption">
+              <span class="slider-counter--current">1</span>
+              <span aria-hidden="true"> / </span>
+              <span class="visually-hidden">{{ 'general.slider.of' | t }}</span>
+              <span class="slider-counter--total">0</span>
+            </div>
+            <button type="button" class="slider-button slider-button--next" name="next" aria-label="{{ 'general.slider.next_slide' | t }}">
+              <span class="svg-wrapper">{{- 'icon-caret.svg' | inline_asset_content -}}</span>
+            </button>
+          </div>
+        </slider-component>
+      {%- else -%}
+        <ul
+          class="recently-viewed-premium__grid grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down"
+          role="list"
+          data-recently-viewed-list
+        ></ul>
+      {%- endif -%}
+
+      <p class="premium-section-empty-state" data-recently-viewed-empty hidden>
+        {{- 'general.recently_viewed.empty' | t -}}
+      </p>
+    </recently-viewed-premium>
+  </div>
+</div>
+
+<script src="{{ 'product-merchandising.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "Recently viewed products",
+  "class": "section-recently-viewed-premium",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Populated automatically from the visitor's browser history on this device (localStorage). Empty until they've viewed at least one product."
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Recently viewed"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_clear_history",
+      "label": "Show \"Clear history\" button",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_when_empty",
+      "label": "Hide the whole section when there's no history",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "grid", "label": "Grid" },
+        { "value": "carousel", "label": "Carousel" }
+      ],
+      "default": "carousel"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns on desktop",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columns on mobile",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.colors.label"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Recently viewed products"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,19 @@
+/* Shared premium homepage utilities - Milestone 4, Phase 4 --------------
+   Extracted during the Phase 4 reusability audit. .premium-section-
+   empty-state was previously only defined inside
+   component-card-premium.css, but is used by several sections
+   (testimonials, logo cloud, social gallery, store features, FAQ,
+   featured blog) that never load that stylesheet - so their theme-editor
+   empty states were rendering completely unstyled. This file is the
+   single source of truth going forward for any homepage section that
+   needs the empty-state look; component-card-premium.css keeps its own
+   copy for backward compatibility with sections already depending on it,
+   so nothing that currently works can regress. */
+
+.premium-section-empty-state {
+  padding: 4rem 2rem;
+  text-align: center;
+  border: 1px dashed rgba(var(--color-foreground), 0.2);
+  border-radius: var(--card-corner-radius, 0);
+  color: rgba(var(--color-foreground), 0.7);
+}

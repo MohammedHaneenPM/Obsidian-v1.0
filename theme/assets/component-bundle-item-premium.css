@@ -1,0 +1,62 @@
+/* Shared bundle/FBT selectable item row - Milestone 5, Phase 2 ---------- */
+
+.bundle-item-premium {
+  list-style: none;
+}
+
+.bundle-item-premium__label {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 1rem 0;
+  cursor: pointer;
+}
+
+.bundle-item-premium__checkbox {
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  cursor: pointer;
+}
+
+.bundle-item-premium__checkbox:disabled {
+  cursor: not-allowed;
+}
+
+.bundle-item-premium__media {
+  flex-shrink: 0;
+  width: 6rem;
+  height: 6rem;
+  border-radius: var(--card-corner-radius, 0);
+  overflow: hidden;
+  background: rgba(var(--color-foreground), 0.04);
+}
+
+.bundle-item-premium__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bundle-item-premium__details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.bundle-item-premium__title {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bundle-item-premium__unavailable {
+  color: rgba(var(--color-foreground), 0.6);
+  font-size: 1.3rem;
+}
+
+.bundle-item-premium:has(.bundle-item-premium__checkbox:disabled:not(:checked)) {
+  opacity: 0.5;
+}

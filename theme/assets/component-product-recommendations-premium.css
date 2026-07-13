@@ -1,0 +1,5 @@
+/* Product Recommendations / Complementary Products (premium) - Milestone 5, Phase 2 */
+
+.product-recommendations-premium:empty {
+  display: none;
+}

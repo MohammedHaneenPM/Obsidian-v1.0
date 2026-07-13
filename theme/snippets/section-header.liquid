@@ -1,0 +1,64 @@
+{% comment %}
+  Renders a reusable section header: an optional eyebrow/label, a heading,
+  an optional rich-text description, and an optional CTA button/link.
+  Shared across Milestone 4 homepage sections (hero excluded, since the
+  hero has its own layout).
+
+  Accepts:
+  - eyebrow: {String} Small label shown above the heading (optional)
+  - heading: {String} Inline richtext heading (optional)
+  - heading_tag: {String} HTML tag for the heading, e.g. 'h2' (default) or 'h1' (optional)
+  - heading_size: {String} Extra class for heading size, e.g. 'h1', 'h2' (optional)
+  - description: {String} Richtext description (optional)
+  - button_text: {String} CTA label (optional)
+  - button_url: {String} CTA link (optional)
+  - button_style: {String} 'primary', 'secondary', or 'link' (default 'link') (optional)
+  - alignment: {String} 'left' (default), 'center', or 'right' (optional)
+  - section_id: {String} Used to build a unique heading id (optional)
+
+  Usage:
+  {% render 'section-header',
+    eyebrow: section.settings.eyebrow,
+    heading: section.settings.heading,
+    description: section.settings.description,
+    button_text: section.settings.button_text,
+    button_url: section.settings.button_url,
+    alignment: section.settings.heading_alignment,
+    section_id: section.id
+  %}
+{% endcomment %}
+{%- if eyebrow != blank or heading != blank or description != blank or button_text != blank -%}
+  {%- liquid
+    assign heading_tag = heading_tag | default: 'h2'
+    assign heading_size = heading_size | default: 'h1'
+    assign button_style = button_style | default: 'link'
+    assign alignment = alignment | default: 'left'
+  -%}
+  <div class="section-header section-header--{{ alignment }}">
+    <div class="section-header__text">
+      {%- if eyebrow != blank -%}
+        <p class="section-header__eyebrow caption-with-letter-spacing">{{ eyebrow | escape }}</p>
+      {%- endif -%}
+      {%- if heading != blank -%}
+        <{{ heading_tag }}
+          class="section-header__heading {{ heading_size }} inline-richtext"
+          {% if section_id != blank %}
+            id="SectionHeading-{{ section_id }}"
+          {% endif %}
+        >
+          {{- heading -}}
+        </{{ heading_tag }}>
+      {%- endif -%}
+      {%- if description != blank -%}
+        <div class="section-header__description rte">
+          {{- description -}}
+        </div>
+      {%- endif -%}
+    </div>
+    {%- if button_text != blank -%}
+      <div class="section-header__cta">
+        {%- render 'button', text: button_text, url: button_url, style: button_style -%}
+      </div>
+    {%- endif -%}
+  </div>
+{%- endif -%}

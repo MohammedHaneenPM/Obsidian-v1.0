@@ -1,0 +1,75 @@
+{% comment %}
+  Renders a link styled as a button, reusing the theme's existing .button
+  component (defined in assets/base.css) rather than introducing new
+  button CSS. Shared across Milestone 4 homepage sections.
+
+  Accepts:
+  - text: {String} Button label (required)
+  - url: {String} Link href (optional - renders a disabled-look button if blank)
+  - style: {String} 'primary' (default), 'secondary', or 'link' (text link, no button chrome)
+  - size: {String} 'small' for a compact button (optional)
+  - full_width: {Boolean} Stretches the button to fill its container (optional)
+  - new_tab: {Boolean} Opens the link in a new tab (optional)
+  - classes: {String} Extra classes to append (optional)
+  - aria_label: {String} Overrides the accessible name (optional)
+  - icon: {String} Optional icon filename (without .svg), e.g. 'icon-arrow'.
+    Rendered decoratively (aria-hidden) next to the label. (optional)
+  - icon_position: {String} 'before' or 'after' (default) (optional)
+
+  Usage:
+  {% render 'button', text: 'Shop now', url: collection.url, style: 'primary', icon: 'icon-arrow' %}
+{% endcomment %}
+{%- if text != blank -%}
+  {%- liquid
+    assign button_classes = 'button'
+    if style == 'secondary'
+      assign button_classes = button_classes | append: ' button--secondary'
+    elsif style == 'link'
+      assign button_classes = 'link link--text animate-arrow'
+    else
+      assign button_classes = button_classes | append: ' button--primary'
+    endif
+
+    if size == 'small' and style != 'link'
+      assign button_classes = button_classes | append: ' button--small'
+    endif
+
+    if full_width and style != 'link'
+      assign button_classes = button_classes | append: ' button--full-width'
+    endif
+
+    if icon != blank
+      assign button_classes = button_classes | append: ' button--with-icon'
+    endif
+
+    if classes != blank
+      assign button_classes = button_classes | append: ' ' | append: classes
+    endif
+
+    assign icon_position = icon_position | default: 'after'
+  -%}
+  <a
+    {% if url != blank %}
+      href="{{ url }}"
+    {% else %}
+      role="link" aria-disabled="true"
+    {% endif %}
+    class="{{ button_classes }}"
+    {% if new_tab %}
+      target="_blank" rel="noopener"
+    {% endif %}
+    {% if aria_label != blank %}
+      aria-label="{{ aria_label | escape }}"
+    {% endif %}
+  >
+    {%- if icon != blank and icon_position == 'before' -%}
+      <span class="svg-wrapper button__icon button__icon--before" aria-hidden="true">{{- icon | append: '.svg' | inline_asset_content -}}</span>
+    {%- endif -%}
+    {{- text | escape -}}
+    {%- if style == 'link' -%}
+      {{- 'icon-arrow.svg' | inline_asset_content -}}
+    {%- elsif icon != blank and icon_position == 'after' -%}
+      <span class="svg-wrapper button__icon button__icon--after" aria-hidden="true">{{- icon | append: '.svg' | inline_asset_content -}}</span>
+    {%- endif -%}
+  </a>
+{%- endif -%}

@@ -1,0 +1,33 @@
+{% comment %}
+  Renders a small label badge, reusing the theme's existing .badge
+  component (defined in assets/base.css). Shared across Milestone 4
+  homepage sections and product/collection cards.
+
+  Accepts:
+  - text: {String} Badge label (required)
+  - color_scheme: {String} A color scheme id, e.g. 'scheme-2' (optional,
+    falls back to the theme's sale/sold-out badge scheme settings)
+  - type: {String} 'sale', 'sold_out', 'new', or 'custom' (default).
+    Only used to pick a sensible default color_scheme when one isn't given.
+  - classes: {String} Extra classes to append (optional)
+
+  Usage:
+  {% render 'badge', text: 'New', type: 'new' %}
+{% endcomment %}
+{%- if text != blank -%}
+  {%- liquid
+    if color_scheme == blank
+      case type
+        when 'sale'
+          assign color_scheme = settings.sale_badge_color_scheme
+        when 'sold_out'
+          assign color_scheme = settings.sold_out_badge_color_scheme
+        else
+          assign color_scheme = settings.sale_badge_color_scheme
+      endcase
+    endif
+  -%}
+  <span class="badge{% if color_scheme != blank %} color-{{ color_scheme }}{% endif %}{% if classes != blank %} {{ classes }}{% endif %}">
+    {{- text | escape -}}
+  </span>
+{%- endif -%}

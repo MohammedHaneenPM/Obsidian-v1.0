@@ -1,0 +1,98 @@
+{% comment %}
+  Renders a premium collection card: full-bleed image with an overlay for
+  title, optional description, product count, and a CTA button. Distinct
+  from snippets/card-collection.liquid (untouched, still used elsewhere).
+
+  Accepts:
+  - card_collection: {Object} Collection Liquid object (optional)
+  - media_aspect_ratio: {String} 'square', 'portrait' (default), or 'landscape' (optional)
+  - show_description: {Boolean} Show the collection description (optional)
+  - show_product_count: {Boolean} Show the number of products (optional)
+  - show_button: {Boolean} Show a CTA button (optional)
+  - button_text: {String} CTA label, default "Shop now" (optional)
+  - lazy_load: {Boolean} Default true (optional)
+  - placeholder_image: {String} Placeholder image key when no collection exists (optional)
+
+  Usage:
+  {% render 'collection-card-premium', card_collection: collection, show_product_count: true %}
+{% endcomment %}
+{%- liquid
+  assign ratio = 0.8
+  if media_aspect_ratio == 'square'
+    assign ratio = 1
+  elsif media_aspect_ratio == 'landscape'
+    assign ratio = 1.33
+  endif
+  assign button_text = button_text
+  if button_text == blank
+    assign button_text = 'general.collection_card.shop_now' | t
+  endif
+
+  assign display_title = card_collection.title
+  if display_title == blank
+    assign display_title = 'onboarding.collection_title' | t
+  endif
+-%}
+
+<div class="collection-card-premium-wrapper">
+  <a
+    href="{{ card_collection.url | default: '#' }}"
+    class="collection-card-premium"
+    style="--ratio-percent: {{ 1 | divided_by: ratio | times: 100 }}%;"
+    {% if card_collection == blank %}
+      role="link" aria-disabled="true"
+    {% endif %}
+  >
+    <div class="collection-card-premium__media">
+      {%- if card_collection.featured_image -%}
+        <img
+          srcset="
+            {%- if card_collection.featured_image.width >= 165 -%}{{ card_collection.featured_image | image_url: width: 165 }} 165w,{%- endif -%}
+            {%- if card_collection.featured_image.width >= 375 -%}{{ card_collection.featured_image | image_url: width: 375 }} 375w,{%- endif -%}
+            {%- if card_collection.featured_image.width >= 550 -%}{{ card_collection.featured_image | image_url: width: 550 }} 550w,{%- endif -%}
+            {%- if card_collection.featured_image.width >= 750 -%}{{ card_collection.featured_image | image_url: width: 750 }} 750w,{%- endif -%}
+            {%- if card_collection.featured_image.width >= 1100 -%}{{ card_collection.featured_image | image_url: width: 1100 }} 1100w,{%- endif -%}
+            {{ card_collection.featured_image | image_url }} {{ card_collection.featured_image.width }}w
+          "
+          src="{{ card_collection.featured_image | image_url: width: 750 }}"
+          sizes="(min-width: 990px) 33vw, (min-width: 750px) 50vw, 100vw"
+          alt="{{ card_collection.featured_image.alt | escape }}"
+          class="collection-card-premium__image motion-reduce"
+          {% unless lazy_load == false %}
+            loading="lazy"
+          {% endunless %}
+          width="{{ card_collection.featured_image.width }}"
+          height="{{ card_collection.featured_image.height }}"
+        >
+      {%- else -%}
+        {{ placeholder_image | default: 'collection-apparel-1' | placeholder_svg_tag: 'placeholder-svg collection-card-premium__image' }}
+      {%- endif -%}
+    </div>
+
+    <div class="collection-card-premium__overlay" aria-hidden="true"></div>
+
+    <div class="collection-card-premium__content">
+      <h3 class="collection-card-premium__heading h2">
+        {{- display_title | escape -}}
+      </h3>
+
+      {%- if show_product_count and card_collection != blank -%}
+        <p class="collection-card-premium__count caption-with-letter-spacing">
+          {{- 'general.collection_card.product_count' | t: count: card_collection.all_products_count -}}
+        </p>
+      {%- endif -%}
+
+      {%- if show_description and card_collection.description != blank -%}
+        <p class="collection-card-premium__description">
+          {{- card_collection.description | strip_html | truncatewords: 16 -}}
+        </p>
+      {%- endif -%}
+
+      {%- if show_button -%}
+        <span class="collection-card-premium__button button button--secondary">
+          {{- button_text -}}
+        </span>
+      {%- endif -%}
+    </div>
+  </a>
+</div>

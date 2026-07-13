@@ -1,0 +1,130 @@
+/* Instagram / Social Gallery Premium - Milestone 4, Phase 3 -------------- */
+
+.social-gallery-premium__grid {
+  margin: 0;
+  padding: 0;
+}
+
+.social-gallery-premium__item {
+  list-style: none;
+}
+
+.social-gallery-premium__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.social-gallery-premium__link {
+  position: relative;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.social-gallery-premium__media {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--card-corner-radius, 0.6rem);
+  aspect-ratio: 1 / 1;
+}
+
+.social-gallery-premium__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.social-gallery-premium__link:hover .social-gallery-premium__media img,
+.social-gallery-premium__link:focus-visible .social-gallery-premium__media img {
+  transform: scale(1.04);
+}
+
+.social-gallery-premium__icon {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  color: #000;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.social-gallery-premium__icon svg {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+.social-gallery-premium__link:hover .social-gallery-premium__icon,
+.social-gallery-premium__link:focus-visible .social-gallery-premium__icon {
+  opacity: 1;
+}
+
+.social-gallery-premium__caption {
+  margin: 0.8rem 0 0;
+  font-size: 1.3rem;
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+.social-gallery-premium__product-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.8rem;
+  font-size: 1.3rem;
+  text-decoration: none;
+}
+
+.social-gallery-premium__product-tag .svg-wrapper {
+  width: 1.4rem;
+  height: 1.4rem;
+}
+
+/* Pure-CSS masonry (no JS packing library) using multi-column layout ----- */
+.social-gallery-premium__grid--masonry {
+  display: block;
+  columns: 2;
+  column-gap: 1.6rem;
+  list-style: none;
+}
+
+.social-gallery-premium__grid--masonry .social-gallery-premium__item {
+  break-inside: avoid;
+  margin-bottom: 1.6rem;
+}
+
+.social-gallery-premium__grid--masonry .social-gallery-premium__media {
+  aspect-ratio: auto;
+}
+
+@media screen and (min-width: 750px) {
+  .social-gallery-premium__grid--masonry {
+    columns: 3;
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .social-gallery-premium__grid--masonry.grid--3-col-desktop {
+    columns: 3;
+  }
+
+  .social-gallery-premium__grid--masonry.grid--4-col-desktop {
+    columns: 4;
+  }
+
+  .social-gallery-premium__grid--masonry.grid--5-col-desktop {
+    columns: 5;
+  }
+
+  .social-gallery-premium__grid--masonry.grid--6-col-desktop {
+    columns: 6;
+  }
+}
