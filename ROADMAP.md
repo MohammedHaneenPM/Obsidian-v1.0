@@ -236,16 +236,49 @@ No new features.
 | M5-T9-003 | Size Guide | ✅ Complete |
 | M5-T9-004 | QA | ⬜ NEXT |
 
+STATUS: ✅ COMPLETE
+
+❄️ SUBSYSTEM: FROZEN
+
+Notes:
+
+Product Information Engine is feature complete.
+
+Only the following changes are allowed:
+
+- Critical bug fixes
+- Accessibility improvements
+- Performance improvements
+- Compatibility fixes
+
+No new features.
+
 ---
 
 ## M5-T10 – Merchant Experience Polish
 
 | Ticket | Feature | Status |
 |--------|---------|--------|
-| M5-T10-001 | Theme Editor Audit | ⏳ Pending |
-| M5-T10-002 | Theme Editor UX | ⏳ Pending |
-| M5-T10-003 | Merchant Documentation | ⏳ Pending |
-| M5-T10-004 | QA | ⏳ Pending |
+| M5-T10-001 | Merchant Experience Architecture Audit | ✅ Complete |
+| M5-T10-002 | Merchant Experience Polish | ✅ Complete |
+| M5-T10-003 | Merchant QA | ✅ Complete |
+
+STATUS: ✅ COMPLETE
+
+❄️ SUBSYSTEM: FROZEN
+
+Notes:
+
+Merchant Experience is feature complete.
+
+Only the following changes are allowed:
+
+- Critical bug fixes
+- Accessibility improvements
+- Performance improvements
+- Compatibility fixes
+
+No new features.
 
 ---
 
@@ -253,7 +286,7 @@ No new features.
 
 | Ticket | Feature | Status |
 |--------|---------|--------|
-| M5-T11-001 | Product Experience Final Audit | ⏳ Pending |
+| M5-T11-001 | Product Experience Final Audit | ⬜ NEXT |
 
 ---
 
@@ -340,7 +373,7 @@ Do NOT implement before Milestone 8:
 
 NEXT TASK
 
-M5-T9-004 – QA
+M5-T11-001 – Product Experience Final Audit
 
 Implement ONLY this engineering ticket.
 
