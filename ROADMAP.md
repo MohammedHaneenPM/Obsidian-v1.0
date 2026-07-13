@@ -231,11 +231,10 @@ No new features.
 
 | Ticket | Feature | Status |
 |--------|---------|--------|
-| M5-T9-001 | Product Specifications | ⬜ NEXT |
-| M5-T9-002 | Downloads | ⏳ Pending |
-| M5-T9-003 | Size Guide | ⏳ Pending |
-| M5-T9-004 | Care Guide | ⏳ Pending |
-| M5-T9-005 | QA | ⏳ Pending |
+| M5-T9-001 | Product Specifications | ✅ Complete |
+| M5-T9-002 | Downloads | ✅ Complete |
+| M5-T9-003 | Size Guide | ✅ Complete |
+| M5-T9-004 | QA | ⬜ NEXT |
 
 ---
 
@@ -341,7 +340,7 @@ Do NOT implement before Milestone 8:
 
 NEXT TASK
 
-M5-T9-001 – Product Specifications
+M5-T9-004 – QA
 
 Implement ONLY this engineering ticket.
 
