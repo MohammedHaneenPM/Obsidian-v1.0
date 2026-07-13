@@ -143,10 +143,29 @@ No new features.
 
 | Ticket | Feature | Status |
 |--------|---------|--------|
-| M5-T6-001 | Audit | ⏳ Pending |
-| M5-T6-002 | Premium Video Layout | ⏳ Pending |
-| M5-T6-003 | Video Controls | ⏳ Pending |
-| M5-T6-004 | QA | ⏳ Pending |
+| M5-T6-001 | Audit | ✅ Complete |
+| M5-T6-002 | Premium Video Layout | ✅ Complete |
+| M5-T6-003 | Video Controls | ✅ Complete |
+| M5-T6-004 | QA | ✅ Complete |
+
+M5-T6 – Product Video Experience
+
+STATUS: ✅ COMPLETE
+
+❄️ SUBSYSTEM: FROZEN
+
+Notes:
+
+Product Video Experience is feature complete.
+
+Only the following changes are allowed:
+
+- Critical bug fixes
+- Accessibility improvements
+- Performance improvements
+- Compatibility fixes
+
+No new features.
 
 ---
 
@@ -286,7 +305,7 @@ Do NOT implement before Milestone 8:
 
 NEXT TASK
 
-M5-T6-001 – Audit
+M5-T7-001 – Audit
 
 Implement ONLY this engineering ticket.
 

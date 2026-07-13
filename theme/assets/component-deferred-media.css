@@ -10,6 +10,8 @@
   border-radius: calc(var(--border-radius) - var(--border-width));
 }
 
+
+
 .media > .deferred-media__poster {
   display: flex;
   align-items: center;
@@ -17,36 +19,79 @@
 }
 
 .deferred-media__poster img {
-  width: auto;
-  max-width: 100%;
+  width: 100%;
   height: 100%;
+  object-fit: cover;
+  transition: transform var(--duration-default) ease;
+}
+
+.deferred-media:hover .deferred-media__poster img {
+  transform: scale(1.02);
 }
 
 .deferred-media {
   overflow: hidden;
+  position: relative;
+  background-color: rgb(0,0,0); /* Black background for video loading */
+}
+
+/* Premium Loading Spinner */
+.deferred-media::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4rem;
+  height: 4rem;
+  margin-top: -2rem;
+  margin-left: -2rem;
+  border: 0.2rem solid rgba(255, 255, 255, 0.2);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: deferred-media-spin 0.8s linear infinite;
+  z-index: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--duration-short) ease;
+}
+
+@keyframes deferred-media-spin {
+  to { transform: rotate(360deg); }
+}
+
+.deferred-media[loaded]::before {
+  opacity: 1;
+  visibility: visible;
 }
 
 .deferred-media:not([loaded]) template {
   z-index: -1;
 }
 
+/* Smooth visual transition from poster to playing media */
+.deferred-media > .deferred-media__poster {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity var(--duration-default) ease, visibility var(--duration-default) ease;
+  z-index: 2; /* Sit above the spinner and video */
+}
+
 .deferred-media[loaded] > .deferred-media__poster {
-  display: none;
+  display: block !important;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .deferred-media__poster:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 var(--media-border-width) rgba(var(--color-foreground), var(--media-border-opacity)),
-    0 0 0 calc(var(--media-border-width) + 0.3rem) rgb(var(--color-background)),
-    0 0 0 calc(var(--media-border-width) + 0.5rem) rgba(var(--color-foreground), 0.5);
+  box-shadow: inset 0 0 0 0.2rem rgb(var(--color-background)), inset 0 0 0 0.4rem rgba(var(--color-foreground), 0.5);
   border-radius: calc(var(--media-radius) - var(--media-border-width));
 }
 
 .deferred-media__poster:focus {
   outline: none;
-  box-shadow: 0 0 0 var(--media-border-width) rgba(var(--color-foreground), var(--media-border-opacity)),
-    0 0 0 calc(var(--media-border-width) + 0.3rem) rgb(var(--color-background)),
-    0 0 0 calc(var(--media-border-width) + 0.5rem) rgba(var(--color-foreground), 0.5);
+  box-shadow: inset 0 0 0 0.2rem rgb(var(--color-background)), inset 0 0 0 0.4rem rgba(var(--color-foreground), 0.5);
   border-radius: calc(var(--media-radius) - var(--media-border-width));
 }
 
@@ -66,33 +111,64 @@
   box-shadow: none;
 }
 
+/* Premium Poster Button Styling */
 .deferred-media__poster-button {
-  background-color: rgb(var(--color-background));
+  background: rgba(var(--color-background), 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 0.1rem solid rgba(var(--color-foreground), 0.1);
   border-radius: 50%;
   color: rgb(var(--color-foreground));
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 6.2rem;
-  width: 6.2rem;
+  height: 7.2rem; /* Larger touch-friendly play target */
+  width: 7.2rem;
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%) scale(1);
-  transition: transform var(--duration-short) ease, color var(--duration-short) ease;
+  transition: transform var(--duration-short) cubic-bezier(0.25, 0.46, 0.45, 0.94), color var(--duration-short) ease, background var(--duration-short) ease, box-shadow var(--duration-short) ease;
   z-index: 1;
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.15);
 }
 
-.deferred-media__poster-button:hover {
+.deferred-media:hover .deferred-media__poster-button {
   transform: translate(-50%, -50%) scale(1.1);
+  background: rgb(var(--color-background));
+  box-shadow: 0 0.8rem 2.5rem rgba(0, 0, 0, 0.25);
+  color: rgb(var(--color-foreground));
 }
 
 .deferred-media__poster-button .icon {
-  width: 2rem;
-  height: 2rem;
+  width: 2.4rem;
+  height: 2.4rem;
+  transition: transform var(--duration-short) ease;
+}
+
+.deferred-media:hover .deferred-media__poster-button .icon {
+  transform: scale(1.1);
 }
 
 .deferred-media__poster-button .icon-play {
-  margin-left: 0.2rem;
+  margin-left: 0.3rem;
+}
+
+/* Media Scaling and Responsive Styling */
+.deferred-media video,
+.deferred-media iframe,
+.deferred-media model-viewer {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: none;
+  z-index: 1; /* Sit above the loading spinner */
+}
+
+/* Specifically target hosted videos to ensure they fill the container nicely without squishing */
+.deferred-media video {
+  object-fit: cover;
+  background-color: transparent; /* Rely on container's black bg */
 }
