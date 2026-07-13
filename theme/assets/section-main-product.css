@@ -681,6 +681,16 @@ a.product__text {
 
 .product-media-modal__model {
   width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-media-modal__model product-model {
+  width: 100%;
+  height: 100%;
+  padding-top: 0 !important; /* Override inline aspect ratio in fullscreen */
 }
 
 .product-media-modal__toggle {
@@ -1779,6 +1789,71 @@ a.product__text {
 
 .product-media-modal__toggle:hover {
   transform: scale(1.05);
+}
+
+/* Premium XR Button Styling */
+.product__xr-button {
+  background: rgba(var(--color-foreground), 0.05) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 0.1rem solid rgba(var(--color-foreground), 0.1) !important;
+  color: rgb(var(--color-foreground)) !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1.5rem 3rem !important;
+  font-family: var(--font-body-family);
+  font-weight: 500;
+  font-size: 1.5rem;
+  letter-spacing: 0.05rem;
+  border-radius: calc(var(--buttons-radius) + 0.5rem) !important;
+  transition: background var(--duration-short) ease, transform var(--duration-short) cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow var(--duration-short) ease, color var(--duration-short) ease !important;
+  margin-top: 2rem;
+  width: 100%;
+}
+
+.product__xr-button:hover {
+  background: rgb(var(--color-foreground)) !important;
+  color: rgb(var(--color-background)) !important;
+  transform: translateY(-0.2rem);
+  box-shadow: 0 1rem 2rem rgba(var(--color-foreground), 0.15) !important;
+}
+
+.product__xr-button .svg-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product__xr-button svg {
+  width: 2.2rem;
+  height: 2.2rem;
+  fill: currentColor;
+  transition: transform var(--duration-short) ease;
+}
+
+.product__xr-button:hover svg {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.product__xr-button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 0.3rem rgb(var(--color-background)), 0 0 0 0.5rem rgba(var(--color-foreground), 0.5) !important;
+}
+
+.product__xr-button:disabled,
+.product__xr-button[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+@media screen and (min-width: 750px) {
+  .product__xr-button {
+    margin-top: 3rem;
+    padding: 1.8rem 4rem !important;
+  }
 }
 
 /* Hide scrollbars for thumbnails */
