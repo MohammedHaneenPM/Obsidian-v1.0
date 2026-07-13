@@ -112,10 +112,30 @@ No new features.
 
 | Ticket | Feature | Status |
 |--------|---------|--------|
-| M5-T5-001 | Fullscreen Gallery Audit | ⬜ NEXT |
-| M5-T5-002 | Premium Fullscreen Layout | ⏳ Pending |
-| M5-T5-003 | Fullscreen Controls & Navigation | ⏳ Pending |
-| M5-T5-004 | Fullscreen Gallery QA | ⏳ Pending |
+| M5-T5-001 | Fullscreen Gallery Audit | ✅ Complete |
+| M5-T5-002 | Modal Gallery Structure | ✅ Complete |
+| M5-T5-003 | Modal Gallery Styling | ✅ Complete |
+| M5-T5-004 | Gallery State Synchronization | ✅ Complete |
+| M5-T5-005 | Fullscreen Gallery QA | ✅ Complete |
+
+M5-T5 – Premium Fullscreen Gallery
+
+STATUS: ✅ COMPLETE
+
+❄️ SUBSYSTEM: FROZEN
+
+Notes:
+
+Fullscreen Gallery is feature complete.
+
+Only the following changes are allowed:
+
+- Critical bug fixes
+- Accessibility improvements
+- Performance improvements
+- Compatibility fixes
+
+No new features.
 
 ---
 
@@ -123,8 +143,10 @@ No new features.
 
 | Ticket | Feature | Status |
 |--------|---------|--------|
-| M5-T6-001 | Premium Video UX | ⏳ Pending |
-| M5-T6-002 | Video QA | ⏳ Pending |
+| M5-T6-001 | Audit | ⏳ Pending |
+| M5-T6-002 | Premium Video Layout | ⏳ Pending |
+| M5-T6-003 | Video Controls | ⏳ Pending |
+| M5-T6-004 | QA | ⏳ Pending |
 
 ---
 
@@ -132,8 +154,10 @@ No new features.
 
 | Ticket | Feature | Status |
 |--------|---------|--------|
-| M5-T7-001 | Premium 3D Viewer | ⏳ Pending |
-| M5-T7-002 | XR Experience Polish | ⏳ Pending |
+| M5-T7-001 | Audit | ⏳ Pending |
+| M5-T7-002 | 3D Viewer | ⏳ Pending |
+| M5-T7-003 | XR Experience | ⏳ Pending |
+| M5-T7-004 | QA | ⏳ Pending |
 
 ---
 
@@ -141,8 +165,10 @@ No new features.
 
 | Ticket | Feature | Status |
 |--------|---------|--------|
-| M5-T8-001 | Interactive Product Hotspots | ⏳ Pending |
-| M5-T8-002 | Hotspot QA | ⏳ Pending |
+| M5-T8-001 | Audit | ⏳ Pending |
+| M5-T8-002 | Hotspot Structure | ⏳ Pending |
+| M5-T8-003 | Hotspot Styling | ⏳ Pending |
+| M5-T8-004 | QA | ⏳ Pending |
 
 ---
 
@@ -151,7 +177,10 @@ No new features.
 | Ticket | Feature | Status |
 |--------|---------|--------|
 | M5-T9-001 | Product Specifications | ⏳ Pending |
-| M5-T9-002 | Size Guide & Care Guide | ⏳ Pending |
+| M5-T9-002 | Downloads | ⏳ Pending |
+| M5-T9-003 | Size Guide | ⏳ Pending |
+| M5-T9-004 | Care Guide | ⏳ Pending |
+| M5-T9-005 | QA | ⏳ Pending |
 
 ---
 
@@ -159,8 +188,10 @@ No new features.
 
 | Ticket | Feature | Status |
 |--------|---------|--------|
-| M5-T10-001 | Theme Editor UX | ⏳ Pending |
-| M5-T10-002 | Merchant Experience QA | ⏳ Pending |
+| M5-T10-001 | Theme Editor Audit | ⏳ Pending |
+| M5-T10-002 | Theme Editor UX | ⏳ Pending |
+| M5-T10-003 | Merchant Documentation | ⏳ Pending |
+| M5-T10-004 | QA | ⏳ Pending |
 
 ---
 
@@ -255,7 +286,7 @@ Do NOT implement before Milestone 8:
 
 NEXT TASK
 
-M5-T5-001 – Fullscreen Gallery Audit
+M5-T6-001 – Audit
 
 Implement ONLY this engineering ticket.
 

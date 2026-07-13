@@ -8,6 +8,7 @@ if (!customElements.get('product-modal')) {
 
       hide() {
         super.hide();
+        window.pauseAllMedia();
       }
 
       show(opener) {
@@ -16,12 +17,31 @@ if (!customElements.get('product-modal')) {
       }
 
       showActiveMedia() {
+        // Derive the modal-namespaced media ID from the opener's data-media-id attribute.
+        // On-page slides use "{sectionId}-{mediaId}".
+        // Modal slides are namespaced as "{sectionId}-{mediaId}-modal".
+        const pageMediaId = this.openedBy.getAttribute('data-media-id');
+        if (!pageMediaId) return;
+
+        const modalMediaId = `${pageMediaId}-modal`;
+
+        // Use the modal's MediaGallery instance to perform the active-slide switch.
+        // This reuses all existing MediaGallery logic: thumbnail sync, live region
+        // announcements, deferred media loading, and scroll-into-view behaviour.
+        const modalGallery = this.querySelector('media-gallery');
+        if (modalGallery) {
+          modalGallery.setActiveMedia(modalMediaId, false);
+          return;
+        }
+
+        // Fallback for when the modal contains no media-gallery (legacy / edge case).
         this.querySelectorAll(
-          `[data-media-id]:not([data-media-id="${this.openedBy.getAttribute('data-media-id')}"])`
+          `[data-media-id]:not([data-media-id="${modalMediaId}"])`
         ).forEach((element) => {
           element.classList.remove('active');
         });
-        const activeMedia = this.querySelector(`[data-media-id="${this.openedBy.getAttribute('data-media-id')}"]`);
+        const activeMedia = this.querySelector(`[data-media-id="${modalMediaId}"]`);
+        if (!activeMedia) return;
         const activeMediaTemplate = activeMedia.querySelector('template');
         const activeMediaContent = activeMediaTemplate ? activeMediaTemplate.content : null;
         activeMedia.classList.add('active');
