@@ -1,0 +1,34 @@
+{% comment %}
+  Renders a hotspot with a product popover card.
+
+  Accepts:
+  - product: {Object} Product Liquid object
+  - position_x: {Number} Horizontal position percentage
+  - position_y: {Number} Vertical position percentage
+  - section_id: {String} Section ID
+  - shopify_attributes: {String} Optional Shopify attributes for the block
+{% endcomment %}
+<div
+  class="lookbook-premium__hotspot"
+  style="left: {{ position_x | default: 50 }}%; top: {{ position_y | default: 50 }}%;"
+  {{ shopify_attributes }}
+>
+  <button
+    type="button"
+    class="lookbook-premium__hotspot-dot"
+    data-lookbook-hotspot
+    aria-expanded="false"
+    aria-label="{{ 'general.lookbook.view_product' | t }}: {{ product.title | escape }}"
+  >
+    <span class="lookbook-premium__hotspot-pulse" aria-hidden="true"></span>
+    <span class="lookbook-premium__hotspot-plus" aria-hidden="true">+</span>
+  </button>
+  <div class="lookbook-premium__hotspot-card" data-lookbook-card hidden>
+    {%- render 'product-card-premium',
+      card_product: product,
+      media_aspect_ratio: 'square',
+      show_quick_add: true,
+      section_id: section_id
+    -%}
+  </div>
+</div>

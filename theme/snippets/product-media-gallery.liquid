@@ -11,6 +11,8 @@
   {% render 'product-media-gallery' %}
 {% endcomment %}
 
+{{ 'component-lookbook-premium.css' | asset_url | stylesheet_tag }}
+
 {%- liquid
   if section.settings.hide_variants and variant_images.size == product.media.size
     assign single_media_visible = true
@@ -83,6 +85,17 @@
             constrain_to_viewport: section.settings.constrain_to_viewport,
             lazy_load: false
           %}
+          
+          {%- if featured_media.media_type == 'image' and featured_media.metafields.theme.hotspots.value != blank -%}
+            {%- for hotspot in featured_media.metafields.theme.hotspots.value -%}
+              {%- render 'hotspot-popover',
+                product: hotspot.product.value,
+                position_x: hotspot.horizontal_position,
+                position_y: hotspot.vertical_position,
+                section_id: section.id
+              -%}
+            {%- endfor -%}
+          {%- endif -%}
         </li>
       {%- endif -%}
       {%- for media in product.media -%}
@@ -121,6 +134,17 @@
               constrain_to_viewport: section.settings.constrain_to_viewport,
               lazy_load: lazy_load
             %}
+            
+            {%- if media.media_type == 'image' and media.metafields.theme.hotspots.value != blank -%}
+              {%- for hotspot in media.metafields.theme.hotspots.value -%}
+                {%- render 'hotspot-popover',
+                  product: hotspot.product.value,
+                  position_x: hotspot.horizontal_position,
+                  position_y: hotspot.vertical_position,
+                  section_id: section.id
+                -%}
+              {%- endfor -%}
+            {%- endif -%}
           </li>
         {%- endunless -%}
       {%- endfor -%}

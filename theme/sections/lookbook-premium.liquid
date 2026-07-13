@@ -60,30 +60,13 @@
 
       {%- for block in section.blocks -%}
         {%- if block.type == 'hotspot' and block.settings.product != blank -%}
-          <div
-            class="lookbook-premium__hotspot"
-            style="left: {{ block.settings.position_x }}%; top: {{ block.settings.position_y }}%;"
-            {{ block.shopify_attributes }}
-          >
-            <button
-              type="button"
-              class="lookbook-premium__hotspot-dot"
-              data-lookbook-hotspot
-              aria-expanded="false"
-              aria-label="{{ 'general.lookbook.view_product' | t }}: {{ block.settings.product.title | escape }}"
-            >
-              <span class="lookbook-premium__hotspot-pulse" aria-hidden="true"></span>
-              <span class="lookbook-premium__hotspot-plus" aria-hidden="true">+</span>
-            </button>
-            <div class="lookbook-premium__hotspot-card" data-lookbook-card hidden>
-              {%- render 'product-card-premium',
-                card_product: block.settings.product,
-                media_aspect_ratio: 'square',
-                show_quick_add: true,
-                section_id: section.id
-              -%}
-            </div>
-          </div>
+          {%- render 'hotspot-popover',
+            product: block.settings.product,
+            position_x: block.settings.position_x,
+            position_y: block.settings.position_y,
+            section_id: section.id,
+            shopify_attributes: block.shopify_attributes
+          -%}
         {%- endif -%}
       {%- endfor -%}
     </div>

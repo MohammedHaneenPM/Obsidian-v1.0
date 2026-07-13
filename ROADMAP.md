@@ -201,10 +201,29 @@ No new features.
 
 | Ticket | Feature | Status |
 |--------|---------|--------|
-| M5-T8-001 | Audit | ⏳ Pending |
-| M5-T8-002 | Hotspot Structure | ⏳ Pending |
-| M5-T8-003 | Hotspot Styling | ⏳ Pending |
-| M5-T8-004 | QA | ⏳ Pending |
+| M5-T8-001 | Audit | ✅ Complete |
+| M5-T8-002 | Hotspot Structure | ✅ Complete |
+| M5-T8-003 | Hotspot Styling | ✅ Complete |
+| M5-T8-004 | QA | ✅ Complete |
+
+## M5-T8 – Premium Hotspot Engine
+
+STATUS: ✅ COMPLETE
+
+❄️ SUBSYSTEM: FROZEN
+
+Notes:
+
+Premium Hotspot Engine is feature complete.
+
+Only the following changes are allowed:
+
+- Critical bug fixes
+- Accessibility improvements
+- Performance improvements
+- Compatibility fixes
+
+No new features.
 
 ---
 
@@ -212,7 +231,7 @@ No new features.
 
 | Ticket | Feature | Status |
 |--------|---------|--------|
-| M5-T9-001 | Product Specifications | ⏳ Pending |
+| M5-T9-001 | Product Specifications | ⬜ NEXT |
 | M5-T9-002 | Downloads | ⏳ Pending |
 | M5-T9-003 | Size Guide | ⏳ Pending |
 | M5-T9-004 | Care Guide | ⏳ Pending |
@@ -322,7 +341,7 @@ Do NOT implement before Milestone 8:
 
 NEXT TASK
 
-M5-T8-001 – Audit
+M5-T9-001 – Product Specifications
 
 Implement ONLY this engineering ticket.
 
