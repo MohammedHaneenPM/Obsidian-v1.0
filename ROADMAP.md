@@ -305,6 +305,9 @@ No milestone is considered complete until all stages have passed.
 - [x] **M6-004:** Performance & Interaction Polish
 - [x] **M6-005:** Quick View & Quick Add
 - [x] **M6-006:** Performance & QA
+- [x] **M6-HF-001:** Collection Regression Fixes
+- [x] **M6-HF-002:** Final Collection QA Fixes
+- [x] **M6-HF-003:** Final Product Count & Breadcrumb Corrections
 
 ---
 

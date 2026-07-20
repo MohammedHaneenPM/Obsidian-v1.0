@@ -4,6 +4,18 @@
   column-gap: 1.5rem;
 }
 
+@media screen and (max-width: 749px) {
+  .premium-grid-container .grid--1-col-tablet-down .grid__item {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .premium-grid-container .grid--2-col-tablet-down .grid__item {
+    width: calc(50% - 1.5rem * 1 / 2);
+    max-width: calc(50% - 1.5rem * 1 / 2);
+  }
+}
+
 @media screen and (min-width: 750px) {
   .premium-grid-container .grid {
     row-gap: 5rem;

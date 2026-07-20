@@ -81,7 +81,7 @@
 
             <div class="product-count-vertical light{% if section.settings.show_premium_toolbar %} hidden{% endif %}" role="status">
               <h2 class="product-count__text text-body">
-                <span id="ProductCountDesktop">
+                <span id="{% if section.settings.show_premium_toolbar %}ProductCountDesktopHidden{% else %}ProductCountDesktop{% endif %}">
                   {%- if collection.results_count -%}
                     {{
                       'templates.search.results_with_count'

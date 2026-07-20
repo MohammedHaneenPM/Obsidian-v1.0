@@ -31,9 +31,13 @@
         <nav class="breadcrumbs" aria-label="breadcrumbs">
           <a href="{{ routes.root_url }}" title="Home">Home</a>
           <span class="breadcrumbs__separator" aria-hidden="true">/</span>
-          <a href="{{ routes.all_products_collection_url }}" title="Collections">Collections</a>
-          <span class="breadcrumbs__separator" aria-hidden="true">/</span>
-          <span class="breadcrumbs__current" aria-current="page">{{ collection.title | escape }}</span>
+          {%- if collection.handle == 'all' -%}
+            <span class="breadcrumbs__current" aria-current="page">{{ collection.title | escape }}</span>
+          {%- else -%}
+            <a href="{{ routes.collections_url }}" title="Collections">Collections</a>
+            <span class="breadcrumbs__separator" aria-hidden="true">/</span>
+            <span class="breadcrumbs__current" aria-current="page">{{ collection.title | escape }}</span>
+          {%- endif -%}
         </nav>
       {%- endif -%}
       <h1 class="collection-hero__title">

@@ -41,6 +41,9 @@ The objective is to improve merchant usability, customer navigation, product dis
 | M6-005 Premium Product Grid Experience | ✅ Complete |
 | M6-006 Performance & QA | ✅ Complete |
 | M6-007 Release Sign-off | ✅ Complete |
+| M6-HF-001 Collection Regressions | ✅ Complete |
+| M6-HF-002 Final Collection QA Fixes | ✅ Complete |
+| M6-HF-003 Final Product Count & Breadcrumb Corrections | ✅ Complete |
 
 ---
 
@@ -179,6 +182,41 @@ Implemented:
 
 Milestone 6 (Collection Experience) is officially COMPLETE.
 All acceptance criteria have been successfully met without compromising Shopify Dawn's underlying storefront filtering APIs and core functionality.
+
+---
+
+## M6-HF-001
+
+Collection Regressions (Hotfix)
+
+Fixed:
+
+- Sorting Regression: Restored native Dawn JS compatibility by properly wrapping the premium sort selector in a `<facet-filters-form>` element and `<form id="FacetSortForm">`.
+- Grid N-1 Rendering Bug: Corrected `grid-template-columns` `calc()` logic inside `collection-toolbar-premium.css` by substituting the mismatched Dawn variable with the actual `3rem` premium column-gap value.
+
+---
+
+## M6-HF-002
+
+Final Collection QA Fixes (Hotfix)
+
+Fixed:
+
+- Product Count Update Bug: Configured the premium toolbar to use Dawn's native `ProductCountDesktop` ID while conditionally hiding the default instance, ensuring seamless AJAX count updates.
+- Mobile Grid Wrapping Bug: Added explicit width `calc()` rules for mobile viewpoints to properly subtract the custom 1.5rem gap.
+- Mobile Search Icon Alignment: Implemented absolute positioning and centering for `.menu-drawer__search-icon`.
+- Breadcrumb Navigation: Updated the "Collections" link to point directly to Shopify's native `/collections` list page (`routes.collections_url`).
+
+---
+
+## M6-HF-003
+
+Final Product Count & Breadcrumb Corrections (Hotfix)
+
+Fixed:
+
+- AJAX Product Count Hijacking Bug: Conditionally renamed the `ProductCountDesktop` ID inside `facets.liquid` (which was previously overriding the one in `collection-toolbar-premium.liquid` because it appeared earlier in the DOM parsing tree during AJAX replacement).
+- All Products Breadcrumb Context: Added Liquid logic in `main-collection-banner.liquid` to omit the "Collections" breadcrumb tier entirely when `collection.handle == 'all'`, ensuring the path correctly reads "Home / Products" for the catalog index.
 
 ---
 
