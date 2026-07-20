@@ -1,0 +1,263 @@
+{{ 'component-social-banner-premium.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    margin-top: {{ section.settings.margin_top | times: 0.75 | round: 0 }}px;
+    margin-bottom: {{ section.settings.margin_bottom | times: 0.75 | round: 0 }}px;
+  }
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+      margin-top: {{ section.settings.margin_top }}px;
+      margin-bottom: {{ section.settings.margin_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
+  <div class="page-width">
+    <div class="social-banner-premium social-banner-premium--image-{{ section.settings.image_position }}" style="--card-corner-radius: {{ section.settings.border_radius }}px;">
+      
+      <div class="social-banner-premium__content">
+        {%- if section.settings.show_label and section.settings.eyebrow != blank -%}
+          <p class="social-banner-premium__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        
+        {%- if section.settings.heading != blank -%}
+          <h2 class="social-banner-premium__heading inline-richtext">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+        
+        {%- if section.settings.show_description and section.settings.description != blank -%}
+          <div class="social-banner-premium__description rte">{{ section.settings.description }}</div>
+        {%- endif -%}
+
+        {%- if section.settings.show_social_icons -%}
+          <div class="social-banner-premium__icons">
+            {% render 'social-icons' %}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.show_handle and section.settings.handle_text != blank -%}
+          <a href="{{ section.settings.handle_link | default: '#' }}" class="social-banner-premium__handle">{{ section.settings.handle_text | escape }}</a>
+        {%- endif -%}
+
+        {%- if section.settings.show_button and section.settings.button_text != blank -%}
+          <div class="social-banner-premium__button">
+            {% render 'button', text: section.settings.button_text, url: section.settings.button_url, style: 'primary' %}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="social-banner-premium__media">
+        {%- liquid
+          assign mobile_image = section.settings.mobile_image | default: section.settings.image
+        -%}
+        {%- if section.settings.image != blank -%}
+          <picture>
+            <source media="(max-width: 749px)" srcset="{{ mobile_image | image_url: width: 750 }} 750w, {{ mobile_image | image_url: width: 1000 }} 1000w">
+            <source media="(min-width: 750px)" srcset="{{ section.settings.image | image_url: width: 1500 }} 1500w, {{ section.settings.image | image_url: width: 2000 }} 2000w">
+            <img 
+              src="{{ section.settings.image | image_url: width: 1500 }}" 
+              alt="{{ section.settings.image.alt | escape }}"
+              width="{{ section.settings.image.width }}"
+              height="{{ section.settings.image.height }}"
+              loading="lazy">
+          </picture>
+        {%- else -%}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Social banner (premium)",
+  "tag": "section",
+  "class": "section-social-banner-premium",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Follow along"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Join our community"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Discover our latest arrivals and get inspired.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button label",
+      "default": "Shop the feed"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Social Options"
+    },
+    {
+      "type": "text",
+      "id": "handle_text",
+      "label": "Social handle",
+      "default": "@yourbrand"
+    },
+    {
+      "type": "url",
+      "id": "handle_link",
+      "label": "Social link"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social_icons",
+      "label": "Show social icons",
+      "info": "To configure your social links, visit Theme Settings > Social media.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_handle",
+      "label": "Show social handle",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Display Toggles"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_label",
+      "label": "Show eyebrow label",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Show description",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_button",
+      "label": "Show button",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Desktop image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile image (optional)"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Desktop image position",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "right"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 6
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.colors.label"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Margin top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Margin bottom",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Social banner (premium)"
+    }
+  ]
+}
+{% endschema %}
+

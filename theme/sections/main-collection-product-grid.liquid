@@ -6,6 +6,8 @@
   {{ 'mask-blobs.css' | asset_url | stylesheet_tag }}
 {%- endif -%}
 
+{{ 'component-product-grid-premium.css' | asset_url | stylesheet_tag }}
+
 {%- unless section.settings.quick_add == 'none' -%}
   {{ 'quick-add.css' | asset_url | stylesheet_tag }}
 {%- endunless -%}
@@ -77,7 +79,7 @@
               </div>
             </div>
 
-            <div class="product-count-vertical light" role="status">
+            <div class="product-count-vertical light{% if section.settings.show_premium_toolbar %} hidden{% endif %}" role="status">
               <h2 class="product-count__text text-body">
                 <span id="ProductCountDesktop">
                   {%- if collection.results_count -%}
@@ -103,6 +105,9 @@
 
       <div class="{% if section.settings.filter_type == 'vertical' %} facets-vertical page-width{% endif %}">
         {{ 'component-facets.css' | asset_url | stylesheet_tag }}
+        {%- if section.settings.show_premium_toolbar -%}
+          {{ 'component-collection-filters-premium.css' | asset_url | stylesheet_tag }}
+        {%- endif -%}
         <script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
         {%- if section.settings.enable_filtering or section.settings.enable_sorting -%}
           <aside
@@ -121,6 +126,21 @@
           </aside>
         {%- endif -%}
 
+        {%- if section.settings.show_premium_toolbar -%}
+          {%- liquid
+            assign sort_by = collection.sort_by | default: collection.default_sort_by
+            if collection.url
+              assign results_url = collection.url
+            else
+              assign terms = collection.terms | escape
+              assign results_url = '?q=' | append: terms | append: '&options%5Bprefix%5D=last&sort_by=' | append: sort_by
+            endif
+          -%}
+          {% render 'collection-active-filters', results: collection, results_url: results_url %}
+        {%- endif -%}
+
+        {% render 'collection-toolbar-premium' %}
+
         <div
           class="product-grid-container{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
           id="ProductGridContainer"
@@ -134,17 +154,22 @@
               <div class="title-wrapper center">
                 <h2 class="title title--primary">
                   {{ 'sections.collection_template.empty' | t -}}
-                  <br>
-                  {{
-                    'sections.collection_template.use_fewer_filters_html'
-                    | t: link: collection.url, class: 'underlined-link link'
-                  }}
                 </h2>
+                <div class="collection--empty-actions" style="margin-top: 2rem; display: flex; gap: 1.5rem; justify-content: center;">
+                  <facet-remove>
+                    <a href="{{ collection.url }}" class="button button--secondary">
+                      Clear Filters
+                    </a>
+                  </facet-remove>
+                  <a href="{{ routes.all_products_collection_url }}" class="button button--primary">
+                    Continue Shopping
+                  </a>
+                </div>
               </div>
             </div>
           {%- else -%}
             <div
-              class="collection{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}"
+              class="collection{% if section.settings.filter_type != 'vertical' %} page-width{% endif %} premium-grid-container premium-grid-container--desktop-{{ section.settings.columns_desktop }}"
             >
               <div class="loading-overlay gradient"></div>
               <ul
@@ -386,6 +411,16 @@
       "id": "enable_sorting",
       "default": true,
       "label": "t:sections.main-collection-product-grid.settings.enable_sorting.label"
+    },
+    {
+      "type": "header",
+      "content": "Premium Toolbar"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_premium_toolbar",
+      "default": true,
+      "label": "Show premium toolbar"
     },
     {
       "type": "header",

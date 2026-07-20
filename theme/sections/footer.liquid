@@ -180,7 +180,7 @@
                   {%- when 'trust_badges' -%}
                     <div
                       class="footer-block__details-content footer-block__trust-badges"
-                      style="--trust-badge-height: {{ block.settings.badge_height | default: 36 }}px;"
+                      style="--trust-badge-height: {{ block.settings.badge_height | default: 35 }}px;"
                     >
                       {%- for i in (1..4) -%}
                         {%- liquid
@@ -564,7 +564,7 @@
           "step": 5,
           "unit": "px",
           "label": "Badge height",
-          "default": 36
+          "default": 35
         }
       ]
     }

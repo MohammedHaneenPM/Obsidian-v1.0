@@ -60,7 +60,7 @@
             {%- endif -%}
             {% comment %} Pills are right below the title for filter type vertical {% endcomment %}
             {%- if filter_type == 'vertical' -%}
-              <div class="active-facets active-facets-desktop">
+              <div class="active-facets active-facets-desktop{% if section.settings.show_premium_toolbar %} hidden{% endif %}">
                 <div class="active-facets-vertical-filter">
                   {%- unless results.filters == empty -%}
                     <h2
@@ -110,6 +110,10 @@
                   {% endif %}
                 {%- endfor -%}
               </div>
+            {%- endif -%}
+
+            {%- if filter_type == 'vertical' and section.settings.show_premium_toolbar -%}
+              <div class="premium-filter-sidebar">
             {%- endif -%}
 
             <script src="{{ 'show-more.js' | asset_url }}" defer="defer"></script>
@@ -339,6 +343,10 @@
                   </details>
               {% endcase %}
             {%- endfor -%}
+            
+            {%- if filter_type == 'vertical' and section.settings.show_premium_toolbar -%}
+              </div>
+            {%- endif -%}
           </div>
           {% comment %} Pills after filtes on filter type horizontal {% endcomment %}
           {%- if filter_type == 'horizontal' -%}
@@ -391,7 +399,7 @@
         {%- if filter_type == 'horizontal' -%}
           {% comment %} Sorting and product count are the last elements when filter type is horizontal {% endcomment %}
           {%- if enable_sorting -%}
-            <div class="facet-filters sorting caption">
+            <div class="facet-filters sorting caption{% if section.settings.show_premium_toolbar %} hidden{% endif %}">
               <div class="facet-filters__field">
                 <h2 class="facet-filters__label caption-large text-body">
                   <label for="SortBy">{{ 'products.facets.sort_by_label' | t }}</label>
@@ -422,7 +430,7 @@
               </div>
             </div>
           {%- endif -%}
-          <div class="product-count light" role="status">
+          <div class="product-count light{% if section.settings.show_premium_toolbar %} hidden{% endif %}" role="status">
             <h2 class="product-count__text text-body">
               <span id="ProductCountDesktop">
                 {%- if results.results_count -%}
@@ -787,7 +795,7 @@
     </details>
   </menu-drawer>
 
-  <div class="active-facets active-facets-mobile medium-hide large-up-hide">
+  <div class="active-facets active-facets-mobile medium-hide large-up-hide{% if section.settings.show_premium_toolbar %} hidden{% endif %}">
     {%- for filter in results.filters -%}
       {%- for value in filter.active_values -%}
         <facet-remove>

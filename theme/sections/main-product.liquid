@@ -210,13 +210,13 @@
                   </p>
                 {%- when 'custom_liquid' -%}
                   {{ block.settings.custom_liquid }}
-                {%- when 'product_information_premium' -%}
+                {%- when 'product_info_premium' -%}
                   {%- render 'product-information-premium', product: product, block: block -%}
                 {%- when 'inventory_urgency_premium' -%}
                   {%- render 'inventory-urgency-premium', product: product, block: block -%}
                 {%- when 'shipping_estimate_premium' -%}
                   {%- render 'shipping-estimate-premium', block: block -%}
-                {%- when 'free_shipping_indicator_premium' -%}
+                {%- when 'free_shipping_premium' -%}
                   {%- render 'free-shipping-indicator-premium', block: block -%}
                 {%- when 'return_policy_premium' -%}
                   {%- render 'return-policy-premium', block: block -%}
@@ -592,9 +592,10 @@
                                   {% endif %}
                                 >
                                   <ul class="list-unstyled" role="list">
+                                    {%- assign page_offset = forloop.index0 | times: block.settings.products_per_page -%}
                                     {%- for product in recommendations.products
                                       limit: block.settings.products_per_page
-                                      offset: continue
+                                      offset: page_offset
                                     -%}
                                       <li>
                                         {%- if block.settings.enable_quick_add -%}
@@ -836,8 +837,8 @@
       ]
     },
     {
-      "type": "product_information_premium",
-      "name": "Product information (premium)",
+      "type": "product_info_premium",
+      "name": "Product Info (Premium)",
       "limit": 1,
       "settings": [
         {
@@ -993,7 +994,7 @@
       ]
     },
     {
-      "type": "free_shipping_indicator_premium",
+      "type": "free_shipping_premium",
       "name": "Free shipping indicator",
       "limit": 1,
       "settings": [
@@ -1021,12 +1022,9 @@
       "limit": 1,
       "settings": [
         {
-          "type": "range",
+          "type": "number",
           "id": "return_days",
           "label": "Return period (days)",
-          "min": 0,
-          "max": 365,
-          "step": 1,
           "default": 30
         },
         {
@@ -2543,7 +2541,7 @@
     },
     {
       "type": "product_shipping",
-      "name": "Product Shipping Information",
+      "name": "Product Shipping Info",
       "settings": [
         {
           "type": "paragraph",

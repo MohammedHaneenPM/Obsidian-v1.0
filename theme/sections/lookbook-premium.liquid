@@ -35,7 +35,7 @@
 
     <div
       class="lookbook-premium__image-wrapper"
-      style="--ratio-percent: {{ 1 | divided_by: section.settings.image_ratio | times: 100 }}%;"
+      style="--ratio-percent: {{ 1.0 | divided_by: section.settings.image_ratio | times: 100 }}%;"
     >
       {%- if section.settings.image != blank -%}
         <img
@@ -55,15 +55,15 @@
           height="{{ section.settings.image.height }}"
         >
       {%- else -%}
-        {{ 'lifestyle-apparel-1' | placeholder_svg_tag: 'placeholder-svg lookbook-premium__image' }}
+        {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg lookbook-premium__image' }}
       {%- endif -%}
 
       {%- for block in section.blocks -%}
-        {%- if block.type == 'hotspot' and block.settings.product != blank -%}
+        {%- if block.type == 'hotspot' -%}
           {%- render 'hotspot-popover',
             product: block.settings.product,
-            position_x: block.settings.position_x,
-            position_y: block.settings.position_y,
+            position_x: block.settings.x_position,
+            position_y: block.settings.y_position,
             section_id: section.id,
             shopify_attributes: block.shopify_attributes
           -%}
@@ -176,7 +176,7 @@
         },
         {
           "type": "range",
-          "id": "position_x",
+          "id": "x_position",
           "label": "Horizontal position",
           "min": 0,
           "max": 100,
@@ -186,7 +186,7 @@
         },
         {
           "type": "range",
-          "id": "position_y",
+          "id": "y_position",
           "label": "Vertical position",
           "min": 0,
           "max": 100,
@@ -208,3 +208,4 @@
   ]
 }
 {% endschema %}
+

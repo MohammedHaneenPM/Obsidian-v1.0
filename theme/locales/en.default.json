@@ -1,5 +1,8 @@
 {
   "general": {
+    "lookbook": {
+      "view_product": "View product"
+    },
     "badges": {
       "new": "New"
     },

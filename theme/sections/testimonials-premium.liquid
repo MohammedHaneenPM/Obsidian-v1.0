@@ -40,6 +40,7 @@
 
     {%- if section.blocks.size > 0 -%}
       {%- capture items -%}
+        {%- comment -%}theme-check-disable UnusedAssign{%- endcomment -%}
         {%- for block in section.blocks -%}
           <li
             id="Testimonial-{{ block.id }}"

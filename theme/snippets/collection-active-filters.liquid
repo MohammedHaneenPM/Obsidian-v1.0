@@ -1,0 +1,52 @@
+<div class="active-facets active-facets-desktop active-facets-premium-wrapper">
+  {%- assign has_active_filters = false -%}
+  {%- for filter in results.filters -%}
+    {%- if filter.active_values.size > 0 -%}
+      {%- assign has_active_filters = true -%}
+    {%- endif -%}
+    {%- if filter.type == 'price_range' -%}
+      {%- if filter.min_value.value != null or filter.max_value.value != null -%}
+        {%- assign has_active_filters = true -%}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- if has_active_filters -%}
+    <div class="collection-active-filters-premium">
+      {%- for filter in results.filters -%}
+        {%- for value in filter.active_values -%}
+          <facet-remove>
+            <a href="{{ value.url_to_remove }}" class="active-filter-chip">
+              {{ filter.label | escape }}: {{ value.label | escape }}
+              <span class="active-filter-chip__remove">
+                {{- 'icon-close-small.svg' | inline_asset_content -}}
+              </span>
+              <span class="visually-hidden">{{ 'products.facets.clear_filter' | t }}</span>
+            </a>
+          </facet-remove>
+        {%- endfor -%}
+        {% if filter.type == 'price_range' %}
+          {% assign min = filter.min_value.value %}
+          {% assign max = filter.max_value.value %}
+          {%- if min != null or max != null -%}
+            <facet-remove>
+              <a href="{{ filter.url_to_remove }}" class="active-filter-chip">
+                {{ min | default: 0 | money }} - {{ max | default: filter.range_max | money }}
+                <span class="active-filter-chip__remove">
+                  {{- 'icon-close-small.svg' | inline_asset_content -}}
+                </span>
+                <span class="visually-hidden">{{ 'products.facets.clear_filter' | t }}</span>
+              </a>
+            </facet-remove>
+          {%- endif -%}
+        {% endif %}
+      {%- endfor -%}
+      
+      <facet-remove>
+        <a href="{{ results_url }}" class="active-filter-clear-all">
+          {{ 'products.facets.clear_all' | t }}
+        </a>
+      </facet-remove>
+    </div>
+  {%- endif -%}
+</div>

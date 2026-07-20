@@ -112,6 +112,71 @@
         "padding_bottom": 28
       }
     },
+    "premium-merchandising": {
+      "type": "premium-merchandising",
+      "blocks": {
+        "product_info": {
+          "type": "product_info"
+        },
+        "inventory": {
+          "type": "inventory_urgency_premium"
+        },
+        "shipping": {
+          "type": "shipping_estimate_premium"
+        },
+        "free_shipping": {
+          "type": "free_shipping_premium"
+        },
+        "returns": {
+          "type": "return_policy_premium"
+        },
+        "secure": {
+          "type": "secure_checkout_premium"
+        }
+      },
+      "block_order": [
+        "product_info",
+        "inventory",
+        "shipping",
+        "free_shipping",
+        "returns",
+        "secure"
+      ],
+      "settings": {
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "product-accordion-primary": {
+      "type": "product-accordion-primary",
+      "blocks": {
+        "specifications": {
+          "type": "product_specifications"
+        }
+      },
+      "block_order": [
+        "specifications"
+      ],
+      "settings": {
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "product-accordion-secondary": {
+      "type": "product-accordion-secondary",
+      "blocks": {
+        "downloads": {
+          "type": "product_downloads"
+        }
+      },
+      "block_order": [
+        "downloads"
+      ],
+      "settings": {
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
     "sticky-add-to-cart": {
       "type": "sticky-add-to-cart-premium",
       "settings": {
@@ -127,6 +192,9 @@
   },
   "order": [
     "main",
+    "premium-merchandising",
+    "product-accordion-primary",
+    "product-accordion-secondary",
     "disclosures",
     "related-products",
     "sticky-add-to-cart"

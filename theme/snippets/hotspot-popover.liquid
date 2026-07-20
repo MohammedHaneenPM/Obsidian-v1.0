@@ -18,7 +18,8 @@
     class="lookbook-premium__hotspot-dot"
     data-lookbook-hotspot
     aria-expanded="false"
-    aria-label="{{ 'general.lookbook.view_product' | t }}: {{ product.title | escape }}"
+    {%- assign hotspot_title = product.title | default: 'Example product' -%}
+    aria-label="{{ 'general.lookbook.view_product' | t }}: {{ hotspot_title | escape }}"
   >
     <span class="lookbook-premium__hotspot-pulse" aria-hidden="true"></span>
     <span class="lookbook-premium__hotspot-plus" aria-hidden="true">+</span>

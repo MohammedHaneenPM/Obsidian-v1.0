@@ -191,7 +191,8 @@
 
       const frame = wrapper.querySelector('.before-after-premium__frame');
       const input = wrapper.querySelector('[data-ba-input]');
-      if (!frame || !input) return;
+      const handle = wrapper.querySelector('[data-ba-handle]');
+      if (!frame || !input || !handle) return;
 
       function setPosition(percent) {
         const clamped = Math.min(100, Math.max(0, percent));
@@ -207,13 +208,12 @@
 
       let dragging = false;
 
-      frame.addEventListener('pointerdown', (event) => {
+      handle.addEventListener('pointerdown', (event) => {
         dragging = true;
-        frame.setPointerCapture(event.pointerId);
-        setPosition(percentFromClientX(event.clientX));
+        handle.setPointerCapture(event.pointerId);
       });
 
-      frame.addEventListener('pointermove', (event) => {
+      handle.addEventListener('pointermove', (event) => {
         if (!dragging) return;
         setPosition(percentFromClientX(event.clientX));
       });
@@ -221,13 +221,13 @@
       function stopDragging(event) {
         if (!dragging) return;
         dragging = false;
-        if (frame.hasPointerCapture(event.pointerId)) {
-          frame.releasePointerCapture(event.pointerId);
+        if (handle.hasPointerCapture(event.pointerId)) {
+          handle.releasePointerCapture(event.pointerId);
         }
       }
 
-      frame.addEventListener('pointerup', stopDragging);
-      frame.addEventListener('pointercancel', stopDragging);
+      handle.addEventListener('pointerup', stopDragging);
+      handle.addEventListener('pointercancel', stopDragging);
 
       // Keyboard access via the visually-hidden native range input.
       input.addEventListener('input', () => {

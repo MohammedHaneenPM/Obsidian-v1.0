@@ -20,7 +20,7 @@
 
   <span class="trust-info-badge-premium__text">
     {%- if block.settings.mode == 'static' -%}
-      {{- block.settings.static_message | escape -}}
+      {{- block.settings.static_message | escape | replace: '\n', '<br>' -}}
     {%- else -%}
       {%- liquid
         assign min_days = block.settings.min_days

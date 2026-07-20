@@ -1,19 +1,48 @@
 # OBSIDIAN Premium Shopify Theme
 # ROADMAP.md
 
-## Project Overview
+---
+
+# Project Overview
 
 **Project Name:** OBSIDIAN Premium Shopify Theme
 
-**Base Theme:** Shopify Dawn
+**Base Theme:** Shopify Dawn (Online Store 2.0)
 
-**Goal:** Build a commercial-quality Shopify Online Store 2.0 premium theme with premium UX, high performance, accessibility, maintainability, and merchant-friendly customization.
+**Current Version:** v0.6.0-dev
 
-**Current Version:** v0.5 Development
+**Current Status:** Milestone 6 In Progress
 
 ---
 
-# Project Status
+# Project Vision
+
+Build a commercial-quality Shopify premium theme that provides:
+
+- Premium UX
+- Exceptional performance
+- Accessibility (WCAG)
+- Shopify Online Store 2.0 compatibility
+- Merchant-friendly customization
+- Zero required premium apps
+- Clean, scalable architecture
+- Long-term maintainability
+
+---
+
+# Development Principles
+
+- Extend Dawn — never rewrite it.
+- Maintain Online Store 2.0 compatibility.
+- Keep JavaScript modular.
+- Prefer CSS over JavaScript where possible.
+- Prioritize accessibility and performance.
+- Every feature must pass manual QA before completion.
+- Every milestone ends with a production release QA.
+
+---
+
+# Milestone Progress
 
 | Milestone | Status |
 |-----------|--------|
@@ -22,398 +51,267 @@
 | Milestone 2 – Layout | ✅ Complete |
 | Milestone 3 – Header & Footer | ✅ Complete |
 | Milestone 4 – Premium Homepage | ✅ Complete |
-| Milestone 5 – Premium Product Experience | 🟡 In Progress |
-| Milestone 5.5 – Stabilization & QA | ⏳ Pending |
-| Milestone 6 – Collection Experience | ⏳ Pending |
-| Milestone 7 – Cart & Conversion | ⏳ Pending |
-| Milestone 8 – Premium Motion & Interactive Experience | ⏳ Pending |
-| Milestone 9 – Advanced Premium Features | ⏳ Pending |
-| Milestone 10 – Commercial Release | ⏳ Pending |
+| Milestone 5 – Premium Product Experience | ✅ Complete |
+| Milestone 5.5 – Stabilization & QA | ✅ Complete |
+| Milestone 6 – Collection Experience | 🟡 In Progress |
+| Milestone 7 – Cart & Conversion | ⏳ Planned |
+| Milestone 8 – Premium Motion Engine | ⏳ Planned |
+| Milestone 9 – Advanced Premium Features | ⏳ Planned |
+| Milestone 10 – Final Optimization & Release | ⏳ Planned |
 
 ---
 
-# Milestone 5
+# Milestone 5.5 Release Summary
 
-## M5-T1 – Product Foundation
+## Objectives
 
-| Ticket | Status |
-|--------|--------|
-| M5-T1 | ✅ Complete |
+- Stabilize Milestone 5 implementation
+- Eliminate regressions
+- Resolve Shopify schema validation issues
+- Prepare theme for production
 
-**STATUS:** ✅ COMPLETE
+## Delivered
 
-❄️ **SUBSYSTEM:** FROZEN
+### New Sections
+
+- Social Banner Premium
+
+### Homepage Improvements
+
+- Before / After Premium fixes
+- LookBook Premium improvements
+- Social Gallery Premium redesign
+
+### Product Experience
+
+- Product Information Premium
+- Shipping Information
+- Merchandising blocks
+- Return Policy
+- Sticky Add To Cart improvements
+
+### QA Improvements
+
+- Comprehensive regression testing
+- Shopify Theme Check validation
+- Manual Theme Editor verification
+- Production upload validation
+
+### Shopify Compatibility Fixes
+
+Resolved:
+
+- Block type length restrictions
+- Block name length restrictions
+- Range setting limitations
+- Invalid Liquid loop offset
+- Schema validation failures
+
+## Release Status
+
+✅ Shopify Upload Successful
+
+✅ Zero Schema Validation Errors
+
+✅ Production Ready
 
 ---
 
-## M5-T2 – Merchandising & Conversion
+# Milestone 6 — Collection Experience
 
-| Ticket | Status |
-|--------|--------|
-| M5-T2 | ✅ Complete |
+## Status
 
-**STATUS:** ✅ COMPLETE
-
-❄️ **SUBSYSTEM:** FROZEN
+🟡 In Progress
 
 ---
 
-## M5-T3 – Product Gallery Improvements
+## M6-001 — Collection Foundation
 
-| Ticket | Feature | Status |
-|--------|---------|--------|
-| M5-T3-001 | Gallery Architecture Audit | ✅ Complete |
-| M5-T3-002 | Vertical Thumbnail Gallery | ✅ Complete |
-| M5-T3-003 | Compact Gallery Layout | ✅ Complete |
-| M5-T3-004 | Gallery QA & Responsive Polish | ✅ Complete |
+Status:
 
-**STATUS:** ✅ COMPLETE
+✅ Completed
 
-❄️ **SUBSYSTEM:** FROZEN
+Features:
 
-Notes:
-
-- Gallery is feature complete.
-- Only critical bug fixes are allowed.
-- Premium motion enhancements belong to Milestone 8.
+- Premium Collection Header
+- Premium Collection Toolbar
+- Responsive Collection Layout
+- 2 / 3 / 4 Column Grid Switcher
+- Merchant spacing controls
+- Dawn-compatible implementation
+- Vanilla JavaScript
+- Theme Editor integration
 
 ---
 
-## M5-T4 – Advanced Buying Experience
+## M6-002 — Premium Filtering Experience
 
-| Ticket | Feature | Status |
-|--------|---------|--------|
-| M5-T4-001 | Premium Variant UX | ✅ Complete |
-| M5-T4-002 | Premium Quantity Selector UX | ✅ Complete |
-| M5-T4-003 | Sticky Purchase Bar Polish | ✅ Complete |
-| M5-T4-004 | Purchase Feedback & Loading States | ✅ Complete |
-| M5-T4-005 | Trust & Shipping UX Polish | ✅ Complete |
-| M5-T4-006 | Buying Experience QA | ✅ Complete |
+Status:
 
-**STATUS:** ✅ COMPLETE
+⬜ Next
 
-❄️ **SUBSYSTEM:** FROZEN
+Planned:
 
-Notes:
-
-Buying Experience is feature complete.
-
-Only the following changes are allowed:
-
-- Critical bug fixes
+- Premium filter sidebar
+- Improved active filters
+- Better filter UX
+- Sticky desktop filters
+- Premium mobile drawer
 - Accessibility improvements
-- Performance improvements
-- Compatibility fixes
-
-No new features.
----
-
-## M5-T5 – Premium Fullscreen Gallery
-
-| Ticket | Feature | Status |
-|--------|---------|--------|
-| M5-T5-001 | Fullscreen Gallery Audit | ✅ Complete |
-| M5-T5-002 | Modal Gallery Structure | ✅ Complete |
-| M5-T5-003 | Modal Gallery Styling | ✅ Complete |
-| M5-T5-004 | Gallery State Synchronization | ✅ Complete |
-| M5-T5-005 | Fullscreen Gallery QA | ✅ Complete |
-
-M5-T5 – Premium Fullscreen Gallery
-
-STATUS: ✅ COMPLETE
-
-❄️ SUBSYSTEM: FROZEN
-
-Notes:
-
-Fullscreen Gallery is feature complete.
-
-Only the following changes are allowed:
-
-- Critical bug fixes
-- Accessibility improvements
-- Performance improvements
-- Compatibility fixes
-
-No new features.
 
 ---
 
-## M5-T6 – Product Video Experience
+## M6-003 — AJAX Collection Updates
 
-| Ticket | Feature | Status |
-|--------|---------|--------|
-| M5-T6-001 | Audit | ✅ Complete |
-| M5-T6-002 | Premium Video Layout | ✅ Complete |
-| M5-T6-003 | Video Controls | ✅ Complete |
-| M5-T6-004 | QA | ✅ Complete |
+Planned:
 
-M5-T6 – Product Video Experience
-
-STATUS: ✅ COMPLETE
-
-❄️ SUBSYSTEM: FROZEN
-
-Notes:
-
-Product Video Experience is feature complete.
-
-Only the following changes are allowed:
-
-- Critical bug fixes
-- Accessibility improvements
-- Performance improvements
-- Compatibility fixes
-
-No new features.
+- AJAX filtering
+- AJAX sorting
+- Browser history support
+- Loading states
+- Smooth updates
 
 ---
 
-## M5-T7 – 3D Product Experience
+## M6-004 — Premium Product Cards
 
-| Ticket | Feature | Status |
-|--------|---------|--------|
-| M5-T7-001 | Audit | ✅ Complete |
-| M5-T7-002 | 3D Viewer | ✅ Complete |
-| M5-T7-003 | XR Experience | ✅ Complete |
-| M5-T7-004 | QA | ✅ Complete |
+Planned:
 
-STATUS: ✅ COMPLETE
-
-❄️ SUBSYSTEM: FROZEN
-
-Notes:
-
-Premium 3D Product Experience is feature complete.
-
-Only the following changes are allowed:
-
-- Critical bug fixes
-- Accessibility improvements
-- Performance improvements
-- Compatibility fixes
-
-No new features.
+- Improved hover experience
+- Secondary image
+- Product badges
+- Color swatches
+- Quick actions
 
 ---
 
-## M5-T8 – Image Hotspots
+## M6-005 — Quick View & Quick Add
 
-| Ticket | Feature | Status |
-|--------|---------|--------|
-| M5-T8-001 | Audit | ✅ Complete |
-| M5-T8-002 | Hotspot Structure | ✅ Complete |
-| M5-T8-003 | Hotspot Styling | ✅ Complete |
-| M5-T8-004 | QA | ✅ Complete |
+Planned:
 
-## M5-T8 – Premium Hotspot Engine
-
-STATUS: ✅ COMPLETE
-
-❄️ SUBSYSTEM: FROZEN
-
-Notes:
-
-Premium Hotspot Engine is feature complete.
-
-Only the following changes are allowed:
-
-- Critical bug fixes
-- Accessibility improvements
-- Performance improvements
-- Compatibility fixes
-
-No new features.
+- Premium Quick View
+- AJAX Quick Add
+- Variant selector
+- Drawer interactions
 
 ---
 
-## M5-T9 – Technical Product Information
+## M6-006 — Performance & Collection QA
 
-| Ticket | Feature | Status |
-|--------|---------|--------|
-| M5-T9-001 | Product Specifications | ✅ Complete |
-| M5-T9-002 | Downloads | ✅ Complete |
-| M5-T9-003 | Size Guide | ✅ Complete |
-| M5-T9-004 | QA | ⬜ NEXT |
+Planned:
 
-STATUS: ✅ COMPLETE
-
-❄️ SUBSYSTEM: FROZEN
-
-Notes:
-
-Product Information Engine is feature complete.
-
-Only the following changes are allowed:
-
-- Critical bug fixes
-- Accessibility improvements
-- Performance improvements
-- Compatibility fixes
-
-No new features.
+- Collection optimization
+- Accessibility audit
+- Responsive validation
+- Theme Check
+- Browser compatibility
 
 ---
 
-## M5-T10 – Merchant Experience Polish
+## M6-007 — Collection Release
 
-| Ticket | Feature | Status |
-|--------|---------|--------|
-| M5-T10-001 | Merchant Experience Architecture Audit | ✅ Complete |
-| M5-T10-002 | Merchant Experience Polish | ✅ Complete |
-| M5-T10-003 | Merchant QA | ✅ Complete |
+Planned:
 
-STATUS: ✅ COMPLETE
-
-❄️ SUBSYSTEM: FROZEN
-
-Notes:
-
-Merchant Experience is feature complete.
-
-Only the following changes are allowed:
-
-- Critical bug fixes
-- Accessibility improvements
-- Performance improvements
-- Compatibility fixes
-
-No new features.
+- Final QA
+- Production validation
+- Documentation
+- Milestone sign-off
 
 ---
 
-## M5-T11 – Milestone 5 Final QA
+# Milestone 7 — Cart & Conversion
 
-| Ticket | Feature | Status |
-|--------|---------|--------|
-| M5-T11-001 | Product Experience Final Audit | ⬜ NEXT |
+Planned
 
----
-
-# Milestone 5.5 – Stabilization
-
-After Milestone 5 reaches feature completion:
-
-Perform a complete project stabilization.
-
-Scope:
-
-- Liquid Audit
-- JavaScript Audit
-- CSS Audit
-- Theme Check Audit
-- Accessibility Audit
-- Performance Audit
-- Merchant Experience Audit
-- Duplicate Code Audit
-- Refactoring
-- Repository Structure Cleanup
-- Final Bug Fixes
-
-No new features are added during this milestone.
+- Premium Cart Drawer
+- Upsells
+- Cross-sells
+- Cart Progress Bar
+- Shipping Goals
+- Discount UX
+- Trust Elements
+- Checkout Optimization
 
 ---
 
-# Development Workflow
+# Milestone 8 — Premium Motion Engine
 
-Every task is an Engineering Ticket.
+Planned
 
-Rules:
+Motion begins only after core functionality is complete.
 
-- One ticket = One feature.
-- Complete one ticket at a time.
-- Never skip tickets.
-- Never start the next ticket automatically.
-- Freeze completed subsystems.
-- Stop after every completed ticket.
-
----
-
-# Architecture Rules
-
-Always extend Shopify Dawn.
-
-Never rebuild existing Dawn functionality.
-
-Reuse:
-
-- Sections
-- Snippets
-- JavaScript
-- CSS
-- Theme Settings
-
-Maintain:
-
-- Shopify Online Store 2.0 compatibility
-- Theme Check compatibility
-- Accessibility
-- Performance
-- Commercial quality
-
----
-
-# Motion & Interactive Experience Policy
-
-Premium motion and interactive experience systems belong ONLY to Milestone 8.
-
-Do NOT implement before Milestone 8:
+Includes:
 
 - GSAP
 - ScrollTrigger
-- Lenis
-- ScrollSmoother
-- FLIP
-- Image Sequences
-- Premium Motion Engine
+- Premium reveal animations
+- Page transitions
+- Micro interactions
+- Scroll experiences
 
 ---
 
-# Current Ticket
+# Milestone 9 — Advanced Premium Features
 
-NEXT TASK
+Planned
 
-M5-T11-001 – Product Experience Final Audit
-
-Implement ONLY this engineering ticket.
-
-Do not continue automatically.
-
-
----
-
-# Repository Notes
-
-ROADMAP.md is the project's single source of truth.
-
-After each completed ticket:
-
-1. Mark the completed ticket as ✅.
-2. Freeze completed subsystems where applicable.
-3. Mark the next ticket as ⬜ NEXT.
-4. Do not modify future milestones.
-5. Wait for the next engineering ticket.
-6. Frozen subsystems may receive only:
-
-   - Critical bug fixes
-   - Accessibility improvements
-   - Performance improvements
-   - Compatibility fixes
-
-   No new features.
-
+- Wishlist
+- Compare
+- Recently Viewed
+- Predictive Search improvements
+- AI Search enhancements
+- Advanced merchandising
+- Premium navigation
+- Enhanced personalization
 
 ---
 
-# Repository Checkpoints
+# Milestone 10 — Final Optimization & Release
 
-Create a Git checkpoint after every frozen subsystem.
+Planned
 
-Recommended tags:
+- Performance optimization
+- Lighthouse optimization
+- Accessibility certification
+- Browser compatibility
+- Documentation
+- Demo content
+- Merchant onboarding
+- Final release package
 
-- m5-foundation
-- m5-merchandising
-- m5-gallery
-- m5-buying-experience
-- m5-product-media
-- m5-final
+---
+
+# Release Workflow
+
+Every milestone follows this sequence:
+
+1. Planning
+2. Architecture
+3. Implementation
+4. Manual QA
+5. Regression Fixes
+6. Production QA
+7. Documentation
+8. Release Approval
+
+No milestone is considered complete until all stages have passed.
+
+---
+
+#### Phase 1: Core Foundation & Storefront Experience (In Progress)
+- [x] **M6-001:** Collection Experience Foundation
+- [x] **M6-002:** Premium Filtering Experience
+- [x] **M6-003:** Advanced Sorting & Layout Toggle
+- [x] **M6-004:** Performance & Interaction Polish
+- [x] **M6-005:** Quick View & Quick Add
+- [x] **M6-006:** Performance & QA
+
+---
+
+# Current Focus
+
+**Active Milestone:** Milestone 6 — Collection Experience
+
+**Current Ticket:** None (Milestone 6 Complete)
+
+**Next Goal:** Pending Milestone 7 planning.

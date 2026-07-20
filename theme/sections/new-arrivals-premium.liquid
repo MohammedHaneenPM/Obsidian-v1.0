@@ -47,6 +47,7 @@
 
     {%- if new_products.size > 0 -%}
       {%- capture new_arrival_items -%}
+        {%- comment -%}theme-check-disable UnusedAssign{%- endcomment -%}
         {%- for product in new_products limit: section.settings.products_to_show -%}
           <li id="Slide-{{ section.id }}-{{ forloop.index }}" class="new-arrivals-premium__item grid__item{% if is_carousel %} slider__slide{% endif %}">
             {%- render 'product-card-premium',
@@ -147,7 +148,7 @@
       "min": 0,
       "max": 90,
       "step": 5,
-      "unit": "days",
+      "unit": "day",
       "default": 30,
       "info": "Products published within this many days show a \"New\" badge."
     },

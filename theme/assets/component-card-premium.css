@@ -1,7 +1,7 @@
 /* Milestone 4 - shared card & section-header styles --------------------- */
 
 /* Section header ---------------------------------------------------------*/
-.section-header {
+.premium-section-header {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
@@ -10,39 +10,54 @@
   margin-bottom: 3.6rem;
 }
 
-.section-header--center {
+.premium-section-header--left {
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+.premium-section-header--left .premium-section-header__text, .premium-section-header--left .premium-section-header__heading, .premium-section-header--left .premium-section-header__description { text-align: left; justify-content: flex-start; align-items: flex-start; }
+
+.premium-section-header--center {
   flex-direction: column;
   align-items: center;
   text-align: center;
 }
+.premium-section-header--center .premium-section-header__text, .premium-section-header--center .premium-section-header__heading, .premium-section-header--center .premium-section-header__description { text-align: center; justify-content: center; align-items: center; }
 
-.section-header__text {
+.premium-section-header--right {
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+}
+.premium-section-header--right .premium-section-header__text, .premium-section-header--right .premium-section-header__heading, .premium-section-header--right .premium-section-header__description { text-align: right; justify-content: flex-end; align-items: flex-end; }
+
+.premium-section-header__text {
   max-width: 60rem;
 }
 
-.section-header--center .section-header__text {
+.premium-section-header--center .premium-section-header__text {
   max-width: 70rem;
 }
 
-.section-header__eyebrow {
+.premium-section-header__eyebrow {
   margin: 0 0 0.8rem;
   color: rgba(var(--color-foreground), 0.7);
 }
 
-.section-header__heading {
+.premium-section-header__heading {
   margin: 0;
 }
 
-.section-header__description {
+.premium-section-header__description {
   margin-top: 1.2rem;
 }
 
-.section-header__cta {
+.premium-section-header__cta {
   flex-shrink: 0;
 }
 
 @media screen and (max-width: 749px) {
-  .section-header {
+  .premium-section-header {
     margin-bottom: 2.4rem;
   }
 }
@@ -336,3 +351,7 @@
     transition: none;
   }
 }
+
+
+
+

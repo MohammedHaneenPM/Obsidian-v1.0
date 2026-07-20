@@ -1,0 +1,348 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="page-width section-{{ section.id }}-padding">
+  <div class="product__info-container">
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when 'product_info' -%}
+          {%- render 'product-information-premium', product: product, block: block -%}
+        {%- when 'inventory_urgency_premium' -%}
+          {%- render 'inventory-urgency-premium', product: product, block: block -%}
+        {%- when 'shipping_estimate_premium' -%}
+          {%- render 'shipping-estimate-premium', block: block -%}
+        {%- when 'free_shipping_premium' -%}
+          {%- render 'free-shipping-indicator-premium', block: block -%}
+        {%- when 'return_policy_premium' -%}
+          {%- render 'return-policy-premium', block: block -%}
+        {%- when 'secure_checkout_premium' -%}
+          {%- render 'secure-checkout-premium', block: block -%}
+      {%- endcase -%}
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Premium Merchandising",
+  "tag": "section",
+  "class": "section premium-merchandising",
+  "settings": [
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product_info",
+      "name": "Product Information",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Adds extra product details not covered by the Vendor, SKU, or Inventory blocks above. New in Milestone 5."
+        },
+        {
+          "type": "checkbox",
+          "id": "show_vendor",
+          "label": "Show vendor",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_barcode",
+          "label": "Show barcode",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "show_product_type",
+          "label": "Show product type",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "show_collections",
+          "label": "Show collections this product is in",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "show_tags",
+          "label": "Show tags",
+          "default": false
+        },
+        {
+          "type": "range",
+          "id": "max_tags",
+          "label": "Maximum tags to show",
+          "min": 1,
+          "max": 20,
+          "step": 1,
+          "default": 8
+        },
+        {
+          "type": "checkbox",
+          "id": "show_delivery_estimate",
+          "label": "Show delivery estimate",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "delivery_estimate_text",
+          "label": "Delivery estimate text",
+          "info": "Placeholder text only - not connected to a live shipping calculation.",
+          "default": "Estimated delivery: 3–5 business days"
+        },
+        {
+          "type": "select",
+          "id": "text_style",
+          "label": "Text style",
+          "options": [
+            {
+              "value": "body",
+              "label": "Body"
+            },
+            {
+              "value": "subtitle",
+              "label": "Subtitle"
+            },
+            {
+              "value": "uppercase",
+              "label": "Uppercase"
+            }
+          ],
+          "default": "body"
+        }
+      ]
+    },
+    {
+      "type": "inventory_urgency_premium",
+      "name": "Inventory urgency bar",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Adds a visual stock-level bar. Works alongside (does not replace) the existing Inventory block above, which already handles the low-stock text message and threshold."
+        },
+        {
+          "type": "range",
+          "id": "urgency_threshold",
+          "label": "Show bar when stock is at or below",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "default": 20
+        },
+        {
+          "type": "range",
+          "id": "assumed_full_stock",
+          "label": "\"Full stock\" reference number",
+          "min": 5,
+          "max": 200,
+          "step": 5,
+          "default": 50,
+          "info": "Shopify doesn't expose a product's original/maximum stock level, so the bar fills relative to this reference number rather than a true \"percent sold.\""
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_exact_quantity",
+          "label": "Hide exact quantity (show a relative bar only)",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "shipping_estimate_premium",
+      "name": "Estimated shipping badge",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "mode",
+          "label": "Mode",
+          "options": [
+            {
+              "value": "dynamic",
+              "label": "Dynamic (calculated business days)"
+            },
+            {
+              "value": "static",
+              "label": "Static custom message"
+            }
+          ],
+          "default": "dynamic"
+        },
+        {
+          "type": "range",
+          "id": "min_days",
+          "label": "Minimum business days",
+          "min": 0,
+          "max": 30,
+          "step": 1,
+          "default": 3
+        },
+        {
+          "type": "range",
+          "id": "max_days",
+          "label": "Maximum business days",
+          "min": 0,
+          "max": 60,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "text",
+          "id": "static_message",
+          "label": "Static message",
+          "info": "Used when mode is set to Static.",
+          "default": "Usually ships within 2-3 business days"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon"
+        }
+      ]
+    },
+    {
+      "type": "free_shipping_premium",
+      "name": "Free shipping indicator",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Compares this product's price against a threshold. For a live, cart-total-aware version that updates as items are added, use the Secure checkout / free shipping bar in the cart drawer settings if your theme has one - this block is a simpler, product-price-only indicator."
+        },
+        {
+          "type": "text",
+          "id": "threshold",
+          "label": "Free shipping threshold",
+          "info": "Enter a plain number in your shop's currency, e.g. 50",
+          "default": "50"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon"
+        }
+      ]
+    },
+    {
+      "type": "return_policy_premium",
+      "name": "Return policy badge",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "number",
+          "id": "return_days",
+          "label": "Return period (days)",
+          "default": 30
+        },
+        {
+          "type": "checkbox",
+          "id": "show_exchange",
+          "label": "Mention exchanges",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_refund",
+          "label": "Mention refunds",
+          "default": true
+        },
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon"
+        }
+      ]
+    },
+    {
+      "type": "secure_checkout_premium",
+      "name": "Secure checkout badges",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Secure checkout"
+        },
+        {
+          "type": "richtext",
+          "id": "message",
+          "label": "Message",
+          "default": "<p>Your payment information is processed securely.</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_payment_icons",
+          "label": "Show accepted payment icons",
+          "info": "Uses the payment icons already enabled in Settings > Payments.",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_ssl_badge",
+          "label": "Show SSL badge",
+          "default": true
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_icon_1",
+          "label": "Custom trust icon 1"
+        },
+        {
+          "type": "text",
+          "id": "custom_icon_1_text",
+          "label": "Custom trust icon 1 text"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_icon_2",
+          "label": "Custom trust icon 2"
+        },
+        {
+          "type": "text",
+          "id": "custom_icon_2_text",
+          "label": "Custom trust icon 2 text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Premium Merchandising"
+    }
+  ]
+}
+{% endschema %}

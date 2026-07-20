@@ -10,8 +10,6 @@
   padding-bottom: var(--ratio-percent, 66.67%);
   overflow: hidden;
   border-radius: var(--card-corner-radius, 0);
-  cursor: ew-resize;
-  touch-action: pan-y;
   -webkit-user-select: none;
   user-select: none;
 }
@@ -23,12 +21,14 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  pointer-events: none;
 }
 
 .before-after-premium__clip {
   position: absolute;
   inset: 0;
   clip-path: inset(0 calc(100% - var(--ba-position, 50%)) 0 0);
+  pointer-events: none;
 }
 
 .before-after-premium__clip .before-after-premium__image {
@@ -46,7 +46,9 @@
   width: 0;
   transform: translateX(-50%);
   z-index: 2;
-  pointer-events: none;
+  cursor: ew-resize;
+  touch-action: pan-y;
+  pointer-events: auto;
 }
 
 .before-after-premium__handle::before {
@@ -77,18 +79,10 @@
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
-.before-after-premium__handle-grip .icon {
-  width: 1rem;
-  height: 1rem;
+.before-after-premium__handle-grip svg {
+  width: 1.2rem;
+  height: 1.6rem;
   color: #111;
-}
-
-.before-after-premium__handle-grip .icon:first-child {
-  transform: rotate(90deg);
-}
-
-.before-after-premium__handle-grip .icon:last-child {
-  transform: rotate(-90deg);
 }
 
 .before-after-premium__label {

@@ -1,0 +1,113 @@
+.collection-hero--premium {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+@media screen and (min-width: 750px) {
+  .collection-hero--premium {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+}
+
+.collection-hero--premium .collection-hero__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.collection-hero--premium .breadcrumbs {
+  font-size: 1.2rem;
+  color: rgba(var(--color-foreground), 0.6);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.collection-hero--premium .breadcrumbs a {
+  color: rgba(var(--color-foreground), 0.8);
+  text-decoration: none;
+  transition: color var(--duration-default) ease;
+}
+
+.collection-hero--premium .breadcrumbs a:hover {
+  color: rgb(var(--color-foreground));
+  text-decoration: underline;
+  text-underline-offset: 0.3rem;
+}
+
+.collection-hero--premium .breadcrumbs__separator {
+  opacity: 0.5;
+}
+
+.collection-hero--premium .collection-hero__title {
+  font-family: var(--font-heading-family);
+  font-size: calc(var(--font-heading-scale) * 3.2rem);
+  line-height: 1.2;
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+@media screen and (min-width: 750px) {
+  .collection-hero--premium .collection-hero__title {
+    font-size: calc(var(--font-heading-scale) * 4.8rem);
+  }
+}
+
+.collection-hero--premium .collection-hero__description {
+  font-size: 1.6rem;
+  line-height: 1.6;
+  max-width: 65ch;
+  margin: 0 auto;
+  color: rgba(var(--color-foreground), 0.8);
+}
+
+.collection-hero--premium .collection-hero__image-container {
+  width: 100%;
+  margin-top: 3rem;
+  border-radius: var(--border-radius, 0.8rem);
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+.collection-hero--premium .collection-hero__image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+@media screen and (min-width: 750px) {
+  .collection-hero--premium.collection-hero--with-image .collection-hero__inner {
+    flex-direction: row;
+    text-align: left;
+    align-items: center;
+    gap: 4rem;
+  }
+  
+  .collection-hero--premium.collection-hero--with-image .breadcrumbs {
+    justify-content: flex-start;
+  }
+  
+  .collection-hero--premium.collection-hero--with-image .collection-hero__description {
+    margin-left: 0;
+  }
+  
+  .collection-hero--premium.collection-hero--with-image .collection-hero__text-wrapper {
+    flex: 1;
+    padding-right: 4rem;
+  }
+  
+  .collection-hero--premium.collection-hero--with-image .collection-hero__image-container {
+    flex: 1;
+    margin-top: 0;
+    max-height: 400px;
+  }
+}

@@ -6,6 +6,7 @@
 {% endcomment %}
 
 {{ 'component-before-after-premium.css' | asset_url | stylesheet_tag }}
+{{ 'component-card-premium.css' | asset_url | stylesheet_tag }}
 
 {%- style -%}
   .section-{{ section.id }}-padding {
@@ -34,7 +35,7 @@
     <div
       class="before-after-premium"
       data-before-after
-      style="--ratio-percent: {{ 1 | divided_by: section.settings.image_ratio | times: 100 }}%; --ba-position: {{ section.settings.initial_position }}%;"
+      style="--ratio-percent: {{ 1.0 | divided_by: section.settings.image_ratio | times: 100 }}%; --ba-position: {{ section.settings.initial_position }}%;"
     >
       <div class="before-after-premium__frame">
         {%- if section.settings.after_image != blank -%}
@@ -53,7 +54,7 @@
             height="{{ section.settings.after_image.height }}"
           >
         {%- else -%}
-          {{ 'lifestyle-apparel-2' | placeholder_svg_tag: 'placeholder-svg before-after-premium__image before-after-premium__image--after' }}
+          {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg before-after-premium__image before-after-premium__image--after' }}
         {%- endif -%}
 
         <div class="before-after-premium__clip" data-ba-clip>
@@ -73,7 +74,7 @@
               height="{{ section.settings.before_image.height }}"
             >
           {%- else -%}
-            {{ 'lifestyle-apparel-1' | placeholder_svg_tag: 'placeholder-svg before-after-premium__image before-after-premium__image--before' }}
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg before-after-premium__image before-after-premium__image--before' }}
           {%- endif -%}
         </div>
 
@@ -86,8 +87,9 @@
 
         <div class="before-after-premium__handle" data-ba-handle aria-hidden="true">
           <span class="before-after-premium__handle-grip">
-            {{- 'icon-caret.svg' | inline_asset_content -}}
-            {{- 'icon-caret.svg' | inline_asset_content -}}
+            <svg viewBox="0 0 10 14" width="10" height="14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 0v14M5 0v14M9 0v14" stroke="currentColor" stroke-width="2"/>
+            </svg>
           </span>
         </div>
       </div>
@@ -113,7 +115,7 @@
 
 {% schema %}
 {
-  "name": "Before / after slider (premium)",
+  "name": "Before / after (Premium)",
   "class": "section-before-after-premium",
   "tag": "section",
   "settings": [
@@ -139,7 +141,8 @@
       "label": "Header alignment",
       "options": [
         { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" }
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
       ],
       "default": "center"
     },

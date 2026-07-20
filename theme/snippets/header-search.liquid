@@ -38,7 +38,8 @@
         {%- if settings.predictive_search_enabled -%}
           {%- capture popular_terms_json -%}
             [
-              {%- for term in settings.predictive_search_popular_terms | newline_to_br | split: '<br />' -%}
+              {%- assign popular_terms = settings.predictive_search_popular_terms | newline_to_br | split: '<br />' -%}
+              {%- for term in popular_terms -%}
                 {%- assign term = term | strip -%}
                 {%- unless term == blank -%}
                   {{ term | json }}{% unless forloop.last %},{% endunless %}

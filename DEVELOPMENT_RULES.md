@@ -1,312 +1,102 @@
-# OBSIDIAN Premium Shopify Theme
-# DEVELOPMENT_RULES.md
+---------------------------------------------------------
+PLANNING DOCUMENT POLICY
+---------------------------------------------------------
 
-## Purpose
+The OBSIDIAN repository follows an implementation-first workflow.
 
-This file defines the mandatory development rules for the OBSIDIAN Premium Shopify Theme.
+AI assistants must NOT create planning documents, temporary task files, implementation plans, or AI-generated tracking artifacts unless explicitly requested.
 
-Every engineering ticket must follow these rules.
+Do NOT create, modify, or update files such as:
 
----
+- implementation_plan.md
+- implementation_plan*.md
+- task.md
+- tasks.md
+- task_list.md
+- todo.md
+- TODO.md
+- walkthrough.md
+- notes.md
+- plan.md
+- scratch.md
+- Any temporary planning or tracking document
 
-# FIRST INSTRUCTION
+Engineering tickets already define the required work.
 
-Before starting ANY engineering ticket:
+Proceed directly to implementation.
 
-1. Read `DEVELOPMENT_RULES.md`.
-2. Read `ROADMAP.md`.
-3. Read ONLY the files listed in the current engineering ticket.
-4. Read direct dependencies ONLY if absolutely necessary.
-5. Do NOT scan the entire repository.
-6. Do NOT inspect unrelated files.
-7. Complete ONLY the requested engineering ticket.
-8. Stop immediately after completing the requested work.
+---------------------------------------------------------
+DOCUMENTATION POLICY
+---------------------------------------------------------
 
----
+After completing an engineering ticket, update ONLY the documentation explicitly required by that ticket.
 
-# PROJECT
+For standard engineering tickets this includes only:
 
-Project Name
+- ROADMAP.md
+- docs/RELEASES/<current_milestone>.md
 
-OBSIDIAN Premium Shopify Theme
+Do NOT create additional documentation unless the engineering ticket explicitly requires it.
 
-Base Theme
+Do NOT generate implementation plans.
 
-Shopify Dawn
+Do NOT generate walkthrough documents.
 
-Goal
+Do NOT generate task files.
 
-Build a commercial-quality Shopify Online Store 2.0 premium theme.
+Do NOT generate temporary reports.
 
----
+Documentation should remain permanent, concise, and production-oriented.
 
-# DEVELOPMENT PRINCIPLES
+---------------------------------------------------------
+REPOSITORY CLEANLINESS
+---------------------------------------------------------
 
-Always extend Dawn.
+Every file committed to the repository must serve a long-term purpose.
 
-Never rebuild Dawn.
+Do not create:
 
-Never replace existing Shopify functionality unless explicitly requested.
+- temporary planning documents
+- AI scratch files
+- implementation plans
+- task trackers
+- walkthrough documents
+- temporary notes
 
-Prefer extending existing systems.
+If a document is not intended to become part of the permanent project documentation, it should not be created.
 
-Maintain clean architecture.
+---------------------------------------------------------
+AI WORKFLOW
+---------------------------------------------------------
 
-Prioritize:
+Every engineering ticket must follow this workflow:
 
-- Performance
-- Accessibility
-- Merchant Experience
-- Reusability
-- Maintainability
-- Commercial Quality
+Read Required Documentation
 
----
+↓
 
-# FILE SAFETY
+Understand Existing Implementation
 
-NEVER
+↓
 
-- Delete files
-- Rename files
-- Move files
-- Replace entire systems
+Implement Requested Engineering Ticket
 
-Always preserve backward compatibility.
+↓
 
----
+Validate
 
-# DEVELOPMENT SCOPE
+↓
 
-Only inspect files listed in the engineering ticket.
+Update Required Documentation
 
-Only inspect direct dependencies when required.
+↓
 
-Do NOT inspect unrelated sections.
+STOP
 
-Examples:
+Never pause to generate implementation plans.
 
-Do NOT inspect
+Never create planning artifacts.
 
-- Homepage
-- Collection
-- Cart
-- Search
-- Blog
-- Customer
-- Other milestones
+Never ask for approval after writing a plan.
 
-unless explicitly required.
-
----
-
-# DAWN POLICY
-
-If Dawn already provides a feature:
-
-Improve it.
-
-Extend it.
-
-Reuse it.
-
-Never rebuild it.
-
-Examples
-
-- Gallery
-- Product Form
-- Variant Picker
-- Inventory
-- Recommendations
-- Cart
-- Search
-- Filtering
-- Pagination
-- Media
-
----
-
-# CODE QUALITY
-
-Reuse existing
-
-- Snippets
-- JavaScript
-- CSS
-- Liquid
-
-Avoid duplicate logic.
-
-Avoid duplicated markup.
-
-Keep implementations modular.
-
-Write production-ready code.
-
-No placeholder implementations.
-
-No TODO comments.
-
----
-
-# LIQUID
-
-Use valid Shopify Liquid.
-
-Never invent Liquid syntax.
-
-Never invent filters.
-
-Prefer reusable snippets.
-
-Keep templates clean.
-
----
-
-# JAVASCRIPT
-
-Use ES6.
-
-No jQuery.
-
-Reuse Shopify events.
-
-Reuse existing architecture.
-
-Avoid duplicate AJAX requests.
-
-Avoid duplicate event listeners.
-
-Prefer event-driven architecture.
-
-Use IntersectionObserver where appropriate.
-
----
-
-# CSS
-
-Keep CSS modular.
-
-Reuse existing styles.
-
-Avoid duplicate selectors.
-
-Maintain responsive consistency.
-
----
-
-# PERFORMANCE
-
-Prevent CLS.
-
-Use lazy loading.
-
-Use responsive images.
-
-Specify width and height.
-
-Avoid duplicate assets.
-
-Reuse existing Shopify functionality.
-
----
-
-# ACCESSIBILITY
-
-Support
-
-- Keyboard navigation
-- Semantic HTML
-- Screen readers
-- Focus management
-- ARIA labels
-- Reduced motion compatibility
-
----
-
-# MERCHANT EXPERIENCE
-
-Every new feature should be configurable through the Theme Editor when appropriate.
-
-Use:
-
-- Clear setting names
-- Logical grouping
-- Sensible defaults
-- Good presets
-
----
-
-# ANIMATION POLICY
-
-Do NOT implement
-
-- GSAP
-- ScrollTrigger
-- Lenis
-- ScrollSmoother
-- FLIP
-- Premium motion effects
-
-unless the ticket explicitly belongs to Milestone 8.
-
----
-
-# ENGINEERING TICKETS
-
-One engineering ticket = one feature.
-
-Do not continue to another ticket automatically.
-
-Do not perform unrelated improvements.
-
-Stay within the ticket scope.
-
----
-
-# REPORT FORMAT
-
-After completing the ticket provide only:
-
-- Summary
-- Files Created
-- Files Modified
-- Merchant Settings Added
-- Bugs Found & Fixed
-- Verification Checklist
-
-Always confirm:
-
-"No existing files were deleted."
-
-Keep reports concise.
-
----
-
-# ROADMAP
-
-Use `ROADMAP.md` as the single source of truth.
-
-Always determine:
-
-- Current milestone
-- Current engineering ticket
-- Completed tickets
-- Next ticket
-
-Never assume future work.
-
-Never skip tickets.
-
----
-
-# STOP CONDITION
-
-After completing the requested engineering ticket:
-
-STOP.
-
-Wait for the next engineering ticket.
-
-Never begin another feature automatically.
+Proceed directly to implementation.

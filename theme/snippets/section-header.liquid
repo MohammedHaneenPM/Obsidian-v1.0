@@ -34,14 +34,14 @@
     assign button_style = button_style | default: 'link'
     assign alignment = alignment | default: 'left'
   -%}
-  <div class="section-header section-header--{{ alignment }}">
-    <div class="section-header__text">
+  <div class="premium-section-header premium-section-header--{{ alignment }}">
+    <div class="premium-section-header__text">
       {%- if eyebrow != blank -%}
-        <p class="section-header__eyebrow caption-with-letter-spacing">{{ eyebrow | escape }}</p>
+        <p class="premium-section-header__eyebrow caption-with-letter-spacing">{{ eyebrow | escape }}</p>
       {%- endif -%}
       {%- if heading != blank -%}
         <{{ heading_tag }}
-          class="section-header__heading {{ heading_size }} inline-richtext"
+          class="premium-section-header__heading {{ heading_size }} inline-richtext"
           {% if section_id != blank %}
             id="SectionHeading-{{ section_id }}"
           {% endif %}
@@ -50,13 +50,13 @@
         </{{ heading_tag }}>
       {%- endif -%}
       {%- if description != blank -%}
-        <div class="section-header__description rte">
+        <div class="premium-section-header__description rte">
           {{- description -}}
         </div>
       {%- endif -%}
     </div>
     {%- if button_text != blank -%}
-      <div class="section-header__cta">
+      <div class="premium-section-header__cta">
         {%- render 'button', text: button_text, url: button_url, style: button_style -%}
       </div>
     {%- endif -%}

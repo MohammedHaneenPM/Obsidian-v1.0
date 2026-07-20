@@ -17,7 +17,7 @@
       {%- if block.settings.show_ssl_badge -%}
         <span class="secure-checkout-premium__lock-icon" aria-hidden="true">{{- 'icon-lock.svg' | inline_asset_content -}}</span>
       {%- endif -%}
-      {{- block.settings.heading | escape -}}
+      {{- block.settings.heading | escape | replace: '\n', '<br>' -}}
     </p>
   {%- endif -%}
 
@@ -44,7 +44,7 @@
         <li class="secure-checkout-premium__custom-icon">
           {{- block.settings.custom_icon_1 | image_url: width: 60 | image_tag: loading: 'lazy', width: 28, height: 28 -}}
           {%- if block.settings.custom_icon_1_text != blank -%}
-            <span>{{ block.settings.custom_icon_1_text | escape }}</span>
+            <span>{{ block.settings.custom_icon_1_text | escape | replace: '\n', '<br>' }}</span>
           {%- endif -%}
         </li>
       {%- endif -%}
@@ -52,7 +52,7 @@
         <li class="secure-checkout-premium__custom-icon">
           {{- block.settings.custom_icon_2 | image_url: width: 60 | image_tag: loading: 'lazy', width: 28, height: 28 -}}
           {%- if block.settings.custom_icon_2_text != blank -%}
-            <span>{{ block.settings.custom_icon_2_text | escape }}</span>
+            <span>{{ block.settings.custom_icon_2_text | escape | replace: '\n', '<br>' }}</span>
           {%- endif -%}
         </li>
       {%- endif -%}

@@ -1,0 +1,172 @@
+.collection-toolbar-premium {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  margin-bottom: 2rem;
+  border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.08);
+}
+
+.collection-toolbar__count {
+  font-size: 1.4rem;
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+.collection-toolbar__controls {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.collection-toolbar__sort {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.collection-toolbar__sort label {
+  font-size: 1.4rem;
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+.collection-toolbar__sort .select {
+  position: relative;
+}
+
+.collection-toolbar__sort .select__select {
+  padding: 0.8rem 3.5rem 0.8rem 1.5rem;
+  font-size: 1.4rem;
+  border: 0.1rem solid rgba(var(--color-foreground), 0.2);
+  background: transparent;
+  cursor: pointer;
+  color: rgb(var(--color-foreground));
+  font-family: var(--font-body-family);
+  border-radius: var(--border-radius, 0.4rem);
+  transition: border-color var(--duration-default) ease, box-shadow var(--duration-default) ease;
+}
+
+.collection-toolbar__sort .select__select:focus-visible {
+  outline: none;
+  border-color: rgb(var(--color-foreground));
+  box-shadow: 0 0 0 0.1rem rgb(var(--color-foreground));
+}
+
+.collection-toolbar__sort .select__select:hover {
+  border-color: rgba(var(--color-foreground), 0.5);
+}
+
+.collection-toolbar__sort .svg-wrapper {
+  position: absolute;
+  right: 1.2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  width: 1.2rem;
+  height: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.collection-toolbar__grid-selector {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  border-left: 0.1rem solid rgba(var(--color-foreground), 0.08);
+  padding-left: 2rem;
+}
+
+.grid-selector__btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: rgba(var(--color-foreground), 0.3);
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color var(--duration-default) ease;
+}
+
+.grid-selector__btn:hover {
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+.grid-selector__btn.is-active {
+  color: rgb(var(--color-foreground));
+}
+
+.grid-selector__btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 0.2rem rgba(var(--color-foreground), 0.5);
+  border-radius: 0.2rem;
+}
+
+.collection-toolbar__mobile-filter {
+  display: flex;
+  align-items: center;
+}
+
+.collection-toolbar__mobile-filter .button {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.8rem 1.5rem;
+  font-size: 1.4rem;
+}
+
+@media screen and (max-width: 749px) {
+  .collection-toolbar-premium {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding-top: 1rem;
+    padding-bottom: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .collection-toolbar__controls {
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+  
+  .collection-toolbar__sort {
+    flex: 1;
+  }
+  
+  .collection-toolbar__sort .select {
+    width: 100%;
+  }
+  
+  .collection-toolbar__sort .select__select {
+    width: 100%;
+  }
+  
+  .collection-toolbar__mobile-filter {
+    flex: 1;
+  }
+  
+  .collection-toolbar__mobile-filter .button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Dynamic Grid Classes */
+.premium-grid-container--desktop-2 .grid__item {
+  width: calc(50% - var(--grid-desktop-horizontal-spacing) * 1 / 2);
+  max-width: calc(50% - var(--grid-desktop-horizontal-spacing) * 1 / 2);
+}
+
+.premium-grid-container--desktop-3 .grid__item {
+  width: calc(33.33% - var(--grid-desktop-horizontal-spacing) * 2 / 3);
+  max-width: calc(33.33% - var(--grid-desktop-horizontal-spacing) * 2 / 3);
+}
+
+.premium-grid-container--desktop-4 .grid__item {
+  width: calc(25% - var(--grid-desktop-horizontal-spacing) * 3 / 4);
+  max-width: calc(25% - var(--grid-desktop-horizontal-spacing) * 3 / 4);
+}

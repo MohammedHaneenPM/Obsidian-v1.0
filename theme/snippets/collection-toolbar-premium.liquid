@@ -1,0 +1,63 @@
+{%- if section.settings.show_premium_toolbar -%}
+  <script src="{{ 'collection-toolbar-premium.js' | asset_url }}" defer="defer"></script>
+  {{ 'collection-toolbar-premium.css' | asset_url | stylesheet_tag }}
+  
+  <premium-collection-toolbar class="collection-toolbar-premium page-width">
+    <div class="collection-toolbar__count">
+      <span id="ProductCountPremium">
+        {%- if collection.results_count -%}
+          Showing {{ 'templates.search.results_with_count' | t: terms: collection.terms, count: collection.results_count }}
+        {%- elsif collection.products_count == collection.all_products_count -%}
+          Showing {{ 'products.facets.product_count_simple' | t: count: collection.products_count }}
+        {%- else -%}
+          Showing {{ 'products.facets.product_count' | t: product_count: collection.products_count, count: collection.all_products_count }}
+        {%- endif -%}
+      </span>
+    </div>
+
+    <div class="collection-toolbar__controls">
+      {%- if section.settings.enable_sorting -%}
+        <div class="collection-toolbar__sort">
+          <label for="SortByPremium" class="visually-hidden">{{ 'products.facets.sort_by_label' | t }}</label>
+          <div class="select">
+            {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+            <select name="sort_by" class="select__select" id="SortByPremium" form="FacetFiltersForm">
+              {%- for option in collection.sort_options -%}
+                <option value="{{ option.value | escape }}" {% if option.value == sort_by %}selected="selected"{% endif %}>
+                  {{ option.name | escape }}
+                </option>
+              {%- endfor -%}
+            </select>
+            <span class="svg-wrapper">
+              {{- 'icon-caret.svg' | inline_asset_content -}}
+            </span>
+          </div>
+        </div>
+      {%- endif -%}
+
+      <div class="collection-toolbar__grid-selector small-hide">
+        <button type="button" class="grid-selector__btn {% if section.settings.columns_desktop == 2 %}is-active{% endif %}" data-columns="2">
+          <span class="visually-hidden">2 columns</span>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="7" height="16" fill="currentColor"/><rect x="13" y="4" width="7" height="16" fill="currentColor"/></svg>
+        </button>
+        <button type="button" class="grid-selector__btn {% if section.settings.columns_desktop == 3 %}is-active{% endif %}" data-columns="3">
+          <span class="visually-hidden">3 columns</span>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="5" height="16" fill="currentColor"/><rect x="9.5" y="4" width="5" height="16" fill="currentColor"/><rect x="16" y="4" width="5" height="16" fill="currentColor"/></svg>
+        </button>
+        <button type="button" class="grid-selector__btn {% if section.settings.columns_desktop == 4 %}is-active{% endif %}" data-columns="4">
+          <span class="visually-hidden">4 columns</span>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="4" height="16" fill="currentColor"/><rect x="7" y="4" width="4" height="16" fill="currentColor"/><rect x="12" y="4" width="4" height="16" fill="currentColor"/><rect x="17" y="4" width="4" height="16" fill="currentColor"/></svg>
+        </button>
+      </div>
+      
+      <div class="collection-toolbar__mobile-filter medium-hide large-up-hide">
+        <button type="button" class="button button--secondary" onclick="document.querySelector('.mobile-facets__open').click()">
+          <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-filter" viewBox="0 0 20 20" fill="none" width="16" height="16">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M2.5 4.5A.5.5 0 013 4h14a.5.5 0 01.5.5v1.5a.5.5 0 01-.146.354l-5.854 5.853v5.293a.5.5 0 01-.146.353l-2.5 2.5a.5.5 0 01-.854-.353v-7.793L2.146 6.354A.5.5 0 012 6V4.5zM4.116 5l5.238 5.237a.5.5 0 01.146.354v6.086l1.5-1.5v-4.586a.5.5 0 01.146-.354L16.384 5H4.116z" fill="currentColor"></path>
+          </svg>
+          {{ 'products.facets.filter_button' | t }}
+        </button>
+      </div>
+    </div>
+  </premium-collection-toolbar>
+{%- endif -%}

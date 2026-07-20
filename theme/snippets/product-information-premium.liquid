@@ -12,7 +12,7 @@
 
   Accepts:
   - product: {Object} The current product (required)
-  - block: {Object} The 'product_information_premium' section block (required)
+  - block: {Object} The 'product_info_premium' section block (required)
 
   Usage:
   {% render 'product-information-premium', product: product, block: block %}
@@ -68,7 +68,7 @@
       <ul class="product-information-premium__tags" role="list">
         {%- for tag in product.tags limit: block.settings.max_tags -%}
           <li>
-            <a href="/search?q=tag:{{ tag | url_param_escape }}" class="product-information-premium__tag">
+            <a href="{{ routes.search_url }}?q=tag:{{ tag | url_param_escape }}" class="product-information-premium__tag">
               {{- tag -}}
             </a>
           </li>
@@ -80,7 +80,7 @@
   {%- if block.settings.show_delivery_estimate and block.settings.delivery_estimate_text != blank -%}
     <p class="product-information-premium__row product-information-premium__delivery">
       <span class="svg-wrapper" aria-hidden="true">{{- 'icon-truck.svg' | inline_asset_content -}}</span>
-      <span>{{ block.settings.delivery_estimate_text | escape }}</span>
+      <span>{{ block.settings.delivery_estimate_text | escape | replace: '\n', '<br>' }}</span>
     </p>
   {%- endif -%}
 </div>
